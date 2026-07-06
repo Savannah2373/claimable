@@ -6,9 +6,16 @@ individuals — then reasons through eligibility **clause-by-clause with
 citations to the actual rules**, asks for exactly the facts it's missing, and
 generates a requirement-by-requirement action plan.
 
-One engine, two proven verticals: live **Grants.gov** opportunities and
-**SNAP** (federal benefit) policy run through the *same* compiler and the
-*same* eligibility engine.
+One engine, two proven verticals, **35 compiled rulebooks**: 30 live
+**Grants.gov** opportunities and 5 federal benefit programs (**SNAP, WIC,
+EITC, LIHEAP, Lifeline**) run through the *same* compiler and the *same*
+eligibility engine — 194 criteria, every one citing the official text.
+
+**Discovery mode** screens a profile against everything relevant in one shot:
+it builds a search query from the profile itself, retrieves the best-matching
+compiled rulebooks (benefit programs always included for individuals), runs
+the full engine on each, and ranks the results 🟢 eligible / 🟡 likely /
+🔴 not eligible with the open questions to answer next.
 
 Full design doc: `../CLAIMABLE_BRIEF.md`.
 
@@ -99,10 +106,13 @@ python scripts/compile_criteria.py HRSA-26-050
 python scripts/compile_criteria.py SNAP-FEDERAL
 python scripts/seed_profiles.py
 
-# 3 · search / screen / plan
+# 3 · search / discover / screen / plan
 python scripts/search.py "small nonprofit doing rural health research"
+python scripts/discover.py --profile "Maria R. (synthetic persona)"   # screen everything relevant
 python scripts/screen.py --profile "Appalachian Rural Health Data Collaborative" \
                          --number HRSA-26-050          # interactive follow-ups
+python scripts/batch_compile.py --grants 25            # grow coverage (~10¢/rulebook)
+python scripts/ingest_benefits.py                      # benefit-program catalog
 python scripts/run_evals.py                            # the eval gate
 python scripts/costs.py                                # LLM spend by component
 
@@ -133,9 +143,14 @@ app.py                   Streamlit UI
 ## Data sources (all free)
 
 - **Grants.gov Search2 API** — live federal opportunities, no key
-- **USDA FNS** — SNAP federal eligibility policy (benefits vertical)
+- **Official policy pages** — SNAP & WIC (USDA FNS), EITC (IRS), LIHEAP (HHS
+  ACF), Lifeline (FCC/USAC) — the benefits vertical
 - **USAspending API** — who actually wins awards under each listing, no key
 - Profiles are **synthetic personas** — no real PII anywhere in the system
+
+Coverage is a compile away from bigger: SSA (SSI) and Medicaid.gov bot-block
+plain fetches and would need a headless browser or their official APIs —
+documented as future work, not silently skipped.
 
 > Claimable is a screening tool, not legal or financial advice. Eligibility is
 > always determined by the issuing agency.

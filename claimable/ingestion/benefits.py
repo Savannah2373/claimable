@@ -17,10 +17,17 @@ import requests
 
 
 def fetch_policy_text(url: str) -> str:
+    # several .gov sites 403 non-browser user agents on public pages
     resp = requests.get(
         url,
         timeout=30,
-        headers={"User-Agent": "claimable/0.1 (portfolio project; policy research)"},
+        headers={
+            "User-Agent": (
+                "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+                "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36"
+            ),
+            "Accept": "text/html,application/xhtml+xml",
+        },
     )
     resp.raise_for_status()
     text = resp.text

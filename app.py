@@ -92,6 +92,40 @@ if query:
         use_container_width=True, hide_index=True,
     )
 
+st.subheader("…or screen everything relevant at once")
+col_a, col_b = st.columns([1, 3])
+with col_a:
+    max_screens = st.number_input("Programs to screen", 2, 8, 4,
+                                  help="Each program screened costs LLM calls (~10–20¢).")
+with col_b:
+    st.caption("Discovery builds a search query from the profile itself, finds the most "
+               "relevant compiled rulebooks, and runs the full engine on each. For "
+               "individuals, all benefit programs are always included.")
+if st.button("🔎 Discover & screen", type="primary"):
+    with st.spinner(f"Screening up to {max_screens} programs — this takes a couple of minutes…"):
+        from claimable.discovery import discover
+
+        profile = {"name": profile_row["name"], "kind": profile_row["kind"], "attrs": attrs}
+        with connect() as conn:
+            disc = discover(conn, profile_row["id"], profile, max_screens=int(max_screens))
+    st.session_state["discovery"] = disc
+
+if "discovery" in st.session_state:
+    badges = {"eligible": ("🟢", "Appears eligible"),
+              "likely": ("🟡", "Likely eligible — open questions"),
+              "not_eligible": ("🔴", "Not eligible as things stand")}
+    for r in st.session_state["discovery"]:
+        icon, label = badges[r["status"]]
+        o, c = r["opportunity"], r["counts"]
+        with st.expander(f"{icon} {o['number']} — {o['title'][:70]}  "
+                         f"({c['met']}✅ {c['not_met']}❌ {c['needs_info']}❓)"):
+            st.caption(label + (f" · closes {o['close_date']}" if o["close_date"] else ""))
+            for v in r["verdicts"]:
+                st.markdown(f"{ICONS[v['verdict']]} **{v['criterion_key']}** — {v['reasoning']}")
+            if r["open_questions"]:
+                st.markdown("**To firm this up:** select this program below and answer "
+                            "the follow-ups.")
+
 st.header("2 · Screen eligibility")
 opps = load_compiled_opportunities()
 opp = st.selectbox(

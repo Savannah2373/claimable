@@ -1,6 +1,20 @@
 {
  "opportunities": [
   {
+   "id": 6,
+   "source": "grants.gov",
+   "source_id": "362373",
+   "number": "ED-GRANTS-051326-001",
+   "title": "OSERS-OSEP: Expanding Career Pathways and Workforce Readiness of Special Education Teachers and Early Intervention Personnel Through Registered Apprenticeships, Assistance Listing Number (ALN) 84.325J"
+  },
+  {
+   "id": 178,
+   "source": "policy",
+   "source_id": "https://www.irs.gov/credits-deductions/individuals/earned-income-tax-credit/who-qualifies-for-the-earned-income-tax-credit-eitc",
+   "number": "EITC-FEDERAL",
+   "title": "Earned Income Tax Credit (EITC) \u2014 Who Qualifies"
+  },
+  {
    "id": 1,
    "source": "grants.gov",
    "source_id": "362290",
@@ -22,6 +36,188 @@
    "title": "FY26 Bureau of Land Management Youth Conservation Corps - Bureau wide&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
   },
   {
+   "id": 179,
+   "source": "policy",
+   "source_id": "https://www.lifelinesupport.org/do-i-qualify/",
+   "number": "LIFELINE-FCC",
+   "title": "Lifeline \u2014 Phone and Internet Discount Program"
+  },
+  {
+   "id": 183,
+   "source": "policy",
+   "source_id": "https://www.acf.hhs.gov/ocs/low-income-home-energy-assistance-program-liheap",
+   "number": "LIHEAP-FEDERAL",
+   "title": "Low Income Home Energy Assistance Program (LIHEAP)"
+  },
+  {
+   "id": 12,
+   "source": "grants.gov",
+   "source_id": "362903",
+   "number": "OFOP0002813",
+   "title": "Prosperity through Partnership:  Catalyzing U.S.-Algerian Collaboration in Innovation, Commerce and English Language"
+  },
+  {
+   "id": 10,
+   "source": "grants.gov",
+   "source_id": "362830",
+   "number": "OFOP0002992",
+   "title": "U.S. Embassy Bridgetown: EducationUSA Eastern Caribbean Regional Advising Program"
+  },
+  {
+   "id": 35,
+   "source": "grants.gov",
+   "source_id": "350485",
+   "number": "PAR-23-228",
+   "title": "National Institute of General Medical Sciences Predoctoral Basic Biomedical Sciences Research Training Program (T32)"
+  },
+  {
+   "id": 113,
+   "source": "grants.gov",
+   "source_id": "349618",
+   "number": "PAR-23-235",
+   "title": "National Centers for Biomedical Imaging and Bioengineering (NCBIB) (P41 Clinical Trials Optional)"
+  },
+  {
+   "id": 108,
+   "source": "grants.gov",
+   "source_id": "350299",
+   "number": "PAR-23-284",
+   "title": "Specialized Programs of Research Excellence (SPOREs) in Human Cancers for Years 2024, 2025, and 2026 (P50 Clinical Trial Required)"
+  },
+  {
+   "id": 112,
+   "source": "grants.gov",
+   "source_id": "351057",
+   "number": "PAR-24-065",
+   "title": "NHLBI Program Project Applications (P01 Clinical Trials Optional)"
+  },
+  {
+   "id": 116,
+   "source": "grants.gov",
+   "source_id": "351234",
+   "number": "PAR-24-071",
+   "title": "Alcohol Research-Related Resource Award (R24 Clinical Trial Not Allowed)"
+  },
+  {
+   "id": 99,
+   "source": "grants.gov",
+   "source_id": "352324",
+   "number": "PAR-24-120",
+   "title": "NIA Career Transition Award (K22 Independent Clinical Trial Not Allowed)"
+  },
+  {
+   "id": 27,
+   "source": "grants.gov",
+   "source_id": "356726",
+   "number": "PAR-24-276",
+   "title": "Data Coordinating Center for NCCIH Multi-Site Investigator-Initiated Clinical Trials of Mind and Body Interventions (Collaborative U24 Clinical Trial Required)"
+  },
+  {
+   "id": 151,
+   "source": "grants.gov",
+   "source_id": "357005",
+   "number": "PAR-24-306",
+   "title": "Research Projects to Enhance Applicability of Mammalian Models for Translational Research (R01 Clinical Trial Not Allowed)"
+  },
+  {
+   "id": 137,
+   "source": "grants.gov",
+   "source_id": "356904",
+   "number": "PAR-24-312",
+   "title": "Clinical Coordinating Center for NCCIH Multi-Site Investigator-Initiated Clinical Trials of Natural Products (Collaborative UG3/UH3 Clinical Trial Required)"
+  },
+  {
+   "id": 138,
+   "source": "grants.gov",
+   "source_id": "356905",
+   "number": "PAR-24-313",
+   "title": "Natural Product Multi-Site Clinical Trial Data Coordinating Center (Collaborative U24 Clinical Trial Required)"
+  },
+  {
+   "id": 122,
+   "source": "grants.gov",
+   "source_id": "357182",
+   "number": "PAR-25-038",
+   "title": "Cellular and Molecular Biology of Complex Brain Disorders (R01 Clinical Trial Not Allowed)"
+  },
+  {
+   "id": 124,
+   "source": "grants.gov",
+   "source_id": "357198",
+   "number": "PAR-25-066",
+   "title": "Social disconnection and Suicide Risk in Late Life (R21 Clinical Trial Optional)"
+  },
+  {
+   "id": 160,
+   "source": "grants.gov",
+   "source_id": "357014",
+   "number": "PAR-25-153",
+   "title": "Assay development and screening for discovery of chemical probes, drugs or immunomodulators (R01 Clinical Trial Not Allowed)"
+  },
+  {
+   "id": 42,
+   "source": "grants.gov",
+   "source_id": "357634",
+   "number": "PAR-25-156",
+   "title": "Limited Competition: High Impact Specialized Innovation Programs in Clinical and Translational Science  (RC2 Clinical Trials Optional)"
+  },
+  {
+   "id": 39,
+   "source": "grants.gov",
+   "source_id": "357710",
+   "number": "PAR-25-247",
+   "title": "Institutional Training Programs to Advance Translational Research on Alzheimer's Disease (AD) and AD-Related Dementias (ADRD) (T32 Clinical Trial Not Allowed)"
+  },
+  {
+   "id": 38,
+   "source": "grants.gov",
+   "source_id": "357974",
+   "number": "PAR-25-347",
+   "title": "Substance Use/Substance Use Disorder Dissertation Research Award (R36 Clinical Trials Not Allowed)"
+  },
+  {
+   "id": 3,
+   "source": "grants.gov",
+   "source_id": "363043",
+   "number": "PAS-JAKARTA-FY26-06",
+   "title": "Voices for the Future"
+  },
+  {
+   "id": 9,
+   "source": "grants.gov",
+   "source_id": "362867",
+   "number": "PDS-LUSAKA-EDUSA-FY26",
+   "title": "EducationUSA Opportunity Funds Program 2026"
+  },
+  {
+   "id": 5,
+   "source": "grants.gov",
+   "source_id": "355297",
+   "number": "RFA-CA-24-026",
+   "title": "National Cancer Institute Youth Enjoy Science Research Education Program (R25 Clinical Trial Not Allowed)"
+  },
+  {
+   "id": 143,
+   "source": "grants.gov",
+   "source_id": "356982",
+   "number": "RFA-NS-25-022",
+   "title": "BRAIN Initiative: Clinical Studies to Advance Next-Generation Devices for Recording and Modulation in the Human Central Nervous System (UH3 Clinical Trial Optional)"
+  },
+  {
+   "id": 80,
+   "source": "grants.gov",
+   "source_id": "358930",
+   "number": "RFA-OD-25-008",
+   "title": "Tobacco Regulatory Science Small Grant Program for New Investigators (R03 Clinical Trial Optional)"
+  },
+  {
+   "id": 11,
+   "source": "grants.gov",
+   "source_id": "362758",
+   "number": "S-DR860-26-NOFO-0003",
+   "title": "U.S.-D.R. Technology and Science Fair"
+  },
+  {
    "id": 175,
    "source": "policy",
    "source_id": "https://www.fns.usda.gov/snap/recipient/eligibility",
@@ -41,6 +237,13 @@
    "source_id": "361169",
    "number": "USDA-NIFA-AFRI-011596",
    "title": "Agriculture and Food Research Initiative Competitive Grants Program Education and Workforce Development"
+  },
+  {
+   "id": 177,
+   "source": "policy",
+   "source_id": "https://www.fns.usda.gov/wic/wic-eligibility-requirements",
+   "number": "WIC-FEDERAL",
+   "title": "WIC \u2014 Special Supplemental Nutrition Program for Women, Infants, and Children"
   }
  ],
  "criteria": [
@@ -459,6 +662,1570 @@
    "check_type": "judgment",
    "source_quote": "Normally you are not eligible for SNAP benefits if an institution gives you most of your meals. There are exceptions for elderly persons and disabled persons .",
    "threshold": null
+  },
+  {
+   "opportunity_id": 177,
+   "criterion_key": "categorical_eligibility",
+   "version": 1,
+   "text": "Applicant must be a pregnant woman, a postpartum woman (up to 6 months after the end of pregnancy), a breastfeeding woman (up to the infant's first birthday), an infant, or a child up to their fifth birthday",
+   "category": "other",
+   "check_type": "judgment",
+   "source_quote": "Women who are currently pregnant, postpartum (up to 6 months after the \u200bend of a pregnancy\u200b), or breastfeeding (up to the infant\u2019s first birthday)\n Infants\n Children (up to their\u200b fifth birthday)",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 177,
+   "criterion_key": "geographic_scope",
+   "version": 1,
+   "text": "Applicant must apply through a WIC agency in their area (state, U.S. territory, or Tribe)",
+   "category": "geographic",
+   "check_type": "judgment",
+   "source_quote": "You must apply through a WIC agency in your area. You might have several options for where and how to apply, including online.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 177,
+   "criterion_key": "income_limit",
+   "version": 1,
+   "text": "Total household income must be at or below the WIC income limits for the applicant's household size, unless the applicant receives Medicaid, SNAP, or TANF",
+   "category": "financial",
+   "check_type": "judgment",
+   "source_quote": "If you don\u2019t participate in one of these programs, your income must be at or below WIC limits.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 177,
+   "criterion_key": "nutrition_assessment",
+   "version": 1,
+   "text": "Applicant must receive a free health check by WIC staff before enrollment",
+   "category": "other",
+   "check_type": "judgment",
+   "source_quote": "All applicants must receive a free, simple health check by WIC staff before they are enrolled.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 178,
+   "criterion_key": "has_earned_income",
+   "version": 1,
+   "text": "Applicant must have earned income.",
+   "category": "financial",
+   "check_type": "judgment",
+   "source_quote": "Have earned income",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 178,
+   "criterion_key": "investment_income_below_limit",
+   "version": 1,
+   "text": "Applicant must have investment income below the annual limit.",
+   "category": "financial",
+   "check_type": "judgment",
+   "source_quote": "Have investment income below the limit",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 178,
+   "criterion_key": "valid_ssn",
+   "version": 1,
+   "text": "Applicant (and spouse if filing jointly, and any child claimed) must have a valid Social Security number issued on or before the due date of the return (including extensions).",
+   "category": "documentation",
+   "check_type": "judgment",
+   "source_quote": "Have a valid Social Security number by the due date of your return (including extensions)",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 178,
+   "criterion_key": "citizen_or_resident_alien",
+   "version": 1,
+   "text": "Applicant must be a U.S. citizen or a resident alien all year.",
+   "category": "other",
+   "check_type": "judgment",
+   "source_quote": "Be a U.S. citizen or a resident alien all year",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 178,
+   "criterion_key": "not_file_form_2555",
+   "version": 1,
+   "text": "Applicant must not file Form 2555, Foreign Earned Income.",
+   "category": "documentation",
+   "check_type": "judgment",
+   "source_quote": "Not file Form 2555, Foreign Earned Income",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 178,
+   "criterion_key": "separated_spouse_rules",
+   "version": 1,
+   "text": "If separated from spouse and not filing a joint return, applicant must meet certain rules.",
+   "category": "other",
+   "check_type": "judgment",
+   "source_quote": "Meet certain rules if you are separated from your spouse and not filing a joint tax return",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 178,
+   "criterion_key": "ssn_authorizes_work",
+   "version": 1,
+   "text": "The SSN must not have been issued solely to apply for or receive a federally funded benefit and must authorize work.",
+   "category": "documentation",
+   "check_type": "judgment",
+   "source_quote": "It was issued solely to apply for or receive a federally funded benefit (such as Medicaid) and does not authorize you to work.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 178,
+   "criterion_key": "eligible_filing_status",
+   "version": 1,
+   "text": "Applicant must have an eligible filing status: married filing jointly, head of household, qualifying surviving spouse, single, or married filing separate.",
+   "category": "other",
+   "check_type": "judgment",
+   "source_quote": "Eligible filing statuses to claim EITC:\n Married filing jointly\n Head of household \n Qualifying surviving spouse \n Single\n Married filing separate",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 178,
+   "criterion_key": "nonresident_alien_exception",
+   "version": 1,
+   "text": "A nonresident alien for any part of the year can only claim the EITC if filing status is married filing jointly, spouse is a U.S. citizen or resident alien, and the applicant chooses to be treated as a U.S. resident.",
+   "category": "other",
+   "check_type": "judgment",
+   "source_quote": "If you were a nonresident alien for any part of the tax year, you can only claim the EITC if your filing status is married filing jointly and your spouse is a U.S. citizen or resident alien, and you choose to be treated as a U.S. resident.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 178,
+   "criterion_key": "lived_in_us_no_child",
+   "version": 1,
+   "text": "When claiming the EITC without a qualifying child, applicant must have lived in the United States (50 states, DC, and U.S. military bases; not U.S. territories) for more than half the tax year.",
+   "category": "geographic",
+   "check_type": "judgment",
+   "source_quote": "Lived in the United States for more than half the tax year. The United States includes the 50 states, the District of Columbia and U.S. military bases. It does not include U.S. territories such as Guam, the Virgin Islands or Puerto Rico",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 178,
+   "criterion_key": "not_claimed_as_dependent_no_child",
+   "version": 1,
+   "text": "When claiming the EITC without a qualifying child, applicant cannot be claimed as a qualifying child or dependent of another person.",
+   "category": "other",
+   "check_type": "judgment",
+   "source_quote": "Cannot be claimed as a qualifying child of another taxpayer or dependent of another person",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 178,
+   "criterion_key": "age_requirement_no_child",
+   "version": 1,
+   "text": "When claiming the EITC without a qualifying child, applicant must be at least age 25 but under age 65 at the end of the year (if married filing jointly, at least one spouse must meet the age rule).",
+   "category": "other",
+   "check_type": "judgment",
+   "source_quote": "Meet the age requirements . You must be at least age 25 but under age 65 at the end of the year. If married and filing a joint return, at least one spouse must meet the age rule.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 183,
+   "criterion_key": "applicant_type_household",
+   "version": 1,
+   "text": "Assistance is provided to households; LIHEAP does not provide direct grants to individuals.",
+   "category": "organizational",
+   "check_type": "judgment",
+   "source_quote": "The Low Income Home Energy Assistance Program (LIHEAP) does not provide direct grants to individuals",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 183,
+   "criterion_key": "low_income",
+   "version": 1,
+   "text": "The household must be low income to qualify for energy assistance.",
+   "category": "financial",
+   "check_type": "judgment",
+   "source_quote": "The Low Income Home Energy Assistance Program (LIHEAP) helps keep families safe and healthy through initiatives that assist families with energy costs.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 179,
+   "criterion_key": "program_participation_general",
+   "version": 1,
+   "text": "Applicant (or someone in their household) participates in a qualifying government assistance program: Medicaid, SNAP, SSI, Federal Public Housing Assistance, Housing Choice Voucher, Project-based Rental Assistance, Public Housing, Affordable Housing Programs for American Indians/Alaska Natives/Native Hawaiians, or Veterans Pension and Survivors Benefit.",
+   "category": "other",
+   "check_type": "judgment",
+   "source_quote": "You can get Lifeline if you (or someone in your household) participate in one of these programs:\n Medicaid\n Supplemental Nutrition Assistance Program (SNAP), formerly known as Food Stamps\n Supplemental Security Income (SSI)\n Federal Public Housing Assistance (FPHA)\n Housing Choice Voucher (HCV) Program (Section 8 Vouchers)\n Project-based Rental Assistance (PBRA)/2020/811\n Public Housing\n Affordable Housing Programs for American Indians, Alaska Natives, or Native Hawaiians\n Veterans Pension and Survivors Benefit",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 179,
+   "criterion_key": "tribal_program_participation",
+   "version": 1,
+   "text": "Applicants living on qualifying Tribal lands may qualify through participation in additional Tribal assistance programs (Bureau of Indian Affairs General Assistance, Tribal TANF, Head Start meeting income standard, Food Distribution Program on Indian Reservations).",
+   "category": "other",
+   "check_type": "judgment",
+   "source_quote": "If you live on qualifying Tribal lands , you can get Lifeline if you (or someone in your household) participate in:\n Any of the government assistance programs listed above\n Bureau of Indian Affairs General Assistance\n Tribal Temporary Assistance for Needy Families (Tribal TANF)\n Head Start (only households meeting the income qualifying standard)\n Food Distribution Program on Indian Reservations",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 179,
+   "criterion_key": "income_eligibility",
+   "version": 1,
+   "text": "Applicant's household income is at or below 135% of the 2026 Federal Poverty Guidelines, based on household size and state.",
+   "category": "financial",
+   "check_type": "judgment",
+   "source_quote": "You can get Lifeline if your income is at 135% or less than the 2026 Federal Poverty Guidelines. The guideline is based on your household size and state.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 179,
+   "criterion_key": "child_dependent_program",
+   "version": 1,
+   "text": "Applicant may qualify if their child or dependent participates in a qualifying program.",
+   "category": "other",
+   "check_type": "judgment",
+   "source_quote": "You can also get Lifeline if your child or dependent participates in a qualifying program.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 179,
+   "criterion_key": "survivor_proof_and_hardship",
+   "version": 1,
+   "text": "Survivors of domestic violence, human trafficking, or related crimes may participate if they provide proof of an attempted line separation request and are experiencing financial hardship.",
+   "category": "other",
+   "check_type": "judgment",
+   "source_quote": "If you are a survivor, you can participate in the Lifeline program if you provide proof of an attempted line separation request and if you are experiencing financial hardship.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 179,
+   "criterion_key": "survivor_extended_eligibility",
+   "version": 1,
+   "text": "Survivors may qualify through extended eligibility criteria: household income at or below 200% of Federal Poverty Guidelines, enrollment in WIC, enrollment in Free and Reduced-Price School Lunch/Breakfast (including CEP schools), or receipt of a Federal Pell Grant in the current award year.",
+   "category": "other",
+   "check_type": "judgment",
+   "source_quote": "Survivors may qualify through existing Lifeline program requirements mentioned above or through the extended eligibility criteria:\n If your household income is at or below 200% of the Federal Poverty Guidelines \n Enrollment in the Special Supplemental Nutrition Program for Women, Infants, and Children (WIC)\n Enrollment in the Free and Reduced-Price School Lunch or Breakfast program, including enrollment at a Community Eligibility Provision (CEP) school or school district\n Received a Federal Pell Grant in the current award year",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 9,
+   "criterion_key": "applicant_type",
+   "version": 1,
+   "text": "Applicant must be a not-for-profit organization (including think tanks and civil society/non-governmental organizations) or a public or private educational institution.",
+   "category": "organizational",
+   "check_type": "judgment",
+   "source_quote": "Not-for-profit organizations, including think tanks and civil society/non-governmental organizations. Public and private educational institutions.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 9,
+   "criterion_key": "legal_registration_zambia",
+   "version": 1,
+   "text": "Applicant must provide proof of legal registration in Zambia.",
+   "category": "documentation",
+   "check_type": "judgment",
+   "source_quote": "Proof of legal registration and physical presence in Zambia",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 9,
+   "criterion_key": "physical_presence_zambia",
+   "version": 1,
+   "text": "Applicant must have a physical presence in Zambia.",
+   "category": "geographic",
+   "check_type": "judgment",
+   "source_quote": "Proof of legal registration and physical presence in Zambia",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 9,
+   "criterion_key": "organizational_chart",
+   "version": 1,
+   "text": "Applicant must submit an organizational chart showing key personnel.",
+   "category": "documentation",
+   "check_type": "judgment",
+   "source_quote": "organizational chart showing key personnel",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 9,
+   "criterion_key": "references_and_past_performance",
+   "version": 1,
+   "text": "Applicant must submit letters of reference and past performance documentation.",
+   "category": "documentation",
+   "check_type": "judgment",
+   "source_quote": "letters of reference and past performance documentation",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 9,
+   "criterion_key": "award_ceiling",
+   "version": 1,
+   "text": "Requested funding must not exceed the award ceiling of 28,000.",
+   "category": "financial",
+   "check_type": "deterministic",
+   "source_quote": "Award ceiling: 28,000",
+   "threshold": {
+    "value": 28000.0,
+    "operator": "lte",
+    "profile_fact": "requested_funding_usd"
+   }
+  },
+  {
+   "opportunity_id": 9,
+   "criterion_key": "award_floor",
+   "version": 1,
+   "text": "Requested funding must be at least the award floor of 10,000.",
+   "category": "financial",
+   "check_type": "deterministic",
+   "source_quote": "Award floor: 10,000",
+   "threshold": {
+    "value": 10000.0,
+    "operator": "gte",
+    "profile_fact": "requested_funding_usd"
+   }
+  },
+  {
+   "opportunity_id": 11,
+   "criterion_key": "eligible_applicant_type",
+   "version": 1,
+   "text": "Applicant must be one of the eligible organization types: U.S. or Dominican not-for-profit organizations, chambers of commerce and business associations, entrepreneurship and innovation hubs, technology and startup incubators/accelerators, higher education institutions, alumni associations, or civil society organizations with STEM/entrepreneurship/workforce development/youth programming experience.",
+   "category": "organizational",
+   "check_type": "judgment",
+   "source_quote": "\u25cf U.S. and Dominican not-for-profit organizations\n\u25cf Chambers of commerce and business associations\n\u25cf Entrepreneurship and innovation hubs\n\u25cf Technology and startup incubators/accelerators\n\u25cf Higher education institutions\n\u25cf Alumni associations\n\u25cf Civil society organizations with experience in STEM, entrepreneurship, workforce development, or youth programming",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 11,
+   "criterion_key": "nonprofit_status_proof",
+   "version": 1,
+   "text": "Applicant must be able to document non-profit status (U.S. organizations via 501(c)(3) IRS determination letter; non-U.S. organizations via government-issued evidence of non-profit status).",
+   "category": "documentation",
+   "check_type": "judgment",
+   "source_quote": "Proof of Non-profit Status: Documentation to demonstrate the applicant\u2019s non-profit status (e.g., U.S.-based organizations should submit a copy of their 501(c)(3) Internal Revenue Service determination letter, and non-U.S. organizations should provide evidence of non-profit status issued by a government entity).",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 11,
+   "criterion_key": "registration_proof",
+   "version": 1,
+   "text": "Applicant must provide a copy of the organization's registration.",
+   "category": "documentation",
+   "check_type": "judgment",
+   "source_quote": "Proof of Registration: A copy of the organization\u2019s registration should be provided with the proposal application. U.S.-based organizations should submit a copy of their IRS determination letter.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 11,
+   "criterion_key": "award_ceiling",
+   "version": 1,
+   "text": "Requested funding must not exceed the award ceiling of $80,000.",
+   "category": "financial",
+   "check_type": "deterministic",
+   "source_quote": "Award ceiling: 80,000",
+   "threshold": {
+    "value": 80000.0,
+    "operator": "lte",
+    "profile_fact": "requested_funding_usd"
+   }
+  },
+  {
+   "opportunity_id": 11,
+   "criterion_key": "award_floor",
+   "version": 1,
+   "text": "Requested funding must be at least the award floor of $30,000.",
+   "category": "financial",
+   "check_type": "deterministic",
+   "source_quote": "Award floor: 30,000",
+   "threshold": {
+    "value": 30000.0,
+    "operator": "gte",
+    "profile_fact": "requested_funding_usd"
+   }
+  },
+  {
+   "opportunity_id": 11,
+   "criterion_key": "cost_sharing",
+   "version": 1,
+   "text": "Cost sharing is not required for this opportunity.",
+   "category": "financial",
+   "check_type": "deterministic",
+   "source_quote": "COST SHARING REQUIRED\nNo",
+   "threshold": {
+    "value": null,
+    "operator": "is_false",
+    "profile_fact": "can_provide_cost_sharing"
+   }
+  },
+  {
+   "opportunity_id": 6,
+   "criterion_key": "applicant_type_state_or_public_agency",
+   "version": 1,
+   "text": "Applicant must be a State educational agency (SEA) or other public agency, including IDEA Part C lead agencies and State apprenticeship agencies.",
+   "category": "organizational",
+   "check_type": "judgment",
+   "source_quote": "State educational agencies (SEAs) and other public agencies, including IDEA Part C lead agencies and State apprenticeship agencies.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 6,
+   "criterion_key": "must_be_state_agency",
+   "version": 1,
+   "text": "To meet the absolute priority, the eligible applicant must be a State agency.",
+   "category": "organizational",
+   "check_type": "judgment",
+   "source_quote": "To meet the absolute priority, eligible applicants must be a State agency, and if not the SEA or IDEA Part C lead agency, the applicant must partner with the SEA or IDEA Part C lead agency to implement the project.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 6,
+   "criterion_key": "partner_with_sea_if_not_sea",
+   "version": 1,
+   "text": "If the applicant is not the SEA or IDEA Part C lead agency, it must partner with the SEA or IDEA Part C lead agency to implement the project.",
+   "category": "organizational",
+   "check_type": "judgment",
+   "source_quote": "if not the SEA or IDEA Part C lead agency, the applicant must partner with the SEA or IDEA Part C lead agency to implement the project.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 6,
+   "criterion_key": "ineligible_entities",
+   "version": 1,
+   "text": "Local educational agencies (LEAs), institutions of higher education (IHEs), and public charter schools are not eligible to apply.",
+   "category": "organizational",
+   "check_type": "judgment",
+   "source_quote": "other types of entities such as local educational agencies (LEAs), institutions of higher education (IHEs), and public charter schools, are not eligible to apply.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 6,
+   "criterion_key": "award_ceiling",
+   "version": 1,
+   "text": "Requested funding must not exceed the award ceiling of $1,000,000.",
+   "category": "financial",
+   "check_type": "deterministic",
+   "source_quote": "Award ceiling: 1,000,000",
+   "threshold": {
+    "value": 1000000.0,
+    "operator": "lte",
+    "profile_fact": "requested_funding_usd"
+   }
+  },
+  {
+   "opportunity_id": 99,
+   "criterion_key": "applicant_organization_type",
+   "version": 1,
+   "text": "Applicant must be an eligible organization type (e.g., institution of higher education, government, nonprofit, for-profit, tribal organization, etc.).",
+   "category": "organizational",
+   "check_type": "judgment",
+   "source_quote": "City or township governments; County governments; For profit organizations other than small businesses; Independent school districts; Native American tribal governments (Federally recognized); Native American tribal organizations (other than Federally recognized tribal governments); Nonprofits having a 501(c)(3) status with the IRS, other than institutions of higher education",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 99,
+   "criterion_key": "foreign_organizations_ineligible",
+   "version": 1,
+   "text": "Non-domestic (non-U.S.) entities (foreign organizations) are not eligible to apply.",
+   "category": "geographic",
+   "check_type": "deterministic",
+   "source_quote": "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 99,
+   "criterion_key": "foreign_components_ineligible",
+   "version": 1,
+   "text": "Non-domestic (non-U.S.) components of U.S. organizations are not eligible, and foreign components are not allowed.",
+   "category": "geographic",
+   "check_type": "judgment",
+   "source_quote": "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply.Foreign components, as defined in the NIH Grants Policy Statement, are not allowed.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 99,
+   "criterion_key": "faculty_transition_plan",
+   "version": 1,
+   "text": "Applicant must plan to start a tenure-track faculty position within a year of the award.",
+   "category": "other",
+   "check_type": "judgment",
+   "source_quote": "targeted at applicants who plan to start a tenure-track faculty position within a year of the award",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 99,
+   "criterion_key": "clinical_trial_not_allowed",
+   "version": 1,
+   "text": "Independent clinical trials are not allowed under this award.",
+   "category": "other",
+   "check_type": "judgment",
+   "source_quote": "NIA Career Transition Award (K22 Independent Clinical Trial Not Allowed)",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 99,
+   "criterion_key": "cost_sharing_not_required",
+   "version": 1,
+   "text": "Cost sharing is not required for this opportunity.",
+   "category": "financial",
+   "check_type": "deterministic",
+   "source_quote": "## COST SHARING REQUIRED\nNo",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 137,
+   "criterion_key": "applicant_type",
+   "version": 1,
+   "text": "Applicant must be an eligible entity type (e.g., institutions of higher education, government entities, nonprofits, for-profit organizations, tribal governments/organizations, small businesses, housing authorities, or other listed types).",
+   "category": "organizational",
+   "check_type": "judgment",
+   "source_quote": "City or township governments; County governments; For profit organizations other than small businesses; Independent school districts; Native American tribal governments (Federally recognized); Native American tribal organizations (other than Federally recognized tribal governments); Nonprofits having a 501(c)(3) status with the IRS, other than institutions of higher education; Nonprofits that do not have a 501(c)(3) status with the IRS, other than institutions of higher education",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 137,
+   "criterion_key": "foreign_organizations_ineligible",
+   "version": 1,
+   "text": "Non-domestic (non-U.S.) entities (foreign organizations) are not eligible to apply.",
+   "category": "geographic",
+   "check_type": "judgment",
+   "source_quote": "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 137,
+   "criterion_key": "foreign_components_of_us_orgs_ineligible",
+   "version": 1,
+   "text": "Non-domestic (non-U.S.) components of U.S. organizations are not eligible to apply.",
+   "category": "geographic",
+   "check_type": "judgment",
+   "source_quote": "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 137,
+   "criterion_key": "companion_dcc_application_required",
+   "version": 1,
+   "text": "An accompanying Data Coordinating Center application under PAR-24-125 must be submitted simultaneously with the Clinical Coordinating Center application.",
+   "category": "documentation",
+   "check_type": "judgment",
+   "source_quote": "Both a Clinical Coordinating Center application and a corresponding Data Coordinating Center (DCC) application need to be submitted simultaneously for consideration by NCCIH.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 137,
+   "criterion_key": "cost_sharing",
+   "version": 1,
+   "text": "Cost sharing is not required for this opportunity.",
+   "category": "financial",
+   "check_type": "deterministic",
+   "source_quote": "## COST SHARING REQUIRED\nNo",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 80,
+   "criterion_key": "applicant_type",
+   "version": 1,
+   "text": "Applicant must be an eligible entity type (e.g., city/township/county/state/special district governments, for-profit organizations other than small businesses, independent school districts, Native American tribal governments/organizations, nonprofits with or without 501(c)(3) status other than IHEs, private or public institutions of higher education, public/Indian housing authorities, or small businesses).",
+   "category": "organizational",
+   "check_type": "judgment",
+   "source_quote": "City or township governments; County governments; For profit organizations other than small businesses; Independent school districts; Native American tribal governments (Federally recognized); Native American tribal organizations (other than Federally recognized tribal governments); Nonprofits having a 501(c)(3) status with the IRS, other than institutions of higher education; Nonprofits that do not have a 501(c)(3) status with the IRS, other than institutions of higher education",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 80,
+   "criterion_key": "new_investigator",
+   "version": 1,
+   "text": "Project must support a new investigator in the early stages of establishing an independent career in tobacco regulatory research.",
+   "category": "other",
+   "check_type": "judgment",
+   "source_quote": "This Notice of Funding Opportunity (NOFO) aims to support new biomedical, behavioral, and social science investigators who are in the early stages of establishing independent careers in tobacco regulatory research.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 80,
+   "criterion_key": "research_topic_alignment",
+   "version": 1,
+   "text": "Research project must address one or more High-Priority Research Topic(s) related to FDA CTP regulatory authority under the FSPTCA.",
+   "category": "other",
+   "check_type": "judgment",
+   "source_quote": "Research projects must address one or more High-Priority Research Topic(s) related to the regulatory authority of the Food and Drug Administration (FDA) Center for Tobacco Products (CTP) as mandated by the Family Smoking Prevention and Tobacco Control Act (FSPTCA), Public Law 111-31.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 80,
+   "criterion_key": "no_foreign_organizations",
+   "version": 1,
+   "text": "Non-domestic (non-U.S.) entities (foreign organizations) are not eligible to apply.",
+   "category": "geographic",
+   "check_type": "judgment",
+   "source_quote": "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 80,
+   "criterion_key": "no_foreign_components_of_us_orgs",
+   "version": 1,
+   "text": "Non-domestic (non-U.S.) components of U.S. organizations are not eligible to apply.",
+   "category": "geographic",
+   "check_type": "judgment",
+   "source_quote": "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 80,
+   "criterion_key": "no_foreign_components",
+   "version": 1,
+   "text": "Foreign components, as defined in the NIH Grants Policy Statement, are not allowed.",
+   "category": "geographic",
+   "check_type": "judgment",
+   "source_quote": "Foreign components, as defined in the NIH Grants Policy Statement, are not allowed.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 80,
+   "criterion_key": "award_ceiling",
+   "version": 1,
+   "text": "Requested funding must not exceed the award ceiling of $75,000.",
+   "category": "financial",
+   "check_type": "deterministic",
+   "source_quote": "Award ceiling: 75,000",
+   "threshold": {
+    "value": 75000.0,
+    "operator": "lte",
+    "profile_fact": "requested_funding_usd"
+   }
+  },
+  {
+   "opportunity_id": 138,
+   "criterion_key": "companion_ccc_application",
+   "version": 1,
+   "text": "A corresponding CCC application must be submitted simultaneously with the DCC application for consideration by NCCIH.",
+   "category": "documentation",
+   "check_type": "judgment",
+   "source_quote": "Both a DCC application and a corresponding CCC application need to be submitted simultaneously for consideration by NCCIH.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 138,
+   "criterion_key": "research_mission_relevance",
+   "version": 1,
+   "text": "The trial must be relevant to the research mission of the NCCIH and considered a high priority by the Center.",
+   "category": "other",
+   "check_type": "judgment",
+   "source_quote": "Trials for which this NOFO applies must be relevant to the research mission of the NCCIH and considered a high priority by the Center.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 138,
+   "criterion_key": "foreign_organizations_ineligible",
+   "version": 1,
+   "text": "Non-domestic (non-U.S.) entities (foreign organizations) are not eligible to apply.",
+   "category": "geographic",
+   "check_type": "judgment",
+   "source_quote": "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 138,
+   "criterion_key": "foreign_components_of_us_orgs_ineligible",
+   "version": 1,
+   "text": "Non-domestic (non-U.S.) components of U.S. organizations are not eligible to apply.",
+   "category": "geographic",
+   "check_type": "judgment",
+   "source_quote": "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 138,
+   "criterion_key": "applicant_type",
+   "version": 1,
+   "text": "Applicant must be one of the listed eligible applicant types (e.g., government entities, higher education institutions, nonprofits, for-profits, tribal governments/organizations).",
+   "category": "organizational",
+   "check_type": "judgment",
+   "source_quote": "City or township governments; County governments; For profit organizations other than small businesses; Independent school districts; Native American tribal governments (Federally recognized); Native American tribal organizations (other than Federally recognized tribal governments); Nonprofits having a 501(c)(3) status with the IRS, other than institutions of higher education; Nonprofits that do not have a 501(c)(3) status with the IRS, other than institutions of higher education",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 27,
+   "criterion_key": "companion_ccc_application",
+   "version": 1,
+   "text": "A corresponding Clinical Coordinating Center (CCC) application must be submitted simultaneously under companion PAR-21-243, and the DCC application must be specific to that CCC application.",
+   "category": "documentation",
+   "check_type": "judgment",
+   "source_quote": "Both a DCC application and a corresponding CCC application need to be submitted simultaneously for consideration by NCCIH.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 27,
+   "criterion_key": "trial_relevance_nccih",
+   "version": 1,
+   "text": "The trial must be relevant to the research mission of NCCIH and considered a high priority by the Center.",
+   "category": "other",
+   "check_type": "judgment",
+   "source_quote": "Trials for which this NOFO applies must be relevant to the research mission of NCCIH and considered a high priority by the Center.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 27,
+   "criterion_key": "applicant_type",
+   "version": 1,
+   "text": "Applicant must be an eligible entity type, including governments, institutions of higher education, nonprofits, for-profit organizations, small businesses, and tribal governments/organizations.",
+   "category": "organizational",
+   "check_type": "judgment",
+   "source_quote": "City or township governments; County governments; For profit organizations other than small businesses; Independent school districts; Native American tribal governments (Federally recognized); Native American tribal organizations (other than Federally recognized tribal governments); Nonprofits having a 501(c)(3) status with the IRS, other than institutions of higher education; Nonprofits that do not have a 501(c)(3) status with the IRS, other than institutions of higher education; Others (see text field entitled \"Additional Information on Eligibility\" for clarification); Private institutions of higher education; Public and State controlled institutions of higher education; Public housing authorities/Indian housing authorities; Small businesses; Special district governments; State governments",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 27,
+   "criterion_key": "foreign_organizations_ineligible",
+   "version": 1,
+   "text": "Non-domestic (non-U.S.) entities (foreign organizations) are not eligible to apply.",
+   "category": "geographic",
+   "check_type": "judgment",
+   "source_quote": "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 27,
+   "criterion_key": "foreign_components_ineligible",
+   "version": 1,
+   "text": "Non-domestic (non-U.S.) components of U.S. organizations are not eligible to apply.",
+   "category": "geographic",
+   "check_type": "judgment",
+   "source_quote": "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 27,
+   "criterion_key": "cost_sharing",
+   "version": 1,
+   "text": "Cost sharing is not required.",
+   "category": "financial",
+   "check_type": "deterministic",
+   "source_quote": "## COST SHARING REQUIRED\nNo",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 10,
+   "criterion_key": "applicant_type",
+   "version": 1,
+   "text": "Applicant must be an individual.",
+   "category": "organizational",
+   "check_type": "deterministic",
+   "source_quote": "## ELIGIBLE APPLICANT TYPES\nIndividuals",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 10,
+   "criterion_key": "award_ceiling",
+   "version": 1,
+   "text": "Requested funding must not exceed the award ceiling of $24,500.",
+   "category": "financial",
+   "check_type": "deterministic",
+   "source_quote": "Award ceiling: 24,500",
+   "threshold": {
+    "value": 24500.0,
+    "operator": "lte",
+    "profile_fact": "requested_funding_usd"
+   }
+  },
+  {
+   "opportunity_id": 10,
+   "criterion_key": "award_floor",
+   "version": 1,
+   "text": "Requested funding must be at least the award floor of $20,000.",
+   "category": "financial",
+   "check_type": "deterministic",
+   "source_quote": "Award floor: 20,000",
+   "threshold": {
+    "value": 20000.0,
+    "operator": "gte",
+    "profile_fact": "requested_funding_usd"
+   }
+  },
+  {
+   "opportunity_id": 3,
+   "criterion_key": "applicant_type_eligible",
+   "version": 1,
+   "text": "Applicant must be a not-for-profit organization (including think tanks and civil society/NGOs), a public or private educational institution, a public international organization, or a governmental institution.",
+   "category": "organizational",
+   "check_type": "judgment",
+   "source_quote": "The following organizations are eligible to apply: \u25cf Not-for-profit organizations, including think tanks and civil society/non-governmental organizations \u25cf Public and private educational institutions\u25cf Public International Organizations and Governmental institutions",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 3,
+   "criterion_key": "not_for_profit_required",
+   "version": 1,
+   "text": "For-profit entities are not eligible to apply, even if they fall into one of the listed categories.",
+   "category": "organizational",
+   "check_type": "judgment",
+   "source_quote": "For-profit entities, even those that may fall into the categories listed above, are not eligible to apply for this NOFO.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 3,
+   "criterion_key": "award_ceiling",
+   "version": 1,
+   "text": "Requested funding must not exceed the award ceiling of $150,000.",
+   "category": "financial",
+   "check_type": "deterministic",
+   "source_quote": "Award ceiling: 150,000",
+   "threshold": {
+    "value": 150000.0,
+    "operator": "lte",
+    "profile_fact": "requested_funding_usd"
+   }
+  },
+  {
+   "opportunity_id": 3,
+   "criterion_key": "award_floor",
+   "version": 1,
+   "text": "Requested funding must be at least the award floor of $50,000.",
+   "category": "financial",
+   "check_type": "deterministic",
+   "source_quote": "Award floor: 50,000",
+   "threshold": {
+    "value": 50000.0,
+    "operator": "gte",
+    "profile_fact": "requested_funding_usd"
+   }
+  },
+  {
+   "opportunity_id": 12,
+   "criterion_key": "applicant_type",
+   "version": 1,
+   "text": "Applicant must be an eligible entity type: registered not-for-profit organization, educational institution, specialized professional individual, public international organization, governmental institution, social enterprise, museum, press/media, or entity specialized in the project fields.",
+   "category": "organizational",
+   "check_type": "judgment",
+   "source_quote": "Registered not-for-profit organizations, including think tanks and civil society/nongovernmental organizations with programming experience. Public and private educational institutions",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 12,
+   "criterion_key": "not_for_profit_entities_only",
+   "version": 1,
+   "text": "For-profit entities are not eligible to apply, even if they fall into one of the listed eligible categories.",
+   "category": "organizational",
+   "check_type": "deterministic",
+   "source_quote": "For-profit entities, even those that may fall into the categories listed above, are not eligible to apply for this NOFO.",
+   "threshold": {
+    "value": null,
+    "operator": "is_true",
+    "profile_fact": "is_nonprofit"
+   }
+  },
+  {
+   "opportunity_id": 12,
+   "criterion_key": "prime_recipient_nonprofit_nongovernmental",
+   "version": 1,
+   "text": "Only one non-profit, non-governmental entity can be the prime recipient of the award.",
+   "category": "organizational",
+   "check_type": "judgment",
+   "source_quote": "Organizations may sub-contract with other entities, but only one, non-profit, non-governmental entity can be the prime recipient of the award.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 12,
+   "criterion_key": "implemented_in_algeria",
+   "version": 1,
+   "text": "The project must be implemented in Algeria.",
+   "category": "geographic",
+   "check_type": "judgment",
+   "source_quote": "and will be implemented in Algeria",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 12,
+   "criterion_key": "uei_required",
+   "version": 1,
+   "text": "All organizations must have a Unique Entity Identifier (UEI) issued via SAM.gov (individuals exempt).",
+   "category": "documentation",
+   "check_type": "judgment",
+   "source_quote": "All organizations must have a Unique Entity Identifier (UEI) issued via SAM.gov as well as a valid registration in SAM.gov.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 12,
+   "criterion_key": "sam_registration_required",
+   "version": 1,
+   "text": "All organizations must have a valid registration in SAM.gov (individuals exempt).",
+   "category": "documentation",
+   "check_type": "judgment",
+   "source_quote": "as well as a valid registration in SAM.gov. Please see Section E.3 for more information. Individuals are not required to have a UEI or be registered in SAM.gov.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 12,
+   "criterion_key": "one_proposal_per_organization",
+   "version": 1,
+   "text": "Applicants may only submit one proposal per organization; multiple submissions render all proposals from that organization ineligible.",
+   "category": "other",
+   "check_type": "judgment",
+   "source_quote": "Applicants are only allowed to submit one proposal per organization. If more than one proposal is submitted from an organization, all proposals from that institution will be considered ineligible for funding under this funding opportunity.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 12,
+   "criterion_key": "award_ceiling",
+   "version": 1,
+   "text": "Requested funding must not exceed the award ceiling of $100,000.",
+   "category": "financial",
+   "check_type": "deterministic",
+   "source_quote": "Award ceiling: 100,000",
+   "threshold": {
+    "value": 100000.0,
+    "operator": "lte",
+    "profile_fact": "requested_funding_usd"
+   }
+  },
+  {
+   "opportunity_id": 12,
+   "criterion_key": "award_floor",
+   "version": 1,
+   "text": "Requested funding must be at least the award floor of $5,000.",
+   "category": "financial",
+   "check_type": "deterministic",
+   "source_quote": "Award floor: 5,000",
+   "threshold": {
+    "value": 5000.0,
+    "operator": "gte",
+    "profile_fact": "requested_funding_usd"
+   }
+  },
+  {
+   "opportunity_id": 12,
+   "criterion_key": "nonprofit_501c3_status",
+   "version": 1,
+   "text": "Applicant must be a nonprofit having 501(c)(3) status with the IRS, other than institutions of higher education.",
+   "category": "organizational",
+   "check_type": "judgment",
+   "source_quote": "Nonprofits having a 501(c)(3) status with the IRS, other than institutions of higher education",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 151,
+   "criterion_key": "applicant_type",
+   "version": 1,
+   "text": "Applicant must be one of the eligible applicant types, including governments, institutions of higher education, nonprofits, for-profit organizations, small businesses, tribal organizations, or other listed entities.",
+   "category": "organizational",
+   "check_type": "judgment",
+   "source_quote": "City or township governments; County governments; For profit organizations other than small businesses; Independent school districts; Native American tribal governments (Federally recognized); Native American tribal organizations (other than Federally recognized tribal governments); Nonprofits having a 501(c)(3) status with the IRS, other than institutions of higher education; Nonprofits that do not have a 501(c)(3) status with the IRS, other than institutions of higher education",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 151,
+   "criterion_key": "foreign_entities_eligible",
+   "version": 1,
+   "text": "Non-domestic (non-U.S.) entities (foreign organizations) are eligible to apply.",
+   "category": "geographic",
+   "check_type": "judgment",
+   "source_quote": "Non-domestic (non-U.S.) Entities (Foreign Organizations); Regional Organizations; Tribally Controlled Colleges and Universities (TCCUs) ; U.S. Territory or Possession.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 151,
+   "criterion_key": "cost_sharing",
+   "version": 1,
+   "text": "Cost sharing is not required for this opportunity.",
+   "category": "financial",
+   "check_type": "deterministic",
+   "source_quote": "## COST SHARING REQUIRED\nNo",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 151,
+   "criterion_key": "award_ceiling",
+   "version": 1,
+   "text": "Requested funding must not exceed the award ceiling of $499,000.",
+   "category": "financial",
+   "check_type": "deterministic",
+   "source_quote": "Award ceiling: 499,000",
+   "threshold": {
+    "value": 499000.0,
+    "operator": "lte",
+    "profile_fact": "requested_funding_usd"
+   }
+  },
+  {
+   "opportunity_id": 113,
+   "criterion_key": "applicant_type",
+   "version": 1,
+   "text": "Applicant must be an eligible entity type (e.g., institutions of higher education, government entities, nonprofits, for-profit organizations, tribal governments/organizations, school districts, housing authorities, small businesses).",
+   "category": "organizational",
+   "check_type": "judgment",
+   "source_quote": "City or township governments; County governments; For profit organizations other than small businesses; Independent school districts; Native American tribal governments (Federally recognized); Native American tribal organizations (other than Federally recognized tribal governments); Nonprofits having a 501(c)(3) status with the IRS, other than institutions of higher education; Nonprofits that do not have a 501(c)(3) status with the IRS, other than institutions of higher education",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 113,
+   "criterion_key": "foreign_institutions_ineligible",
+   "version": 1,
+   "text": "Non-domestic (non-U.S.) entities (foreign institutions) are not eligible to apply.",
+   "category": "geographic",
+   "check_type": "judgment",
+   "source_quote": "Non-domestic (non-U.S.) Entities (Foreign Institutions) are not eligible to apply.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 113,
+   "criterion_key": "foreign_components_of_us_orgs_ineligible",
+   "version": 1,
+   "text": "Non-domestic (non-U.S.) components of U.S. organizations are not eligible to apply.",
+   "category": "geographic",
+   "check_type": "judgment",
+   "source_quote": "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 113,
+   "criterion_key": "cost_sharing",
+   "version": 1,
+   "text": "No cost sharing is required.",
+   "category": "financial",
+   "check_type": "deterministic",
+   "source_quote": "## COST SHARING REQUIRED\nNo",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 122,
+   "criterion_key": "applicant_type",
+   "version": 1,
+   "text": "Applicant must be an eligible entity type as listed in the NOFO (e.g., institutions of higher education, nonprofits, governments, for-profits, small businesses, tribal organizations, etc.).",
+   "category": "organizational",
+   "check_type": "judgment",
+   "source_quote": "City or township governments; County governments; For profit organizations other than small businesses; Independent school districts; Native American tribal governments (Federally recognized); Native American tribal organizations (other than Federally recognized tribal governments); Nonprofits having a 501(c)(3) status with the IRS, other than institutions of higher education; Nonprofits that do not have a 501(c)(3) status with the IRS, other than institutions of higher education",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 122,
+   "criterion_key": "foreign_entities_eligible",
+   "version": 1,
+   "text": "Non-domestic (non-U.S.) entities and foreign organizations are eligible to apply.",
+   "category": "geographic",
+   "check_type": "judgment",
+   "source_quote": "Non-domestic (non-U.S.) Entities (Foreign Organizations); Regional Organizations; Tribally Controlled Colleges and Universities (TCCUs) ; U.S. Territory or Possession.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 122,
+   "criterion_key": "cost_sharing",
+   "version": 1,
+   "text": "Cost sharing is not required for this opportunity.",
+   "category": "financial",
+   "check_type": "deterministic",
+   "source_quote": "## COST SHARING REQUIRED\nNo",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 122,
+   "criterion_key": "clinical_trial_not_allowed",
+   "version": 1,
+   "text": "The proposed research must not involve a clinical trial (Clinical Trial Not Allowed).",
+   "category": "other",
+   "check_type": "judgment",
+   "source_quote": "Cellular and Molecular Biology of Complex Brain Disorders (R01 Clinical Trial Not Allowed) (PAR-25-038)",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 160,
+   "criterion_key": "applicant_type",
+   "version": 1,
+   "text": "Applicant must be an eligible entity type (e.g., government, higher education institution, nonprofit, for-profit organization, tribal government, foreign organization, etc.)",
+   "category": "organizational",
+   "check_type": "judgment",
+   "source_quote": "City or township governments; County governments; For profit organizations other than small businesses; Independent school districts; Native American tribal governments (Federally recognized); Native American tribal organizations (other than Federally recognized tribal governments); Nonprofits having a 501(c)(3) status with the IRS, other than institutions of higher education; Nonprofits that do not have a 501(c)(3) status with the IRS, other than institutions of higher education",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 160,
+   "criterion_key": "clinical_trial_not_allowed",
+   "version": 1,
+   "text": "The proposed project must not include a clinical trial",
+   "category": "other",
+   "check_type": "judgment",
+   "source_quote": "discovery of chemical probes, drugs or immunomodulators (R01 Clinical Trial Not Allowed)",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 160,
+   "criterion_key": "cost_sharing",
+   "version": 1,
+   "text": "Cost sharing is not required for this opportunity",
+   "category": "financial",
+   "check_type": "deterministic",
+   "source_quote": "## COST SHARING REQUIRED\nNo",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 38,
+   "criterion_key": "eligible_applicant_type",
+   "version": 1,
+   "text": "Applicant organization must be one of the eligible organization types (e.g., institutions of higher education, nonprofits, governments, for-profits, tribal organizations, etc.).",
+   "category": "organizational",
+   "check_type": "judgment",
+   "source_quote": "City or township governments; County governments; For profit organizations other than small businesses; Independent school districts; Native American tribal governments (Federally recognized); Native American tribal organizations (other than Federally recognized tribal governments); Nonprofits having a 501(c)(3) status with the IRS",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 38,
+   "criterion_key": "foreign_organizations_ineligible",
+   "version": 1,
+   "text": "Non-domestic (non-U.S.) entities (foreign organizations) are not eligible to apply.",
+   "category": "geographic",
+   "check_type": "judgment",
+   "source_quote": "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 38,
+   "criterion_key": "foreign_components_of_us_orgs_ineligible",
+   "version": 1,
+   "text": "Non-domestic (non-U.S.) components of U.S. organizations are not eligible to apply.",
+   "category": "geographic",
+   "check_type": "judgment",
+   "source_quote": "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 38,
+   "criterion_key": "cost_sharing_not_required",
+   "version": 1,
+   "text": "Cost sharing is not required for this opportunity.",
+   "category": "financial",
+   "check_type": "deterministic",
+   "source_quote": "## COST SHARING REQUIRED\nNo",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 38,
+   "criterion_key": "doctoral_candidate",
+   "version": 1,
+   "text": "The award supports doctoral candidates completing their dissertation research project.",
+   "category": "other",
+   "check_type": "judgment",
+   "source_quote": "The goal of this NOFO is to support doctoral candidates from a variety of academic disciplines for up to two years for the completion of the doctoral dissertation research project.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 124,
+   "criterion_key": "applicant_type",
+   "version": 1,
+   "text": "Applicant must be one of the eligible organization types (e.g., institutions of higher education, nonprofits, government entities, for-profits, small businesses, tribal governments/organizations, faith/community-based organizations, foreign entities, etc.).",
+   "category": "organizational",
+   "check_type": "judgment",
+   "source_quote": "City or township governments; County governments; For profit organizations other than small businesses; Independent school districts; Native American tribal governments (Federally recognized); Native American tribal organizations (other than Federally recognized tribal governments); Nonprofits having a 501(c)(3) status with the IRS, other than institutions of higher education; Nonprofits that do not have a 501(c)(3) status with the IRS, other than institutions of higher education; Others (see text field entitled \"Additional Information on Eligibility\" for clarification); Private institutions of higher education; Public and State controlled institutions of higher education; Public housing authorities/Indian housing authorities; Small businesses; Special district governments; State governments",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 124,
+   "criterion_key": "cost_sharing",
+   "version": 1,
+   "text": "No cost sharing is required for this opportunity.",
+   "category": "financial",
+   "check_type": "deterministic",
+   "source_quote": "## COST SHARING REQUIRED\nNo",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 108,
+   "criterion_key": "applicant_type",
+   "version": 1,
+   "text": "Applicant must be an eligible entity type (e.g., institution of higher education, nonprofit, government, tribal organization, for-profit, etc.).",
+   "category": "organizational",
+   "check_type": "judgment",
+   "source_quote": "City or township governments; County governments; For profit organizations other than small businesses; Independent school districts; Native American tribal governments (Federally recognized); Native American tribal organizations (other than Federally recognized tribal governments); Nonprofits having a 501(c)(3) status with the IRS, other than institutions of higher education; Nonprofits that do not have a 501(c)(3) status with the IRS, other than institutions of higher education; Others (see text field entitled \"Additional Information on Eligibility\" for clarification); Private institutions of higher education; Public and State controlled institutions of higher education; Public housing authorities/Indian housing authorities; Small businesses; Special district governments; State governments",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 108,
+   "criterion_key": "foreign_institutions_ineligible",
+   "version": 1,
+   "text": "Non-domestic (non-U.S.) entities (foreign institutions) are not eligible to apply.",
+   "category": "geographic",
+   "check_type": "judgment",
+   "source_quote": "Non-domestic (non-U.S.) Entities (Foreign Institutions) are not eligible to apply.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 108,
+   "criterion_key": "foreign_components_of_us_orgs_ineligible",
+   "version": 1,
+   "text": "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply.",
+   "category": "geographic",
+   "check_type": "judgment",
+   "source_quote": "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 108,
+   "criterion_key": "cost_sharing",
+   "version": 1,
+   "text": "No cost sharing is required for this opportunity.",
+   "category": "financial",
+   "check_type": "deterministic",
+   "source_quote": "## COST SHARING REQUIRED\nNo",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 39,
+   "criterion_key": "applicant_type",
+   "version": 1,
+   "text": "Applicant must be one of the eligible organization types (e.g., higher education institutions, governments, nonprofits, for-profit organizations, tribal organizations, etc.).",
+   "category": "organizational",
+   "check_type": "judgment",
+   "source_quote": "City or township governments; County governments; For profit organizations other than small businesses; Independent school districts; Native American tribal governments (Federally recognized); Native American tribal organizations (other than Federally recognized tribal governments); Nonprofits having a 501(c)(3) status with the IRS, other than institutions of higher education; Nonprofits that do not have a 501(c)(3) status with the IRS, other than institutions of higher education",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 39,
+   "criterion_key": "foreign_institutions_ineligible",
+   "version": 1,
+   "text": "Non-domestic (non-U.S.) foreign institutions are not eligible to apply.",
+   "category": "geographic",
+   "check_type": "judgment",
+   "source_quote": "Non-domestic (non-U.S.) Entities (Foreign Institutions) are not eligible to apply.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 39,
+   "criterion_key": "foreign_components_ineligible",
+   "version": 1,
+   "text": "Non-domestic (non-U.S.) components of U.S. organizations are not eligible to apply.",
+   "category": "geographic",
+   "check_type": "judgment",
+   "source_quote": "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 39,
+   "criterion_key": "cost_sharing",
+   "version": 1,
+   "text": "Cost sharing is not required for this opportunity.",
+   "category": "financial",
+   "check_type": "deterministic",
+   "source_quote": "## COST SHARING REQUIRED\nNo",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 112,
+   "criterion_key": "minimum_three_research_projects",
+   "version": 1,
+   "text": "The application must include a minimum of three interrelated research projects investigating a complex biomedical theme or research question.",
+   "category": "other",
+   "check_type": "judgment",
+   "source_quote": "This FOA requires a minimum of three interrelated research projects that investigate a complex biomedical theme or research question.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 112,
+   "criterion_key": "projects_interrelated_theme",
+   "version": 1,
+   "text": "All projects in the Program must be interrelated and have objectives that address a central theme within the scientific mandate of the NHLBI.",
+   "category": "other",
+   "check_type": "judgment",
+   "source_quote": "All projects in the Program must be interrelated and have objectives that address a central theme within the scientific mandate of the NHLBI.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 112,
+   "criterion_key": "applicant_type",
+   "version": 1,
+   "text": "Applicant must be an eligible organization type such as a government, institution of higher education, nonprofit, for-profit organization, small business, tribal government/organization, school district, or housing authority.",
+   "category": "organizational",
+   "check_type": "deterministic",
+   "source_quote": "City or township governments; County governments; For profit organizations other than small businesses; Independent school districts; Native American tribal governments (Federally recognized); Native American tribal organizations (other than Federally recognized tribal governments); Nonprofits having a 501(c)(3) status with the IRS, other than institutions of higher education; Nonprofits that do not have a 501(c)(3) status with the IRS, other than institutions of higher education; Others (see text field entitled \"Additional Information on Eligibility\" for clarification); Private institutions of higher education; Public and State controlled institutions of higher education; Public housing authorities/Indian housing authorities; Small businesses; Special district governments; State governments",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 112,
+   "criterion_key": "foreign_organizations_ineligible",
+   "version": 1,
+   "text": "Non-domestic (non-U.S.) entities (foreign organizations) are not eligible to apply.",
+   "category": "geographic",
+   "check_type": "deterministic",
+   "source_quote": "Non-domestic (non-U.S.) Entities (Foreign Organization) are not eligible to apply.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 112,
+   "criterion_key": "foreign_components_allowed",
+   "version": 1,
+   "text": "Non-domestic (non-U.S.) components of U.S. organizations are eligible to apply, and foreign components as defined in the NIH Grants Policy Statement are allowed.",
+   "category": "geographic",
+   "check_type": "judgment",
+   "source_quote": "Non-domestic (non-U.S.) components of U.S. Organizations are eligible to apply.\n\nForeign components, as defined in the NIH Grants Policy Statement, are allowed.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 112,
+   "criterion_key": "cost_sharing",
+   "version": 1,
+   "text": "Cost sharing is not required for this opportunity.",
+   "category": "financial",
+   "check_type": "deterministic",
+   "source_quote": "## COST SHARING REQUIRED\nNo",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 35,
+   "criterion_key": "domestic_institution",
+   "version": 1,
+   "text": "Applicant must be a domestic (U.S.) institution; non-domestic (foreign) institutions and non-domestic components of U.S. organizations are not eligible.",
+   "category": "geographic",
+   "check_type": "judgment",
+   "source_quote": "Non-domestic (non-U.S.) Entities (Foreign Institutions) are not eligible to apply.Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 35,
+   "criterion_key": "applicant_type",
+   "version": 1,
+   "text": "Applicant must be one of the eligible applicant types (e.g., institutions of higher education, government entities, nonprofits, tribal governments/organizations, for-profit organizations, etc.).",
+   "category": "organizational",
+   "check_type": "judgment",
+   "source_quote": "City or township governments; County governments; For profit organizations other than small businesses; Independent school districts; Native American tribal governments (Federally recognized); Native American tribal organizations (other than Federally recognized tribal governments); Nonprofits having a 501(c)(3) status with the IRS, other than institutions of higher education; Nonprofits that do not have a 501(c)(3) status with the IRS, other than institutions of higher education; Others (see text field entitled \"Additional Information on Eligibility\" for clarification); Private institutions of higher education; Public and State controlled institutions of higher education; Public housing authorities/Indian housing authorities; Small businesses; Special district governments; State governments",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 35,
+   "criterion_key": "cost_sharing",
+   "version": 1,
+   "text": "Cost sharing is not required for this opportunity.",
+   "category": "financial",
+   "check_type": "deterministic",
+   "source_quote": "## COST SHARING REQUIRED\nNo",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 116,
+   "criterion_key": "clinical_trial_not_allowed",
+   "version": 1,
+   "text": "The project must not involve a clinical trial",
+   "category": "other",
+   "check_type": "judgment",
+   "source_quote": "Alcohol Research-Related Resource Award (R24 Clinical Trial Not Allowed)",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 116,
+   "criterion_key": "non_hypothesis_driven",
+   "version": 1,
+   "text": "The activity must be non-hypothesis-driven (hypothesis-driven research applications should not be submitted)",
+   "category": "other",
+   "check_type": "judgment",
+   "source_quote": "Hypothesis-driven research applications should not be submitted in response to this program announcement but to another mechanism that encourages this type of research.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 116,
+   "criterion_key": "resource_national_availability",
+   "version": 1,
+   "text": "The resource must be available to any qualified investigator on a national basis and not duplicate resources available commercially or through other sources",
+   "category": "other",
+   "check_type": "judgment",
+   "source_quote": "The resource should be available to any qualified investigator, and should be highly quality controlled, and not duplicate resources available commercially or through other sources.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 116,
+   "criterion_key": "no_regional_focus",
+   "version": 1,
+   "text": "The resource must serve the broad alcohol research community and not be limited by any specific regional focus",
+   "category": "geographic",
+   "check_type": "judgment",
+   "source_quote": "Resources should be designed to provide services to the broad alcohol research community and should not be limited by any specific regional focus.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 116,
+   "criterion_key": "foreign_organizations_ineligible",
+   "version": 1,
+   "text": "Non-domestic (non-U.S.) entities (foreign organizations) are not eligible to apply",
+   "category": "geographic",
+   "check_type": "judgment",
+   "source_quote": "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 116,
+   "criterion_key": "foreign_components_ineligible",
+   "version": 1,
+   "text": "Non-domestic (non-U.S.) components of U.S. organizations are not eligible to apply",
+   "category": "geographic",
+   "check_type": "judgment",
+   "source_quote": "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 116,
+   "criterion_key": "no_foreign_components",
+   "version": 1,
+   "text": "Foreign components, as defined in the NIH Grants Policy Statement, are not allowed",
+   "category": "geographic",
+   "check_type": "judgment",
+   "source_quote": "Foreign components, as defined in the NIH Grants Policy Statement, are not allowed.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 116,
+   "criterion_key": "eligible_applicant_type",
+   "version": 1,
+   "text": "Applicant must be one of the listed eligible entity types (e.g., governments, institutions of higher education, nonprofits, for-profits, tribal governments/organizations, etc.)",
+   "category": "organizational",
+   "check_type": "judgment",
+   "source_quote": "City or township governments; County governments; For profit organizations other than small businesses; Independent school districts; Native American tribal governments (Federally recognized); Native American tribal organizations (other than Federally recognized tribal governments); Nonprofits having a 501(c)(3) status with the IRS, other than institutions of higher education; Nonprofits that do not have a 501(c)(3) status with the IRS, other than institutions of higher education",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 116,
+   "criterion_key": "cost_sharing_not_required",
+   "version": 1,
+   "text": "Cost sharing is not required for this opportunity",
+   "category": "financial",
+   "check_type": "deterministic",
+   "source_quote": "## COST SHARING REQUIRED\nNo",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 143,
+   "criterion_key": "applicant_type",
+   "version": 1,
+   "text": "Applicant must be an eligible organization type, including governments, higher education institutions, nonprofits, for-profit organizations, small businesses, tribal governments/organizations, or other listed entity types.",
+   "category": "organizational",
+   "check_type": "judgment",
+   "source_quote": "City or township governments; County governments; For profit organizations other than small businesses; Independent school districts; Native American tribal governments (Federally recognized); Native American tribal organizations (other than Federally recognized tribal governments); Nonprofits having a 501(c)(3) status with the IRS, other than institutions of higher education; Nonprofits that do not have a 501(c)(3) status with the IRS, other than institutions of higher education",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 143,
+   "criterion_key": "foreign_organizations_ineligible",
+   "version": 1,
+   "text": "Non-domestic (non-U.S.) entities (foreign organizations) are not eligible to apply.",
+   "category": "geographic",
+   "check_type": "judgment",
+   "source_quote": "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 143,
+   "criterion_key": "foreign_components_of_us_orgs_ineligible",
+   "version": 1,
+   "text": "Non-domestic (non-U.S.) components of U.S. organizations are not eligible to apply.",
+   "category": "geographic",
+   "check_type": "judgment",
+   "source_quote": "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 143,
+   "criterion_key": "no_cost_sharing",
+   "version": 1,
+   "text": "Cost sharing is not required for this opportunity.",
+   "category": "financial",
+   "check_type": "deterministic",
+   "source_quote": "## COST SHARING REQUIRED\nNo",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 42,
+   "criterion_key": "active_ctsa_hub",
+   "version": 1,
+   "text": "Applicant must be an awarded UM1 Clinical and Translational Science Awards (CTSA) Program Hub",
+   "category": "organizational",
+   "check_type": "judgment",
+   "source_quote": "resources to address in a timely manner critical gap areas and/or roadblocks in clinical and translational science at awarded UM1 Clinical and Translational Science Awards (CTSA) Program Hubs (PAR-24-272)",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 42,
+   "criterion_key": "applicant_type",
+   "version": 1,
+   "text": "Applicant must be a public or state controlled institution of higher education",
+   "category": "organizational",
+   "check_type": "judgment",
+   "source_quote": "Public and State controlled institutions of higher education",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 42,
+   "criterion_key": "no_foreign_organizations",
+   "version": 1,
+   "text": "Non-domestic (non-U.S.) entities (foreign organizations) are not eligible to apply",
+   "category": "geographic",
+   "check_type": "judgment",
+   "source_quote": "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 42,
+   "criterion_key": "no_foreign_components_of_us_orgs",
+   "version": 1,
+   "text": "Non-domestic (non-U.S.) components of U.S. organizations are not eligible to apply",
+   "category": "geographic",
+   "check_type": "judgment",
+   "source_quote": "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 42,
+   "criterion_key": "cost_sharing",
+   "version": 1,
+   "text": "Cost sharing is not required",
+   "category": "financial",
+   "check_type": "deterministic",
+   "source_quote": "## COST SHARING REQUIRED\nNo",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 5,
+   "criterion_key": "applicant_type",
+   "version": 1,
+   "text": "Applicant must be an eligible entity type (e.g., government entities, institutions of higher education, nonprofits, for-profit organizations, tribal governments/organizations, school districts, housing authorities, small businesses).",
+   "category": "organizational",
+   "check_type": "judgment",
+   "source_quote": "City or township governments; County governments; For profit organizations other than small businesses; Independent school districts; Native American tribal governments (Federally recognized); Native American tribal organizations (other than Federally recognized tribal governments); Nonprofits having a 501(c)(3) status with the IRS, other than institutions of higher education; Nonprofits that do not have a 501(c)(3) status with the IRS, other than institutions of higher education",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 5,
+   "criterion_key": "no_foreign_organizations",
+   "version": 1,
+   "text": "Non-domestic (non-U.S.) entities (foreign organizations) are not eligible to apply.",
+   "category": "geographic",
+   "check_type": "judgment",
+   "source_quote": "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 5,
+   "criterion_key": "no_foreign_components_of_us_orgs",
+   "version": 1,
+   "text": "Non-domestic (non-U.S.) components of U.S. organizations are not eligible to apply.",
+   "category": "geographic",
+   "check_type": "judgment",
+   "source_quote": "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 5,
+   "criterion_key": "no_foreign_components",
+   "version": 1,
+   "text": "Foreign components, as defined in the NIH Grants Policy Statement, are not allowed.",
+   "category": "geographic",
+   "check_type": "judgment",
+   "source_quote": "Foreign components, as defined in the NIH Grants Policy Statement, are not allowed.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 5,
+   "criterion_key": "award_ceiling",
+   "version": 1,
+   "text": "Requested funding must not exceed the award ceiling of $400,000.",
+   "category": "financial",
+   "check_type": "deterministic",
+   "source_quote": "Award ceiling: 400,000",
+   "threshold": {
+    "value": 400000.0,
+    "operator": "lte",
+    "profile_fact": "requested_funding_usd"
+   }
   }
  ]
 }
