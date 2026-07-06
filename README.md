@@ -6,6 +6,10 @@ individuals — then reasons through eligibility **clause-by-clause with
 citations to the actual rules**, asks for exactly the facts it's missing, and
 generates a requirement-by-requirement action plan.
 
+**🎬 [Watch the 3-minute demo](docs/demo.mp4)** — describe yourself in plain
+English, watch every applicable program get screened in parallel, answer the
+open questions once, get an action plan.
+
 One engine, two proven verticals, **35 compiled rulebooks**: 30 live
 **Grants.gov** opportunities and 5 federal benefit programs (**SNAP, WIC,
 EITC, LIHEAP, Lifeline**) run through the *same* compiler and the *same*
