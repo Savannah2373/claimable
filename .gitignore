@@ -3,5 +3,6 @@ __pycache__/
 *.pyc
 .env
 data/
+reports/
 .DS_Store
 .pytest_cache/

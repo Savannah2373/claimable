@@ -22,10 +22,11 @@ import json
 import os
 from typing import Any, Literal, TypedDict
 
-import anthropic
 from dotenv import load_dotenv
 from langgraph.graph import END, START, StateGraph
 from pydantic import BaseModel, Field
+
+from claimable.llm import traced_parse
 
 load_dotenv()
 
@@ -95,16 +96,6 @@ class EngineState(TypedDict):
     det_verdicts: list[CriterionVerdict]  # computed in code, not by the LLM
     verdicts: list[CriterionVerdict]  # final merged output
     checks: dict[str, VerificationCheck]  # keyed by criterion_key
-
-
-_client: anthropic.Anthropic | None = None
-
-
-def _get_client() -> anthropic.Anthropic:
-    global _client
-    if _client is None:
-        _client = anthropic.Anthropic()
-    return _client
 
 
 _OPS = {
@@ -178,7 +169,8 @@ def _payload(state: EngineState) -> str:
 def analyst_node(state: EngineState) -> dict[str, Any]:
     if not state["llm_criteria"]:
         return {"verdicts": []}
-    response = _get_client().messages.parse(
+    response = traced_parse(
+        "analyst",
         model=ENGINE_MODEL,
         max_tokens=16000,
         system=ANALYST_SYSTEM,
@@ -212,7 +204,8 @@ def verifier_node(state: EngineState) -> dict[str, Any]:
             },
             indent=2,
         )
-        response = _get_client().messages.parse(
+        response = traced_parse(
+            "verifier",
             model=ENGINE_MODEL,
             max_tokens=16000,
             system=VERIFIER_SYSTEM,

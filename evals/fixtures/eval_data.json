@@ -1,0 +1,464 @@
+{
+ "opportunities": [
+  {
+   "id": 1,
+   "source": "grants.gov",
+   "source_id": "362290",
+   "number": "HRSA-26-050",
+   "title": "Rapid Response Rural Data Analysis and Issue Specific Rural Research Studies"
+  },
+  {
+   "id": 2,
+   "source": "grants.gov",
+   "source_id": "361094",
+   "number": "HRSA-26-065",
+   "title": "State Offices of Rural Health Program"
+  },
+  {
+   "id": 4,
+   "source": "grants.gov",
+   "source_id": "362787",
+   "number": "L26AS00064",
+   "title": "FY26 Bureau of Land Management Youth Conservation Corps - Bureau wide&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+  },
+  {
+   "id": 175,
+   "source": "policy",
+   "source_id": "https://www.fns.usda.gov/snap/recipient/eligibility",
+   "number": "SNAP-FEDERAL",
+   "title": "Supplemental Nutrition Assistance Program (SNAP) \u2014 Federal Eligibility"
+  },
+  {
+   "id": 8,
+   "source": "grants.gov",
+   "source_id": "361586",
+   "number": "TI-26-017",
+   "title": "Preventing Youth Overdose: Treatment, Recovery, Education, Awareness and Training"
+  },
+  {
+   "id": 7,
+   "source": "grants.gov",
+   "source_id": "361169",
+   "number": "USDA-NIFA-AFRI-011596",
+   "title": "Agriculture and Food Research Initiative Competitive Grants Program Education and Workforce Development"
+  }
+ ],
+ "criteria": [
+  {
+   "opportunity_id": 2,
+   "criterion_key": "operates_state_office_of_rural_health",
+   "version": 2,
+   "text": "The applicant state must operate a State Office of Rural Health",
+   "category": "organizational",
+   "check_type": "deterministic",
+   "source_quote": "States with State Offices of Rural Health are eligible to apply.",
+   "threshold": {
+    "value": null,
+    "operator": "is_true",
+    "profile_fact": "operates_state_office_of_rural_health"
+   }
+  },
+  {
+   "opportunity_id": 2,
+   "criterion_key": "one_applicant_per_state",
+   "version": 2,
+   "text": "Only one applicant from each state is eligible",
+   "category": "organizational",
+   "check_type": "judgment",
+   "source_quote": "Only one applicant from each state is eligible, based on the designation of the governor.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 2,
+   "criterion_key": "governor_designation",
+   "version": 2,
+   "text": "The applicant must be designated by the governor of the state",
+   "category": "organizational",
+   "check_type": "deterministic",
+   "source_quote": "Only one applicant from each state is eligible, based on the designation of the governor.",
+   "threshold": {
+    "value": null,
+    "operator": "is_true",
+    "profile_fact": "designated_by_governor"
+   }
+  },
+  {
+   "opportunity_id": 2,
+   "criterion_key": "applicant_type_state_government",
+   "version": 2,
+   "text": "The applicant must be a state government (or other eligible entity per additional eligibility information)",
+   "category": "organizational",
+   "check_type": "judgment",
+   "source_quote": "State governments; Others (see text field entitled \"Additional Information on Eligibility\" for clarification)",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 2,
+   "criterion_key": "cost_sharing",
+   "version": 2,
+   "text": "The applicant must provide cost sharing",
+   "category": "financial",
+   "check_type": "deterministic",
+   "source_quote": "COST SHARING REQUIRED\nYes",
+   "threshold": {
+    "value": null,
+    "operator": "is_true",
+    "profile_fact": "can_provide_cost_sharing"
+   }
+  },
+  {
+   "opportunity_id": 2,
+   "criterion_key": "award_ceiling",
+   "version": 2,
+   "text": "Requested funding must not exceed the award ceiling of $223,410",
+   "category": "financial",
+   "check_type": "deterministic",
+   "source_quote": "Award ceiling: 223,410",
+   "threshold": {
+    "value": 223410.0,
+    "operator": "lte",
+    "profile_fact": "requested_funding_usd"
+   }
+  },
+  {
+   "opportunity_id": 1,
+   "criterion_key": "domestic_organization",
+   "version": 2,
+   "text": "Applicant must be a domestic organization (located in the 50 states, DC, Puerto Rico, Northern Mariana Islands, American Samoa, Guam, U.S. Virgin Islands, Federated States of Micronesia, Marshall Islands, or Palau).",
+   "category": "geographic",
+   "check_type": "judgment",
+   "source_quote": "Only domestic organizations are eligible. \"Domestic\" means the 50 states, the District of Columbia, the Commonwealth of Puerto Rico, the Northern Mariana Islands, American Samoa, Guam, the U.S. Virgin Islands, the Federated States of Micronesia, the Republic of the Marshall Islands, and the Republic of Palau.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 1,
+   "criterion_key": "applicant_type",
+   "version": 2,
+   "text": "Applicant must be one of the listed eligible entity types (e.g., governments, school districts, businesses, institutions of higher education, nonprofits, tribal organizations).",
+   "category": "organizational",
+   "check_type": "judgment",
+   "source_quote": "City or township governments; Independent school districts; County governments; Small businesses; State governments; Private institutions of higher education; For profit organizations other than small businesses; Native American tribal organizations (other than Federally recognized tribal governments); Public and State controlled institutions of higher education; Nonprofits having a 501(c)(3) status with the IRS, other than institutions of higher education; Special district governments; Native American tribal governments (Federally recognized); Nonprofits that do not have a 501(c)(3) status with the IRS, other than institutions of higher education",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 1,
+   "criterion_key": "award_ceiling",
+   "version": 2,
+   "text": "Requested funding must not exceed the award ceiling of $600,000.",
+   "category": "financial",
+   "check_type": "deterministic",
+   "source_quote": "Award ceiling: 600,000",
+   "threshold": {
+    "value": 600000.0,
+    "operator": "lte",
+    "profile_fact": "requested_funding_usd"
+   }
+  },
+  {
+   "opportunity_id": 8,
+   "criterion_key": "statutorily_limited_applicant",
+   "version": 1,
+   "text": "Applicant must be an eligible entity as statutorily defined under 42 U.S.C. 290bb-7a.",
+   "category": "organizational",
+   "check_type": "judgment",
+   "source_quote": "Eligible applicants are statutorily limited (per 42 U.S.C. 290bb-7a).",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 8,
+   "criterion_key": "award_ceiling",
+   "version": 1,
+   "text": "Requested funding must not exceed the award ceiling of $450,000.",
+   "category": "financial",
+   "check_type": "deterministic",
+   "source_quote": "Award ceiling: 450,000",
+   "threshold": {
+    "value": 450000.0,
+    "operator": "lte",
+    "profile_fact": "requested_funding_usd"
+   }
+  },
+  {
+   "opportunity_id": 4,
+   "criterion_key": "individuals_ineligible",
+   "version": 1,
+   "text": "Individuals are not eligible to apply.",
+   "category": "organizational",
+   "check_type": "deterministic",
+   "source_quote": "Individuals and for-profit organizations are ineligible to apply for awards under this NOFO.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 4,
+   "criterion_key": "for_profit_ineligible",
+   "version": 1,
+   "text": "For-profit organizations are not eligible to apply.",
+   "category": "organizational",
+   "check_type": "deterministic",
+   "source_quote": "Individuals and for-profit organizations are ineligible to apply for awards under this NOFO.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 4,
+   "criterion_key": "qualified_youth_corps",
+   "version": 1,
+   "text": "Applicant must be a Qualified Youth Corps eligible to apply for projects developed under the Public Lands Corps Act.",
+   "category": "organizational",
+   "check_type": "judgment",
+   "source_quote": "Therefore, eligible Youth Conservation Corps may only apply for projects developed under NOFO 15.243 \u2013 BLM Youth Conservation Opportunities on Public Lands.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 4,
+   "criterion_key": "applicant_type",
+   "version": 1,
+   "text": "Applicant must be one of the eligible entity types: state governments, nonprofits (with or without 501(c)(3) status), institutions of higher education, tribal governments/organizations, city/township/county/special district governments.",
+   "category": "organizational",
+   "check_type": "deterministic",
+   "source_quote": "State governments; Nonprofits that do not have a 501(c)(3) status with the IRS, other than institutions of higher education; Private institutions of higher education; Native American tribal governments (Federally recognized); City or township governments; Native American tribal organizations (other than Federally recognized tribal governments); County governments; Nonprofits having a 501(c)(3) status with the IRS, other than institutions of higher education; Special district governments; Public and State controlled institutions of higher education",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 4,
+   "criterion_key": "cost_sharing",
+   "version": 1,
+   "text": "Applicant must be able to provide cost sharing.",
+   "category": "financial",
+   "check_type": "deterministic",
+   "source_quote": "COST SHARING REQUIRED\n\nYes",
+   "threshold": {
+    "value": null,
+    "operator": "is_true",
+    "profile_fact": "can_provide_cost_sharing"
+   }
+  },
+  {
+   "opportunity_id": 4,
+   "criterion_key": "award_ceiling",
+   "version": 1,
+   "text": "Requested funding must not exceed the award ceiling of $220,000.",
+   "category": "financial",
+   "check_type": "deterministic",
+   "source_quote": "Award ceiling: 220,000",
+   "threshold": {
+    "value": 220000.0,
+    "operator": "lte",
+    "profile_fact": "requested_funding_usd"
+   }
+  },
+  {
+   "opportunity_id": 4,
+   "criterion_key": "award_floor",
+   "version": 1,
+   "text": "Requested funding must be at least the award floor of $30,000.",
+   "category": "financial",
+   "check_type": "deterministic",
+   "source_quote": "Award floor: 30,000",
+   "threshold": {
+    "value": 30000.0,
+    "operator": "gte",
+    "profile_fact": "requested_funding_usd"
+   }
+  },
+  {
+   "opportunity_id": 7,
+   "criterion_key": "applicant_type_research_ed_extension",
+   "version": 1,
+   "text": "For single-function Research, Education, or Extension Projects, the applicant must be one of the eligible entity types: State Agricultural Experiment Station; college or university (including junior colleges offering associate degrees or higher); university research foundation; other research institution or organization; Federal agency; national laboratory; private organization or corporation; U.S. citizen, national, or permanent resident individual; or a group of two or more such entities.",
+   "category": "organizational",
+   "check_type": "judgment",
+   "source_quote": "Eligible applicants for single-function Research, Education or Extension Projects include:a) State Agricultural Experiment Station;b) colleges and universities (including junior colleges offering associate degrees or higher);c) university research foundations;d) other research institutions and organizations;e) Federal agencies;f) national laboratories;g) private organizations or corporations;h) individuals who are U.S. citizens, nationals, or permanent residents; andi) any group consisting of two or more entities identified in a) through h).",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 7,
+   "criterion_key": "no_foreign_organizations",
+   "version": 1,
+   "text": "The applicant institution must not be a foreign or international organization.",
+   "category": "organizational",
+   "check_type": "judgment",
+   "source_quote": "Eligible institutions do not include foreign and international organizations.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 7,
+   "criterion_key": "applicant_type_integrated",
+   "version": 1,
+   "text": "For Integrated Projects, the applicant must be a college or university, a 1994 Land-Grant Institution, or a Hispanic-serving agricultural college or university.",
+   "category": "organizational",
+   "check_type": "judgment",
+   "source_quote": "Eligible applicants for Integrated Projects include: a) colleges and universities;b) 1994 Land-Grant Institutions; andc) Hispanic-serving agricultural colleges and universities",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 7,
+   "criterion_key": "integrated_college_definition",
+   "version": 1,
+   "text": "For Integrated Projects under item a), a 'college' or 'university' must be an educational institution in a state that admits only secondary-education graduates, is legally authorized to provide postsecondary education, provides a program awarding a bachelor's or higher degree, is a public or other nonprofit institution, and is accredited by a nationally recognized accrediting agency.",
+   "category": "organizational",
+   "check_type": "judgment",
+   "source_quote": "the terms \u201ccollege\u201d and \u201cuniversity\u201d mean an educational institution in any state which: a) admits as regular students only persons having a certificate of graduation from a school providing secondary education, or the recognized equivalent of such a certificate; b) is legally authorized within such state to provide a program of education beyond secondary education; c) provides an educational program for which a bachelor\u2019s degree or any other higher degree is awarded; d) is a public or other nonprofit institution; and e) is accredited by a nationally recognized accrediting agency or association.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 7,
+   "criterion_key": "cost_sharing_required",
+   "version": 1,
+   "text": "The applicant must be able to provide cost sharing.",
+   "category": "financial",
+   "check_type": "deterministic",
+   "source_quote": "## COST SHARING REQUIRED\nYes",
+   "threshold": {
+    "value": null,
+    "operator": "is_true",
+    "profile_fact": "can_provide_cost_sharing"
+   }
+  },
+  {
+   "opportunity_id": 7,
+   "criterion_key": "award_ceiling",
+   "version": 1,
+   "text": "The requested funding must not exceed the award ceiling of $650,000.",
+   "category": "financial",
+   "check_type": "deterministic",
+   "source_quote": "Award ceiling: 650,000",
+   "threshold": {
+    "value": 650000.0,
+    "operator": "lte",
+    "profile_fact": "requested_funding_usd"
+   }
+  },
+  {
+   "opportunity_id": 7,
+   "criterion_key": "award_floor",
+   "version": 1,
+   "text": "The requested funding must be at least the award floor of $10,000.",
+   "category": "financial",
+   "check_type": "deterministic",
+   "source_quote": "Award floor: 10,000",
+   "threshold": {
+    "value": 10000.0,
+    "operator": "gte",
+    "profile_fact": "requested_funding_usd"
+   }
+  },
+  {
+   "opportunity_id": 7,
+   "criterion_key": "no_gain_of_function_research",
+   "version": 1,
+   "text": "The application must not be for dangerous gain-of-function research as defined in Section 8 of E.O. 14292.",
+   "category": "other",
+   "check_type": "judgment",
+   "source_quote": "USDA will not accept competitive applications for grants and cooperative agreements submitted for due dates after June 20, 2025, and/or research and development (R&D) contract proposals submitted to solicitations issued after June 20, 2025, for dangerous gain-of-function research, as defined in Section 8 of E.O. 14292.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 175,
+   "criterion_key": "apply_in_state_of_residence",
+   "version": 1,
+   "text": "Applicant must apply for SNAP in the state where they currently live.",
+   "category": "geographic",
+   "check_type": "deterministic",
+   "source_quote": "To get SNAP benefits, you must apply in the state in which you currently live and you must meet certain requirements, including resource and income limits, which are described on this page.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 175,
+   "criterion_key": "countable_resources_limit",
+   "version": 1,
+   "text": "Household must have no more than $3,000 in countable resources ($4,500 if at least one member is age 60 or older, or disabled).",
+   "category": "financial",
+   "check_type": "judgment",
+   "source_quote": "Currently, households may have $3,000 in countable resources (such as cash or money in a bank account) or $4,500 in countable resources if at least one member of the household is age 60 or older, or is disabled.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 175,
+   "criterion_key": "gross_income_limit",
+   "version": 1,
+   "text": "In most cases, household gross monthly income must be at or below the limit for its household size (130 percent of poverty).",
+   "category": "financial",
+   "check_type": "judgment",
+   "source_quote": "Table 1: SNAP Income Eligibility Limits - Oct. 1, 2025, through Sept. 30, 2026 Household Size | Gross monthly income (130 percent of poverty) | Net monthly income (100 percent of poverty) | \n 1 | $1,696 | $1,305 | \n 2 | $2,292 | $1,763 | \n 3 | $2,888 | $2,221 | \n 4 | $3,483 | $2,680 | \n 5 | $4,079 | $3,138 |",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 175,
+   "criterion_key": "net_income_limit",
+   "version": 1,
+   "text": "In most cases, household net monthly income must be at or below the limit for its household size (100 percent of poverty).",
+   "category": "financial",
+   "check_type": "judgment",
+   "source_quote": "In most cases, your household must meet both the gross and net income limits described below or you are not eligible for SNAP and cannot receive benefits.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 175,
+   "criterion_key": "work_requirements",
+   "version": 1,
+   "text": "Applicant must meet SNAP work requirements (registering for work, not voluntarily quitting or reducing hours, taking a job if offered, and participating in employment and training programs if assigned).",
+   "category": "other",
+   "check_type": "deterministic",
+   "source_quote": "In general, people must meet work requirements to be eligible for SNAP.",
+   "threshold": {
+    "value": null,
+    "operator": "is_true",
+    "profile_fact": "meets_work_requirements"
+   }
+  },
+  {
+   "opportunity_id": 175,
+   "criterion_key": "abawd_work_hours",
+   "version": 1,
+   "text": "Able-bodied adults without dependents must work or participate in a work program at least 20 hours per week to receive SNAP for more than 3 months in a 36-month period.",
+   "category": "other",
+   "check_type": "judgment",
+   "source_quote": "able bodied adults without dependents are required to work or participate in a work program for at least 20 hours per week in order to receive SNAP benefits for more than 3 months in a 36-month period.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 175,
+   "criterion_key": "student_eligibility",
+   "version": 1,
+   "text": "Students ages 18 through 49 enrolled in college at least half time are generally not eligible unless they meet specific exemptions.",
+   "category": "other",
+   "check_type": "judgment",
+   "source_quote": "Generally, students ages 18 through 49 who are enrolled in college at least half time are not eligible for SNAP unless they meet certain specific exemptions .",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 175,
+   "criterion_key": "citizenship_status",
+   "version": 1,
+   "text": "Applicant must be a U.S. citizen or a certain lawfully present (eligible) non-citizen; undocumented non-citizens are not eligible.",
+   "category": "other",
+   "check_type": "deterministic",
+   "source_quote": "The Food and Nutrition Act of 2008 limits eligibility for SNAP benefits to U.S. citizens and certain lawfully present non-citizens.",
+   "threshold": {
+    "value": null,
+    "operator": "is_true",
+    "profile_fact": "is_us_citizen_or_eligible_noncitizen"
+   }
+  },
+  {
+   "opportunity_id": 175,
+   "criterion_key": "noncitizen_qualifying_criteria",
+   "version": 1,
+   "text": "Non-citizens must meet one of the qualifying criteria: lived in the U.S. at least 5 years, receiving disability-related assistance, or a child under 18.",
+   "category": "other",
+   "check_type": "judgment",
+   "source_quote": "Generally, to qualify for SNAP, non-citizens must meet one of the following criteria:\n Have lived in the United States for at least 5 years.\n Be receiving disability-related assistance or benefits.\n Be children under 18.",
+   "threshold": null
+  },
+  {
+   "opportunity_id": 175,
+   "criterion_key": "institution_meals",
+   "version": 1,
+   "text": "Applicant is generally not eligible if an institution provides most of their meals (with exceptions for elderly and disabled persons).",
+   "category": "other",
+   "check_type": "judgment",
+   "source_quote": "Normally you are not eligible for SNAP benefits if an institution gives you most of your meals. There are exceptions for elderly persons and disabled persons .",
+   "threshold": null
+  }
+ ]
+}

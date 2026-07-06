@@ -1,0 +1,84 @@
+name: evals
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  criteria-extraction-evals:
+    runs-on: ubuntu-latest
+    services:
+      db:
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_USER: claimable
+          POSTGRES_PASSWORD: claimable
+          POSTGRES_DB: claimable
+        ports:
+          - 5433:5432
+        options: >-
+          --health-cmd "pg_isready -U claimable"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgresql://claimable:claimable@localhost:5433/claimable
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      # The extraction suite needs only DB access — no torch, no API key.
+      - run: pip install "psycopg[binary]" pydantic python-dotenv
+      - name: Load schema
+        run: psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f db/schema.sql
+      - name: Load fixtures
+        run: python scripts/load_fixtures.py
+      - name: Criteria-extraction eval gate
+        run: python scripts/run_evals.py --skip-verdicts
+
+  # The verdict suite calls the live model; runs only when the secret exists
+  # (e.g. on main), so forks and docs-only PRs never need a key.
+  verdict-evals:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    needs: criteria-extraction-evals
+    services:
+      db:
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_USER: claimable
+          POSTGRES_PASSWORD: claimable
+          POSTGRES_DB: claimable
+        ports:
+          - 5433:5432
+        options: >-
+          --health-cmd "pg_isready -U claimable"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgresql://claimable:claimable@localhost:5433/claimable
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - if: env.ANTHROPIC_API_KEY == ''
+        run: echo "No ANTHROPIC_API_KEY secret — skipping verdict evals." && exit 0
+      - uses: actions/setup-python@v5
+        if: env.ANTHROPIC_API_KEY != ''
+        with:
+          python-version: "3.12"
+      - if: env.ANTHROPIC_API_KEY != ''
+        run: pip install "psycopg[binary]" pydantic python-dotenv anthropic langgraph
+      - name: Load schema
+        if: env.ANTHROPIC_API_KEY != ''
+        run: psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f db/schema.sql
+      - name: Load fixtures + profiles
+        if: env.ANTHROPIC_API_KEY != ''
+        run: |
+          python scripts/load_fixtures.py
+          python scripts/seed_profiles.py
+      - name: Full eval gate (extraction + verdicts)
+        if: env.ANTHROPIC_API_KEY != ''
+        run: python scripts/run_evals.py

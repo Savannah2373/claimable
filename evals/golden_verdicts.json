@@ -23,6 +23,22 @@
       }
     },
     {
+      "profile": "Maria R. (synthetic persona)",
+      "number": "SNAP-FEDERAL",
+      "expected": {
+        "apply_in_state_of_residence": "met",
+        "countable_resources_limit": "met",
+        "gross_income_limit": "met",
+        "net_income_limit": "met",
+        "work_requirements": "met",
+        "abawd_work_hours": "met",
+        "student_eligibility": "met",
+        "citizenship_status": "met",
+        "noncitizen_qualifying_criteria": "met",
+        "institution_meals": "met"
+      }
+    },
+    {
       "profile": "Ohio Department of Health — State Office of Rural Health",
       "number": "HRSA-26-065",
       "expected": {

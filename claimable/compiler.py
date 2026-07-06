@@ -18,9 +18,10 @@ import os
 import re
 from typing import Any, Literal
 
-import anthropic
 from dotenv import load_dotenv
 from pydantic import BaseModel, Field
+
+from claimable.llm import traced_parse
 
 load_dotenv()
 
@@ -51,7 +52,13 @@ Rules:
   profile fact from this exact vocabulary against a bound or boolean:
     requested_funding_usd, annual_budget_usd, staff_count,
     is_state_government, is_nonprofit, designated_by_governor,
-    can_provide_cost_sharing, operates_state_office_of_rural_health
+    can_provide_cost_sharing, operates_state_office_of_rural_health,
+    household_size, monthly_gross_income_usd, monthly_net_income_usd,
+    countable_resources_usd, is_us_citizen_or_eligible_noncitizen,
+    meets_work_requirements
+  Do NOT attach a threshold when the bound itself varies with another fact
+  (e.g. an income limit that depends on household size) — that is a judgment
+  criterion; quote the limits table row(s) in source_quote instead.
   Examples: an award ceiling of $600,000 → {profile_fact:
   "requested_funding_usd", operator: "lte", value: 600000}; a cost-sharing
   requirement → {profile_fact: "can_provide_cost_sharing", operator:
@@ -97,8 +104,14 @@ def _strip_html(text: str) -> str:
 
 def build_source_text(opp_row: dict[str, Any]) -> str:
     """Assemble the labeled source document from a stored opportunity's raw
-    payload (shape: {"search_hit": ..., "detail": ...} after --synopsis fetch)."""
-    detail = (opp_row.get("raw") or {}).get("detail", {})
+    payload. Two shapes: a Grants.gov {"search_hit", "detail"} payload, or a
+    benefits-vertical {"policy_text", "url"} payload — same compiler either way."""
+    raw = opp_row.get("raw") or {}
+    if "policy_text" in raw:
+        header = f"PROGRAM: {opp_row.get('title', '')} ({opp_row.get('number', '')})"
+        return f"{header}\n\n## OFFICIAL POLICY TEXT\n{raw['policy_text']}"
+
+    detail = raw.get("detail", {})
     syn = detail.get("synopsis") or {}
 
     sections: list[tuple[str, str]] = []
@@ -108,7 +121,9 @@ def build_source_text(opp_row: dict[str, Any]) -> str:
         sections.append(
             ("ADDITIONAL ELIGIBILITY INFORMATION", _strip_html(syn["applicantEligibilityDesc"]))
         )
-    types = [t.get("description", "") for t in syn.get("applicantTypes", [])]
+    # sorted: Grants.gov returns this list in nondeterministic order between
+    # calls, which would make source hashing (drift detection) flap
+    types = sorted(t.get("description", "") for t in syn.get("applicantTypes", []))
     if types:
         sections.append(("ELIGIBLE APPLICANT TYPES", "; ".join(t for t in types if t)))
     if syn.get("costSharing") is not None:
@@ -133,8 +148,8 @@ def build_source_text(opp_row: dict[str, Any]) -> str:
 
 
 def compile_criteria(source_text: str) -> CompiledCriteria:
-    client = anthropic.Anthropic()
-    response = client.messages.parse(
+    response = traced_parse(
+        "compiler",
         model=COMPILER_MODEL,
         max_tokens=16000,
         system=SYSTEM_PROMPT,
@@ -155,6 +170,18 @@ def verify_quotes(
     in the source text. This is the compile-time citation-integrity gate."""
     haystack = _normalize(source_text)
     return [(c, _normalize(c.source_quote) in haystack) for c in compiled.criteria]
+
+
+def snapshot_source(cur, opportunity_id: int, source_text: str) -> None:
+    """Record the hash of the exact text this compile ran on. The drift
+    monitor (scripts/check_drift.py) compares live sources against it."""
+    import hashlib
+
+    cur.execute(
+        """INSERT INTO documents (opportunity_id, kind, title, content_sha256)
+           VALUES (%s, 'source_snapshot', 'compiled source text', %s)""",
+        (opportunity_id, hashlib.sha256(source_text.encode()).hexdigest()),
+    )
 
 
 def store_criteria(cur, opportunity_id: int, compiled: CompiledCriteria) -> int:

@@ -60,6 +60,28 @@ PROFILES = [
             "has_active_sam_registration": True,
         },
     },
+    {
+        # The benefits-vertical persona (synthetic — no real person). Facts
+        # shaped so income limits require reading the FY2026 table (judgment)
+        # while citizenship/work/resources hit the deterministic path.
+        "kind": "individual",
+        "name": "Maria R. (synthetic persona)",
+        "attrs": {
+            "state": "Ohio",
+            "country": "United States",
+            "household_size": 3,
+            "household_members": "applicant (34), two children (8 and 11)",
+            "monthly_gross_income_usd": 2400,
+            "monthly_net_income_usd": 1850,
+            "countable_resources_usd": 1200,
+            "is_us_citizen_or_eligible_noncitizen": True,
+            "meets_work_requirements": True,
+            "employment": "part-time retail, 28 hours/week",
+            "is_college_student": False,
+            "lives_in_institution": False,
+            "household_has_member_60_or_older_or_disabled": False,
+        },
+    },
 ]
 
 

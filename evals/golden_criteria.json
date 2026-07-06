@@ -27,6 +27,18 @@
     {"name": "award ceiling $220,000", "key_aliases": ["award_ceiling"], "match_text": "220,000"},
     {"name": "award floor $30,000", "key_aliases": ["award_floor"], "match_text": "30,000"}
   ],
+  "SNAP-FEDERAL": [
+    {"name": "apply in state of residence", "key_aliases": ["apply_in_state_of_residence"], "match_text": "state in which"},
+    {"name": "countable resources limit", "key_aliases": ["countable_resources_limit", "resource_limit"], "match_text": "countable resources"},
+    {"name": "gross income limit", "key_aliases": ["gross_income_limit"], "match_text": "gross"},
+    {"name": "net income limit", "key_aliases": ["net_income_limit"], "match_text": "net"},
+    {"name": "work requirements", "key_aliases": ["work_requirements"], "match_text": "work requirements"},
+    {"name": "ABAWD 20 hours", "key_aliases": ["abawd_work_hours", "abawd_requirements"], "match_text": "20 hours"},
+    {"name": "student eligibility", "key_aliases": ["student_eligibility"], "match_text": "student"},
+    {"name": "citizenship / eligible non-citizen", "key_aliases": ["citizenship_status"], "match_text": "citizen"},
+    {"name": "non-citizen qualifying criteria", "key_aliases": ["noncitizen_qualifying_criteria"], "match_text": "non-citizen"},
+    {"name": "institutional meals", "key_aliases": ["institution_meals", "institutional_meals"], "match_text": "institution"}
+  ],
   "USDA-NIFA-AFRI-011596": [
     {"name": "eligible applicants (research/education/extension)", "key_aliases": ["applicant_type_research_ed_extension"], "match_text": "state agricultural experiment"},
     {"name": "no foreign/international organizations", "key_aliases": ["no_foreign_organizations"], "match_text": "foreign"},

@@ -17,7 +17,13 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from claimable.compiler import build_source_text, compile_criteria, store_criteria, verify_quotes
+from claimable.compiler import (
+    build_source_text,
+    compile_criteria,
+    snapshot_source,
+    store_criteria,
+    verify_quotes,
+)
 from claimable.db import connect
 
 
@@ -40,10 +46,10 @@ def main() -> None:
         opp_id, number, title, synopsis, raw = row
         opp = {"number": number, "title": title, "synopsis": synopsis, "raw": raw}
 
-        if "detail" not in (raw or {}):
+        if "detail" not in (raw or {}) and "policy_text" not in (raw or {}):
             sys.exit(
-                f"{number} has no detail payload. Re-fetch with --synopsis:\n"
-                f'  python scripts/fetch_opportunities.py --keyword "..." --synopsis'
+                f"{number} has no detail or policy payload. For grants, re-fetch with"
+                f" --synopsis; for benefits, run the vertical's ingest script."
             )
 
         source_text = build_source_text(opp)
@@ -56,6 +62,7 @@ def main() -> None:
         checked = verify_quotes(compiled, source_text)
 
         version = store_criteria(cur, opp_id, compiled)
+        snapshot_source(cur, opp_id, source_text)
 
     verified = sum(1 for _, ok in checked if ok)
     print(f"Stored {len(compiled.criteria)} criteria (version {version}); "
