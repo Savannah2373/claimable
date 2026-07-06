@@ -1,5 +1,7 @@
 # Claimable
 
+[![evals](https://github.com/Savannah2373/claimable/actions/workflows/ci.yml/badge.svg)](https://github.com/Savannah2373/claimable/actions/workflows/ci.yml)
+
 **The "money you're entitled to" engine.** Claimable matches applicants to
 government money — federal grants for organizations, benefit programs for
 individuals — then reasons through eligibility **clause-by-clause with
