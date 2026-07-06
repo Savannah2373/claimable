@@ -11,11 +11,13 @@ One engine, two proven verticals, **35 compiled rulebooks**: 30 live
 EITC, LIHEAP, Lifeline**) run through the *same* compiler and the *same*
 eligibility engine — 194 criteria, every one citing the official text.
 
-**Discovery mode** screens a profile against everything relevant in one shot:
-it builds a search query from the profile itself, retrieves the best-matching
-compiled rulebooks (benefit programs always included for individuals), runs
-the full engine on each, and ranks the results 🟢 eligible / 🟡 likely /
-🔴 not eligible with the open questions to answer next.
+**The app is one text box.** Describe yourself or your organization in plain
+English; an intake agent builds your structured profile; a free applicability
+filter (from official applicant-type metadata) picks every rulebook your kind
+of applicant could use; the full engine screens all of them in parallel and
+ranks the results 🟢 eligible / 🟡 likely / 🔴 not eligible. Then you answer
+the open questions **once** — the answers apply to every program at the same
+time — and the yellows re-screen.
 
 Full design doc: `../CLAIMABLE_BRIEF.md`.
 

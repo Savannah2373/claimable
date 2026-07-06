@@ -52,6 +52,50 @@ class IntakeOutput(BaseModel):
     facts: list[Fact]
 
 
+PROFILE_SYSTEM = """\
+You convert a person's or organization's free-text self-description into a
+structured applicant profile for eligibility screening.
+
+Rules:
+- kind: "individual" for a person/household, "organization" for any entity
+  (nonprofit, business, government agency, school, tribe).
+- display_name: short neutral label from the description ("Small Ohio food
+  nonprofit", "Household of 3 in Texas"). Never invent a personal name.
+- Extract ONLY stated facts — never infer or fill gaps. Missing facts become
+  follow-up questions later; wrong facts become wrong eligibility answers now.
+- Prefer these canonical keys when the stated fact matches one:
+  entity_type, mission, state, country, is_nonprofit, is_state_government,
+  annual_budget_usd, staff_count, requested_funding_usd,
+  can_provide_cost_sharing, age, household_size, household_members,
+  monthly_gross_income_usd, monthly_net_income_usd, countable_resources_usd,
+  is_us_citizen_or_eligible_noncitizen, meets_work_requirements, employment,
+  is_college_student, lives_in_institution
+- Dollar amounts → number; yes/no → boolean; else text.
+"""
+
+
+class ProfileDraft(BaseModel):
+    kind: Literal["individual", "organization"]
+    display_name: str
+    facts: list[Fact]
+
+
+def profile_from_description(description: str) -> dict[str, Any]:
+    """Free-text self-description → {"kind", "name", "attrs"}."""
+    response = traced_parse(
+        "intake",
+        model=INTAKE_MODEL,
+        max_tokens=4096,
+        system=PROFILE_SYSTEM,
+        messages=[{"role": "user", "content": description.strip()}],
+        output_format=ProfileDraft,
+    )
+    draft = response.parsed_output
+    attrs = {f.key: f.value() for f in draft.facts if f.value() is not None}
+    attrs["self_description"] = description.strip()
+    return {"kind": draft.kind, "name": draft.display_name, "attrs": attrs}
+
+
 def structure_answers(
     qa_pairs: list[dict[str, str]], known_fact_keys: list[str]
 ) -> dict[str, Any]:

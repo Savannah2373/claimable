@@ -1,23 +1,25 @@
-"""Discovery mode — "screen me against everything relevant."
+"""Discovery mode — "screen me against everything applicable."
 
-Builds a search query from the profile itself, retrieves the most relevant
-compiled rulebooks (hybrid + rerank), runs the full eligibility engine on each,
-and returns a ranked summary: eligible → likely (open questions) → not eligible.
-
-For individuals, every compiled benefit program is always included — benefit
-programs are few and high-value, so they don't have to win a search race.
+Applicability is decided for free before any LLM call: individuals are
+screened against benefit programs plus the grants whose official applicant
+types include individuals; organizations against grants. Every applicable
+compiled rulebook is then run through the full eligibility engine — in
+parallel — and results come back ranked: eligible → likely → not eligible.
 """
 
 from __future__ import annotations
 
-from typing import Any
+from concurrent.futures import ThreadPoolExecutor
+from typing import Any, Callable
 
 import psycopg
 
+from claimable.db import connect
 from claimable.engine import analyze, store_analysis
 from claimable.search import hybrid_search
 
 STATUS_ORDER = {"eligible": 0, "likely": 1, "not_eligible": 2}
+_WORKERS = 4  # parallel screens; each worker uses its own DB connection
 
 
 def build_profile_query(profile: dict[str, Any]) -> str:
@@ -48,65 +50,129 @@ def _load_criteria(cur, opp_id: int) -> list[dict[str, Any]]:
              "source_quote": r[4], "threshold": r[5]} for r in cur.fetchall()]
 
 
+def applicable_targets(
+    conn: psycopg.Connection, profile: dict[str, Any]
+) -> list[dict[str, Any]]:
+    """Every compiled rulebook this KIND of applicant could possibly use.
+    Decided from official metadata — free, before any LLM call."""
+    with conn.cursor() as cur:
+        cur.execute(
+            """SELECT DISTINCT o.id, o.number, o.title, o.source, o.close_date::text,
+                      EXISTS (
+                        SELECT 1 FROM jsonb_array_elements(
+                          coalesce(o.raw->'detail'->'synopsis'->'applicantTypes', '[]'::jsonb)
+                        ) t WHERE t->>'description' ILIKE '%%individual%%'
+                      ) AS allows_individuals
+               FROM opportunities o
+               JOIN criteria c ON c.opportunity_id = o.id AND c.superseded_at IS NULL
+               ORDER BY o.source DESC, o.close_date::text NULLS LAST"""
+        )
+        rows = [{"id": r[0], "number": r[1], "title": r[2], "source": r[3],
+                 "close_date": r[4], "allows_individuals": r[5]} for r in cur.fetchall()]
+
+    if profile.get("kind") == "individual":
+        # benefit programs + grants that officially accept individuals
+        return [o for o in rows if o["source"] == "policy" or o["allows_individuals"]]
+    return [o for o in rows if o["source"] != "policy"]
+
+
 def discover(
     conn: psycopg.Connection,
     profile_id: int,
     profile: dict[str, Any],
-    max_screens: int = 5,
+    max_screens: int | None = None,
     query: str | None = None,
+    on_progress: Callable[[int, int], None] | None = None,
 ) -> list[dict[str, Any]]:
-    """Search → pick top compiled matches → screen each → ranked summaries."""
-    query = query or build_profile_query(profile)
+    """Screen everything applicable (default) or cap with max_screens, in
+    which case search relevance decides which programs keep their slot."""
+    targets = applicable_targets(conn, profile)
+    if max_screens is not None and len(targets) > max_screens:
+        query = query or build_profile_query(profile)
+        rank = {h.number: i for i, h in enumerate(hybrid_search(conn, query, k=50))}
+        targets.sort(key=lambda o: (o["source"] != "policy", rank.get(o["number"], 999)))
+        targets = targets[:max_screens]
+    return screen_programs(conn, profile_id, profile, targets, on_progress=on_progress)
 
-    with conn.cursor() as cur:
-        cur.execute(
-            """SELECT DISTINCT o.id, o.number, o.title, o.source, o.close_date::text
-               FROM opportunities o
-               JOIN criteria c ON c.opportunity_id = o.id AND c.superseded_at IS NULL"""
-        )
-        compiled = {r[1]: {"id": r[0], "number": r[1], "title": r[2],
-                           "source": r[3], "close_date": r[4]} for r in cur.fetchall()}
 
-    hits = hybrid_search(conn, query, k=max(20, max_screens * 3))
-    targets: list[dict[str, Any]] = []
-    seen: set[str] = set()
-    if profile.get("kind") == "individual":
-        # benefit programs first for people — they're few, high-value, and
-        # shouldn't lose their screening slot to a search-ranked grant
-        for opp in compiled.values():
-            if opp["source"] == "policy" and opp["number"] not in seen:
-                targets.append(opp)
-                seen.add(opp["number"])
-    for h in hits:
-        if h.number in compiled and h.number not in seen:
-            targets.append(compiled[h.number])
-            seen.add(h.number)
-    targets = targets[:max_screens]
+def _screen_one(profile_id: int, profile: dict[str, Any], opp: dict[str, Any]) -> dict[str, Any] | None:
+    """Screen one program on its own DB connection (thread-worker safe)."""
+    with connect() as conn, conn.cursor() as cur:
+        criteria = _load_criteria(cur, opp["id"])
+        if not criteria:
+            return None
+        result = analyze(profile, criteria)
+        store_analysis(cur, profile_id, opp["id"], criteria, result)
+    counts = {"met": 0, "not_met": 0, "needs_info": 0}
+    questions: list[str] = []
+    for v in result["verdicts"]:
+        counts[v.verdict] += 1
+        if v.follow_up_question:
+            questions.append(v.follow_up_question)
+    status = ("not_eligible" if counts["not_met"]
+              else "likely" if counts["needs_info"] else "eligible")
+    return {
+        "opportunity": opp,
+        "counts": counts,
+        "status": status,
+        "open_questions": questions,
+        "verdicts": [v.model_dump() for v in result["verdicts"]],
+    }
 
+
+def screen_programs(
+    conn: psycopg.Connection,  # kept for signature stability; workers connect themselves
+    profile_id: int,
+    profile: dict[str, Any],
+    targets: list[dict[str, Any]],
+    on_progress: Callable[[int, int], None] | None = None,
+) -> list[dict[str, Any]]:
+    """Run the full engine on every target program in parallel; ranked summaries."""
     results: list[dict[str, Any]] = []
-    with conn.cursor() as cur:
-        for opp in targets:
-            criteria = _load_criteria(cur, opp["id"])
-            if not criteria:
-                continue
-            result = analyze(profile, criteria)
-            store_analysis(cur, profile_id, opp["id"], criteria, result)
-            counts = {"met": 0, "not_met": 0, "needs_info": 0}
-            questions: list[str] = []
-            for v in result["verdicts"]:
-                counts[v.verdict] += 1
-                if v.follow_up_question:
-                    questions.append(v.follow_up_question)
-            status = ("not_eligible" if counts["not_met"]
-                      else "likely" if counts["needs_info"] else "eligible")
-            results.append({
-                "opportunity": opp,
-                "counts": counts,
-                "status": status,
-                "open_questions": questions,
-                "verdicts": [v.model_dump() for v in result["verdicts"]],
-            })
+    done = 0
+    with ThreadPoolExecutor(max_workers=_WORKERS) as pool:
+        futures = [pool.submit(_screen_one, profile_id, profile, opp) for opp in targets]
+        for f in futures:
+            r = f.result()
+            done += 1
+            if on_progress:
+                on_progress(done, len(targets))
+            if r:
+                results.append(r)
 
     results.sort(key=lambda r: (STATUS_ORDER[r["status"]],
                                 r["counts"]["needs_info"], -r["counts"]["met"]))
     return results
+
+
+def rescreen(
+    conn: psycopg.Connection,
+    profile_id: int,
+    profile: dict[str, Any],
+    numbers: list[str],
+) -> list[dict[str, Any]]:
+    """Re-screen a specific set of programs (the answer-once loop: new facts
+    in the profile apply to every program at the same time)."""
+    with conn.cursor() as cur:
+        cur.execute(
+            """SELECT DISTINCT o.id, o.number, o.title, o.source, o.close_date::text
+               FROM opportunities o
+               JOIN criteria c ON c.opportunity_id = o.id AND c.superseded_at IS NULL
+               WHERE o.number = ANY(%s)""",
+            (numbers,),
+        )
+        by_number = {r[1]: {"id": r[0], "number": r[1], "title": r[2],
+                            "source": r[3], "close_date": r[4]} for r in cur.fetchall()}
+    targets = [by_number[n] for n in numbers if n in by_number]
+    return screen_programs(conn, profile_id, profile, targets)
+
+
+def collect_open_questions(results: list[dict[str, Any]]) -> list[str]:
+    """Deduped follow-up questions from programs that are still winnable
+    (🟡 likely) — answering a 🔴 program's questions can't flip its not_met."""
+    seen: dict[str, None] = {}
+    for r in results:
+        if r["status"] == "likely":
+            for q in r["open_questions"]:
+                seen.setdefault(q)
+    return list(seen)

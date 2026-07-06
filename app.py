@@ -1,9 +1,10 @@
-"""Claimable — Streamlit frontend.
+"""Claimable — describe yourself, see everything you may qualify for.
 
 Run:  streamlit run app.py
-Flow: pick a profile → search opportunities (hybrid + rerank) → view compiled
-criteria with citations → run the eligibility engine → answer follow-ups
-(intake agent) → re-run → action plan.
+
+Flow: one text box → intake agent builds your profile → every applicable
+compiled rulebook is screened in parallel → ranked results → answer the open
+questions once → the yellows re-screen → action plan for any program.
 """
 
 from __future__ import annotations
@@ -18,210 +19,201 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from claimable.db import connect
 
-st.set_page_config(page_title="Claimable", page_icon="🧾", layout="wide")
+st.set_page_config(page_title="Claimable", page_icon="🧾", layout="centered")
 
 ICONS = {"met": "✅", "not_met": "❌", "needs_info": "❓"}
+BADGES = {
+    "eligible": ("🟢", "Appears eligible — every published requirement met"),
+    "likely": ("🟡", "Likely — nothing disqualifies you, open questions remain"),
+    "not_eligible": ("🔴", "Not eligible as things stand"),
+}
+
+EXAMPLES = {
+    "A small nonprofit": (
+        "We're a 501(c)(3) nonprofit in Ohio with 12 staff and a $1.4M annual "
+        "budget. We do data analysis and research on rural health access "
+        "across Appalachian Ohio. We could put up matching funds if required."
+    ),
+    "A person / household": (
+        "I'm a single mom in Ohio with two kids, 8 and 11. I work part-time "
+        "retail about 28 hours a week and bring home about $2,400 a month "
+        "before taxes, $1,850 after. We have about $1,200 in savings. "
+        "I'm a US citizen and I'm not in school."
+    ),
+    "A state agency": (
+        "We are the Ohio Department of Health's State Office of Rural Health, "
+        "a state government agency designated by the governor. We can provide "
+        "cost sharing and would request about $220,000."
+    ),
+}
 
 
-@st.cache_data(ttl=60)
-def load_profiles() -> list[dict]:
-    with connect() as conn, conn.cursor() as cur:
-        cur.execute("SELECT id, kind, name, attrs FROM profiles ORDER BY name")
-        return [{"id": r[0], "kind": r[1], "name": r[2], "attrs": r[3]} for r in cur.fetchall()]
+def _reset_run_state() -> None:
+    for k in ("profile", "profile_id", "results"):
+        st.session_state.pop(k, None)
 
 
-@st.cache_data(ttl=60)
-def load_compiled_opportunities() -> list[dict]:
-    with connect() as conn, conn.cursor() as cur:
-        cur.execute(
-            """SELECT DISTINCT o.id, o.number, o.title, o.agency_name, o.close_date::text, o.source
-               FROM opportunities o
-               JOIN criteria c ON c.opportunity_id = o.id AND c.superseded_at IS NULL
-               ORDER BY o.number"""
-        )
-        return [{"id": r[0], "number": r[1], "title": r[2], "agency": r[3],
-                 "close_date": r[4], "source": r[5]} for r in cur.fetchall()]
-
-
-def load_criteria(opp_id: int) -> list[dict]:
-    with connect() as conn, conn.cursor() as cur:
-        cur.execute(
-            """SELECT id, criterion_key, text, check_type, source_quote, threshold, version
-               FROM criteria WHERE opportunity_id = %s AND superseded_at IS NULL ORDER BY id""",
-            (opp_id,),
-        )
-        return [{"id": r[0], "criterion_key": r[1], "text": r[2], "check_type": r[3],
-                 "source_quote": r[4], "threshold": r[5], "version": r[6]} for r in cur.fetchall()]
-
-
-# ── sidebar: applicant ────────────────────────────────────────────────────────
-profiles = load_profiles()
-st.sidebar.title("🧾 Claimable")
-st.sidebar.caption("The money-you're-entitled-to engine. Screening only — "
-                   "eligibility is always determined by the issuing agency.")
-profile_row = st.sidebar.selectbox(
-    "Applicant profile", profiles, format_func=lambda p: f"{p['name']} ({p['kind']})"
-)
-
-attrs_key = f"attrs_{profile_row['id']}"
-if attrs_key not in st.session_state:
-    st.session_state[attrs_key] = dict(profile_row["attrs"])
-attrs = st.session_state[attrs_key]
-
-with st.sidebar.expander("Profile facts", expanded=False):
-    st.json(attrs)
-
-# ── main: find an opportunity ────────────────────────────────────────────────
-st.header("1 · Find money")
-query = st.text_input(
-    "Describe the applicant or what you're looking for",
-    placeholder="small nonprofit doing rural health research in Ohio",
-)
-if query:
-    with st.spinner("Hybrid search + rerank…"):
-        from claimable.search import hybrid_search
-
-        with connect() as conn:
-            hits = hybrid_search(conn, query, k=8)
-    compiled_numbers = {o["number"] for o in load_compiled_opportunities()}
-    st.dataframe(
-        [{"number": h.number, "title": h.title, "closes": h.close_date,
-          "rerank score": round(h.rerank_score or 0, 2),
-          "criteria compiled": "✓" if h.number in compiled_numbers else "—"}
-         for h in hits],
-        use_container_width=True, hide_index=True,
+# ── sidebar: what this is ─────────────────────────────────────────────────────
+with st.sidebar:
+    st.title("🧾 Claimable")
+    st.write(
+        "Describe yourself or your organization. Claimable screens you "
+        "against every government program it has compiled — federal grants "
+        "and benefit programs — and shows exactly which requirements you "
+        "meet, with a citation from the official rules for every answer."
     )
+    with connect() as conn, conn.cursor() as cur:
+        cur.execute("""SELECT count(DISTINCT opportunity_id),
+                              count(*) FILTER (WHERE superseded_at IS NULL)
+                       FROM criteria""")
+        n_programs, n_criteria = cur.fetchone()
+    st.metric("Programs it can screen today", n_programs)
+    st.caption(f"{n_criteria} compiled requirements, every one citing official text. "
+               "Coverage grows one `batch_compile` at a time.")
+    st.divider()
+    st.caption("Screening only — eligibility is always determined by the "
+               "issuing agency. Don't enter real personal details you "
+               "wouldn't put in a form.")
 
-st.subheader("…or screen everything relevant at once")
-col_a, col_b = st.columns([1, 3])
-with col_a:
-    max_screens = st.number_input("Programs to screen", 2, 8, 4,
-                                  help="Each program screened costs LLM calls (~10–20¢).")
-with col_b:
-    st.caption("Discovery builds a search query from the profile itself, finds the most "
-               "relevant compiled rulebooks, and runs the full engine on each. For "
-               "individuals, all benefit programs are always included.")
-if st.button("🔎 Discover & screen", type="primary"):
-    with st.spinner(f"Screening up to {max_screens} programs — this takes a couple of minutes…"):
-        from claimable.discovery import discover
+# ── step 1: describe ──────────────────────────────────────────────────────────
+st.header("Who are you?")
+cols = st.columns(len(EXAMPLES))
+for col, (label, text) in zip(cols, EXAMPLES.items()):
+    if col.button(f"Example: {label}"):
+        st.session_state["desc"] = text
+        _reset_run_state()
 
-        profile = {"name": profile_row["name"], "kind": profile_row["kind"], "attrs": attrs}
-        with connect() as conn:
-            disc = discover(conn, profile_row["id"], profile, max_screens=int(max_screens))
-    st.session_state["discovery"] = disc
-
-if "discovery" in st.session_state:
-    badges = {"eligible": ("🟢", "Appears eligible"),
-              "likely": ("🟡", "Likely eligible — open questions"),
-              "not_eligible": ("🔴", "Not eligible as things stand")}
-    for r in st.session_state["discovery"]:
-        icon, label = badges[r["status"]]
-        o, c = r["opportunity"], r["counts"]
-        with st.expander(f"{icon} {o['number']} — {o['title'][:70]}  "
-                         f"({c['met']}✅ {c['not_met']}❌ {c['needs_info']}❓)"):
-            st.caption(label + (f" · closes {o['close_date']}" if o["close_date"] else ""))
-            for v in r["verdicts"]:
-                st.markdown(f"{ICONS[v['verdict']]} **{v['criterion_key']}** — {v['reasoning']}")
-            if r["open_questions"]:
-                st.markdown("**To firm this up:** select this program below and answer "
-                            "the follow-ups.")
-
-st.header("2 · Screen eligibility")
-opps = load_compiled_opportunities()
-opp = st.selectbox(
-    "Opportunity (criteria compiled)",
-    opps,
-    format_func=lambda o: f"{o['number']} — {o['title'][:70]}",
+desc = st.text_area(
+    "Describe yourself or your organization — plain English is fine",
+    key="desc",
+    height=140,
+    placeholder="e.g. I'm a part-time worker in Texas with two kids and about "
+                "$2,000/month income…  or  We're a small nonprofit in Oregon that…",
 )
-criteria = load_criteria(opp["id"])
 
-with st.expander(f"Compiled criteria (v{criteria[0]['version'] if criteria else '?'}, "
-                 f"{len(criteria)} rules — every one cites the official text)"):
-    for c in criteria:
-        det = " · deterministic" if c["threshold"] else ""
-        st.markdown(f"**{c['criterion_key']}**{det} — {c['text']}")
-        st.caption(f"“{c['source_quote']}”")
+if st.button("Find everything I might qualify for", type="primary", disabled=not desc.strip()):
+    _reset_run_state()
+    with st.spinner("Reading your description…"):
+        from claimable.intake import profile_from_description
 
-run = st.button("Run eligibility analysis", type="primary")
-result_key = f"result_{profile_row['id']}_{opp['id']}"
+        profile = profile_from_description(desc)
+    with connect() as conn, conn.cursor() as cur:
+        cur.execute(
+            "INSERT INTO profiles (kind, name, attrs) VALUES (%s, %s, %s) RETURNING id",
+            (profile["kind"], profile["name"], json.dumps(profile["attrs"])),
+        )
+        profile_id = cur.fetchone()[0]
+    st.session_state["profile"] = profile
+    st.session_state["profile_id"] = profile_id
 
-if run:
-    with st.spinner("deterministic checks → analyst → verifier…"):
-        from claimable.engine import analyze, store_analysis
+    from claimable.discovery import applicable_targets, discover
 
-        profile = {"name": profile_row["name"], "kind": profile_row["kind"], "attrs": attrs}
-        result = analyze(profile, criteria)
-        with connect() as conn, conn.cursor() as cur:
-            store_analysis(cur, profile_row["id"], opp["id"], criteria, result)
-        st.session_state[result_key] = {
-            "verdicts": [v.model_dump() for v in result["verdicts"]],
-            "checks": {k: c.model_dump() for k, c in result["checks"].items()},
-        }
+    with connect() as conn:
+        n_targets = len(applicable_targets(conn, profile))
+    progress = st.progress(0.0, text=f"Screening {n_targets} programs (runs in parallel)…")
 
-if result_key in st.session_state:
-    res = st.session_state[result_key]
-    counts = {"met": 0, "not_met": 0, "needs_info": 0}
-    quotes = {c["criterion_key"]: c["source_quote"] for c in criteria}
+    def on_progress(done: int, total: int) -> None:
+        progress.progress(done / total, text=f"Screened {done}/{total} programs…")
 
-    for v in res["verdicts"]:
-        counts[v["verdict"]] += 1
-        check = res["checks"].get(v["criterion_key"], {})
-        verified = "verified" if check.get("supported") else "unverified"
-        with st.container(border=True):
-            st.markdown(f"{ICONS[v['verdict']]} **{v['criterion_key']}** · "
-                        f"`{v['verdict']}` · _{verified}_")
-            st.write(v["reasoning"])
-            with st.expander("Rule text this rests on"):
-                st.caption(f"“{quotes.get(v['criterion_key'], '')}”")
+    with connect() as conn:
+        st.session_state["results"] = discover(
+            conn, profile_id, profile, on_progress=on_progress
+        )
+    progress.empty()
 
-    if counts["not_met"]:
-        st.error(f"Not eligible as things stand — {counts['met']} met · "
-                 f"{counts['not_met']} not met · {counts['needs_info']} needs info")
-    elif counts["needs_info"]:
-        st.warning(f"Likely eligible, pending answers — {counts['met']} met · "
-                   f"{counts['needs_info']} needs info")
-    else:
-        st.success(f"Appears eligible on all {counts['met']} published criteria")
+# ── step 2: results ───────────────────────────────────────────────────────────
+if "results" in st.session_state:
+    profile = st.session_state["profile"]
+    results = st.session_state["results"]
 
-    # ── needs-info re-entry loop ─────────────────────────────────────────────
-    needs = [v for v in res["verdicts"] if v["verdict"] == "needs_info"]
-    if needs:
-        st.header("3 · Answer the open questions")
+    st.header("What you may qualify for")
+    st.caption(f"Screened as: **{profile['name']}** ({profile['kind']})")
+    with st.expander("Facts I understood from your description"):
+        st.json({k: v for k, v in profile["attrs"].items() if k != "self_description"})
+
+    n_green = sum(r["status"] == "eligible" for r in results)
+    n_yellow = sum(r["status"] == "likely" for r in results)
+    c1, c2, c3 = st.columns(3)
+    c1.metric("🟢 Eligible", n_green)
+    c2.metric("🟡 Likely", n_yellow)
+    c3.metric("🔴 Not eligible", len(results) - n_green - n_yellow)
+
+    for r in results:
+        icon, label = BADGES[r["status"]]
+        o, c = r["opportunity"], r["counts"]
+        with st.expander(f"{icon} **{o['title'][:80]}**  ·  "
+                         f"{c['met']}✅ {c['not_met']}❌ {c['needs_info']}❓"):
+            st.caption(f"{o['number']} · {label}"
+                       + (f" · closes {o['close_date']}" if o["close_date"] else ""))
+            for v in r["verdicts"]:
+                st.markdown(f"{ICONS[v['verdict']]} {v['reasoning']}")
+
+    # ── step 3: answer once, everything re-screens ────────────────────────────
+    from claimable.discovery import collect_open_questions
+
+    questions = collect_open_questions(results)
+    if questions:
+        st.header("A few questions to firm things up")
+        st.caption("Your answers apply to every 🟡 program at once.")
         with st.form("answers"):
-            answers = {}
-            for v in needs:
-                q = v["follow_up_question"] or f"Clarify: {v['reasoning']}"
-                answers[v["criterion_key"]] = st.text_input(q, key=f"ans_{v['criterion_key']}")
-            submitted = st.form_submit_button("Submit answers & re-run")
+            answers: dict[str, str] = {}
+            for i, q in enumerate(questions):
+                answers[q] = st.text_input(q, key=f"q_{i}")
+            submitted = st.form_submit_button("Answer & re-check the yellows")
         if submitted:
-            qa = [{"question": (v["follow_up_question"] or v["reasoning"]),
-                   "answer": answers[v["criterion_key"]]}
-                  for v in needs if answers[v["criterion_key"]].strip()]
+            qa = [{"question": q, "answer": a} for q, a in answers.items() if a.strip()]
             if qa:
-                with st.spinner("intake agent structuring answers…"):
+                with st.spinner("Structuring your answers…"):
                     from claimable.intake import structure_answers
 
-                    new_facts = structure_answers(qa, known_fact_keys=list(attrs))
+                    new_facts = structure_answers(qa, known_fact_keys=list(profile["attrs"]))
                 if new_facts:
                     st.info("Learned: " + ", ".join(f"{k} = {v!r}" for k, v in new_facts.items()))
-                    attrs.update(new_facts)
-                    st.session_state.pop(result_key, None)
+                    profile["attrs"].update(new_facts)
+                    with connect() as conn, conn.cursor() as cur:
+                        cur.execute("UPDATE profiles SET attrs = %s WHERE id = %s",
+                                    (json.dumps(profile["attrs"]), st.session_state["profile_id"]))
+
+                    from claimable.discovery import STATUS_ORDER, rescreen
+
+                    yellows = [r["opportunity"]["number"] for r in results
+                               if r["status"] == "likely"]
+                    with st.spinner(f"Re-screening {len(yellows)} programs with your answers…"):
+                        with connect() as conn:
+                            fresh = rescreen(conn, st.session_state["profile_id"],
+                                             profile, yellows)
+                    merged = {r["opportunity"]["number"]: r for r in results}
+                    merged.update({r["opportunity"]["number"]: r for r in fresh})
+                    results = sorted(
+                        merged.values(),
+                        key=lambda r: (STATUS_ORDER[r["status"]],
+                                       r["counts"]["needs_info"], -r["counts"]["met"]),
+                    )
+                    st.session_state["results"] = results
                     st.rerun()
                 else:
-                    st.warning("No usable facts extracted from those answers.")
+                    st.warning("I couldn't extract usable facts from those answers.")
 
-    # ── action plan ──────────────────────────────────────────────────────────
-    st.header("4 · Action plan")
-    if st.button("Draft action plan"):
-        with st.spinner("planner agent (+ USAspending award history)…"):
-            from claimable.enrichment.usaspending import alns_for_opportunity, award_stats
-            from claimable.planner import build_plan, render_markdown
+    # ── step 4: action plan ───────────────────────────────────────────────────
+    st.header("Get an action plan")
+    plannable = [r for r in results if r["status"] != "not_eligible"]
+    if plannable:
+        pick = st.selectbox(
+            "Which program?", plannable,
+            format_func=lambda r: f"{BADGES[r['status']][0]} {r['opportunity']['title'][:70]}",
+        )
+        if st.button("Draft my action plan"):
+            with st.spinner("Planner agent (+ real award history where available)…"):
+                from claimable.enrichment.usaspending import alns_for_opportunity, award_stats
+                from claimable.planner import build_plan, render_markdown
 
-            with connect() as conn, conn.cursor() as cur:
-                cur.execute("SELECT raw FROM opportunities WHERE id = %s", (opp["id"],))
-                raw = cur.fetchone()[0]
-            alns = alns_for_opportunity(raw)
-            stats = award_stats(alns[0]) if alns else None
-            profile = {"name": profile_row["name"], "kind": profile_row["kind"], "attrs": attrs}
-            plan = build_plan(profile, opp, res["verdicts"], stats)
-            st.markdown(render_markdown(plan, profile, opp, res["verdicts"]))
+                o = pick["opportunity"]
+                with connect() as conn, conn.cursor() as cur:
+                    cur.execute("SELECT raw FROM opportunities WHERE id = %s", (o["id"],))
+                    raw = cur.fetchone()[0]
+                alns = alns_for_opportunity(raw or {})
+                stats = award_stats(alns[0]) if alns else None
+                plan = build_plan(profile, o, pick["verdicts"], stats)
+                st.markdown(render_markdown(plan, profile, o, pick["verdicts"]))
+    else:
+        st.caption("Nothing eligible or likely yet — adjust your description and re-run.")

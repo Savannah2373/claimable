@@ -23,8 +23,9 @@ BADGES = {"eligible": "🟢 ELIGIBLE  ", "likely": "🟡 LIKELY    ", "not_eligi
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--profile", required=True)
-    parser.add_argument("--max-screens", type=int, default=5,
-                        help="how many programs to fully screen (each costs LLM calls)")
+    parser.add_argument("--max-screens", type=int, default=None,
+                        help="cap the number of programs screened (default: ALL applicable; "
+                             "each screen costs LLM calls)")
     parser.add_argument("--query", help="override the auto-built search query")
     args = parser.parse_args()
 
