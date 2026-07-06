@@ -1,0 +1,40 @@
+{
+  "_comment": "Golden eligibility criteria per grant, labeled by reading the official text. A predicted criterion matches a golden item if its criterion_key is in key_aliases OR match_text appears in its text (case-insensitive). optional:true items may match (removing the prediction from false-positive counting) but are not required for recall.",
+  "HRSA-26-065": [
+    {"name": "state government applicant", "key_aliases": ["applicant_type", "applicant_type_state_government"], "match_text": "state government"},
+    {"name": "operates a State Office of Rural Health", "key_aliases": ["operates_state_office_of_rural_health", "has_state_office_rural_health"], "match_text": "state office of rural health"},
+    {"name": "governor designation", "key_aliases": ["governor_designation"], "match_text": "designated by the governor"},
+    {"name": "one applicant per state", "key_aliases": ["one_per_state", "one_applicant_per_state"], "match_text": "one applicant"},
+    {"name": "cost sharing required", "key_aliases": ["cost_sharing"], "match_text": "cost sharing"},
+    {"name": "award ceiling $223,410", "key_aliases": ["award_ceiling"], "match_text": "223,410"}
+  ],
+  "HRSA-26-050": [
+    {"name": "domestic organization", "key_aliases": ["domestic_organization"], "match_text": "domestic"},
+    {"name": "eligible applicant types", "key_aliases": ["applicant_type"], "match_text": "entity type"},
+    {"name": "award ceiling $600,000", "key_aliases": ["award_ceiling"], "match_text": "600,000"},
+    {"name": "no cost sharing (imposes nothing)", "key_aliases": ["cost_sharing"], "match_text": "cost sharing", "optional": true}
+  ],
+  "TI-26-017": [
+    {"name": "statutory eligibility 42 U.S.C. 290bb-7a", "key_aliases": ["statutorily_limited_applicant"], "match_text": "290bb"},
+    {"name": "award ceiling $450,000", "key_aliases": ["award_ceiling"], "match_text": "450,000"}
+  ],
+  "L26AS00064": [
+    {"name": "individuals ineligible", "key_aliases": ["individuals_ineligible"], "match_text": "individuals"},
+    {"name": "for-profits ineligible", "key_aliases": ["for_profit_ineligible"], "match_text": "for-profit"},
+    {"name": "qualified youth corps", "key_aliases": ["qualified_youth_corps"], "match_text": "youth corps"},
+    {"name": "eligible applicant types", "key_aliases": ["applicant_type"], "match_text": "eligible entity types"},
+    {"name": "cost sharing required", "key_aliases": ["cost_sharing"], "match_text": "cost sharing"},
+    {"name": "award ceiling $220,000", "key_aliases": ["award_ceiling"], "match_text": "220,000"},
+    {"name": "award floor $30,000", "key_aliases": ["award_floor"], "match_text": "30,000"}
+  ],
+  "USDA-NIFA-AFRI-011596": [
+    {"name": "eligible applicants (research/education/extension)", "key_aliases": ["applicant_type_research_ed_extension"], "match_text": "state agricultural experiment"},
+    {"name": "no foreign/international organizations", "key_aliases": ["no_foreign_organizations"], "match_text": "foreign"},
+    {"name": "eligible applicants (integrated projects)", "key_aliases": ["applicant_type_integrated"], "match_text": "integrated"},
+    {"name": "cost sharing required", "key_aliases": ["cost_sharing_required", "cost_sharing"], "match_text": "cost sharing"},
+    {"name": "award ceiling $650,000", "key_aliases": ["award_ceiling"], "match_text": "650,000"},
+    {"name": "award floor $10,000", "key_aliases": ["award_floor"], "match_text": "10,000"},
+    {"name": "no gain-of-function research", "key_aliases": ["no_gain_of_function_research"], "match_text": "gain-of-function"},
+    {"name": "college/university definition (integrated)", "key_aliases": ["integrated_college_definition"], "match_text": "accredit", "optional": true}
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "_comment": "Expected verdicts per (profile, opportunity, criterion_key), labeled by applying the official rules to the synthetic profiles by hand. A value may be a string or a list of acceptable verdicts (for genuinely ambiguous calls). Keys track the current compiled criteria; recompiles that rename keys will surface here as 'criterion missing' failures — that is the drift alarm working.",
+  "cases": [
+    {
+      "profile": "Appalachian Rural Health Data Collaborative",
+      "number": "HRSA-26-050",
+      "expected": {
+        "domestic_organization": "met",
+        "applicant_type": "met",
+        "award_ceiling": "needs_info"
+      }
+    },
+    {
+      "profile": "Appalachian Rural Health Data Collaborative",
+      "number": "HRSA-26-065",
+      "expected": {
+        "applicant_type_state_government": "not_met",
+        "operates_state_office_of_rural_health": "needs_info",
+        "governor_designation": "not_met",
+        "one_applicant_per_state": ["not_met", "needs_info"],
+        "cost_sharing": "needs_info",
+        "award_ceiling": "needs_info"
+      }
+    },
+    {
+      "profile": "Ohio Department of Health — State Office of Rural Health",
+      "number": "HRSA-26-065",
+      "expected": {
+        "applicant_type_state_government": "met",
+        "operates_state_office_of_rural_health": "met",
+        "governor_designation": "met",
+        "one_applicant_per_state": "met",
+        "cost_sharing": "met",
+        "award_ceiling": "met"
+      }
+    }
+  ]
+}
