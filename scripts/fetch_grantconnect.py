@@ -9,15 +9,13 @@ Usage:
 from __future__ import annotations
 
 import argparse
-import dataclasses
-import json
 import sys
-from datetime import datetime, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from claimable.ingestion.grantconnect import GrantConnectClient
+from scripts.fetch_common import write_jsonl
 
 
 def main() -> None:
@@ -35,15 +33,7 @@ def main() -> None:
         print(f"note: portal returned {len(opportunities)} of {args.rows} requested "
               "— fewer current opportunities exist, or the list markup changed")
 
-    stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
-    out_dir = Path(args.out)
-    out_dir.mkdir(parents=True, exist_ok=True)
-    out_path = out_dir / f"grantconnect_{stamp}.jsonl"
-
-    with out_path.open("w") as f:
-        for opp in opportunities:
-            f.write(json.dumps(dataclasses.asdict(opp)) + "\n")
-
+    out_path = write_jsonl(opportunities, "grantconnect", args.out)
     print(f"\nFetched {len(opportunities)} opportunities → {out_path}\n")
     header = f"{'CLOSES':<12} {'NUMBER':<10} TITLE"
     print(header)

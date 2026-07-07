@@ -26,6 +26,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from claimable.compiler import build_source_text
 from claimable.db import connect
 from claimable.ingestion.benefits import fetch_policy_text
+from claimable.ingestion.eu_portal import EUPortalClient
 from claimable.ingestion.grantconnect import GrantConnectClient
 from claimable.ingestion.grants_gov import GrantsGovClient
 
@@ -38,6 +39,11 @@ def _grants_gov() -> GrantsGovClient:
 @cache
 def _grantconnect() -> GrantConnectClient:
     return GrantConnectClient()
+
+
+@cache
+def _eu_portal() -> EUPortalClient:
+    return EUPortalClient()
 
 
 def _refetch_grants_gov(row: dict) -> dict[str, Any]:
@@ -55,12 +61,23 @@ def _refetch_grantconnect(row: dict) -> dict[str, Any]:
     return _grantconnect().fetch_detail(row["source_id"]).raw
 
 
+def _refetch_eu_portal(row: dict) -> dict[str, Any]:
+    fresh = _eu_portal().fetch_detail(row["source_id"])
+    if fresh is None:
+        # the topic is no longer Open — that IS drift, not an unreachable
+        # source: return an empty shape so the hash comparison flags it
+        return {"policy_text": "", "url": row["raw"].get("url")}
+    return fresh.raw
+
+
 # one re-fetcher per opportunities.source — a new ingestion source registers
 # here or its rows are reported (not silently mis-fetched via a wrong default)
 _REFETCHERS = {
     "grants.gov": _refetch_grants_gov,
     "policy": _refetch_policy,
     "grantconnect": _refetch_grantconnect,
+    "eu_portal": _refetch_eu_portal,
+    "enterprisesg": _refetch_policy,  # same curated page-scrape shape
 }
 
 

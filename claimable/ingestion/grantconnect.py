@@ -14,7 +14,6 @@ compiler.build_source_text).
 
 from __future__ import annotations
 
-import html
 import re
 import time
 from typing import Any, Iterator
@@ -22,6 +21,7 @@ from typing import Any, Iterator
 import requests
 
 from claimable.ingestion.grants_gov import Opportunity
+from claimable.ingestion.html_text import html_to_text as _text
 
 BASE_URL = "https://www.grants.gov.au"
 _TIMEOUT = 30
@@ -56,16 +56,6 @@ _POLICY_SECTIONS = [
     ("Primary Category", "PRIMARY CATEGORY"),
     ("Instructions for Application Submission", "HOW TO APPLY"),
 ]
-
-
-def _text(fragment: str) -> str:
-    """HTML fragment → readable text, keeping list items as '- ' bullets."""
-    fragment = re.sub(r"(?s)<li[^>]*>", "\n- ", fragment)
-    fragment = re.sub(r"(?s)</(p|ul|ol|li)>|<br\s*/?>", "\n", fragment)
-    fragment = re.sub(r"(?s)<[^>]+>", " ", fragment)
-    fragment = html.unescape(fragment)
-    lines = [re.sub(r"[ \t]+", " ", line).strip() for line in fragment.splitlines()]
-    return "\n".join(line for line in lines if line)
 
 
 def _parse_au_date(value: str | None) -> str | None:

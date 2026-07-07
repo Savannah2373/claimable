@@ -12,10 +12,13 @@ generates a requirement-by-requirement action plan.
 English, watch every applicable program get screened in parallel, answer the
 open questions once, get an action plan.
 
-One engine, two proven verticals, **35 compiled rulebooks**: 30 live
-**Grants.gov** opportunities and 5 federal benefit programs (**SNAP, WIC,
-EITC, LIHEAP, Lifeline**) run through the *same* compiler and the *same*
-eligibility engine — 194 criteria, every one citing the official text.
+One engine, two proven verticals, four continents, **166 compiled
+rulebooks**: 124 live **Grants.gov** opportunities, 5 US federal benefit
+programs (**SNAP, WIC, EITC, LIHEAP, Lifeline**), 20 Australian
+**GrantConnect** opportunities, 14 **EU Funding & Tenders Portal** topics
+(Horizon Europe, LIFE, EDF, JTM), and 3 **Enterprise Singapore** SME grants
+(EDG, MRA, PSG) — all run through the *same* compiler and the *same*
+eligibility engine, every criterion citing the official text.
 
 **The app is one text box.** Describe yourself or your organization in plain
 English; an intake agent builds your structured profile; a free applicability
@@ -109,9 +112,11 @@ python scripts/load_opportunities.py
 python scripts/embed_opportunities.py
 python scripts/ingest_snap.py
 
-# 1b · optional: Australia's GrantConnect (grants.gov.au) — the international
-#      proof of generality; same loader, same compiler, zero engine changes
-python scripts/fetch_grantconnect.py --rows 20
+# 1b · optional: international sources — same loader, same compiler, zero
+#      engine changes (Australia · European Union · Singapore)
+python scripts/fetch_grantconnect.py --rows 20     # AU: grants.gov.au
+python scripts/fetch_eu_portal.py --rows 15        # EU: Funding & Tenders Portal
+python scripts/ingest_enterprisesg.py              # SG: EnterpriseSG catalog
 python scripts/load_opportunities.py
 python scripts/embed_opportunities.py
 
@@ -140,7 +145,8 @@ streamlit run app.py
 ```
 claimable/               core package
   ingestion/             grants_gov (Search2 API) · benefits (policy pages) ·
-                         grantconnect (AU portal, server-rendered HTML)
+                         grantconnect (AU portal) · eu_portal (SEDIA API) ·
+                         html_text (one shared HTML→text — citation-critical)
   enrichment/            usaspending (real award history)
   compiler.py            rulebook → atomic, cited, versioned criteria
   engine.py              LangGraph: deterministic → analyst → verifier
@@ -164,7 +170,11 @@ app.py                   Streamlit UI
 - **USAspending API** — who actually wins awards under each listing, no key
 - **GrantConnect (grants.gov.au)** — Australia's central grants portal, no key;
   no public API, so GO pages are parsed into the same `policy_text` shape the
-  benefits vertical uses — one engine, three sources, two countries
+  benefits vertical uses
+- **EU Funding & Tenders Portal (SEDIA)** — Horizon Europe, LIFE, EDF, JTM
+  topics via the portal's public search + topicDetails JSON, no key
+- **Enterprise Singapore** — flagship SME grants (EDG, MRA, PSG) from official
+  scheme pages — one engine, five sources, four continents
 - Profiles are **synthetic personas** — no real PII anywhere in the system
 
 Coverage is a compile away from bigger: SSA (SSI) and Medicaid.gov bot-block

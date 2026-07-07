@@ -44,18 +44,22 @@ def fetch_policy_text(url: str) -> str:
 
 
 def upsert_policy_opportunity(
-    cur, *, number: str, title: str, agency_name: str, url: str, policy_text: str
+    cur, *, number: str, title: str, agency_name: str, url: str,
+    policy_text: str, source: str = "policy"
 ) -> int:
+    """source='policy' is the US individual-benefits vertical (discovery
+    treats it specially); other page-scraped catalogs (e.g. 'enterprisesg')
+    pass their own source name."""
     cur.execute(
         """INSERT INTO opportunities
              (source, source_id, number, title, agency_name, status, synopsis, raw)
-           VALUES ('policy', %s, %s, %s, %s, 'posted', %s, %s)
+           VALUES (%s, %s, %s, %s, %s, 'posted', %s, %s)
            ON CONFLICT (source, source_id) DO UPDATE SET
              synopsis = EXCLUDED.synopsis,
              raw = EXCLUDED.raw,
              last_seen_at = now()
            RETURNING id""",
-        (url, number, title, agency_name, policy_text[:8000],
+        (source, url, number, title, agency_name, policy_text[:8000],
          json.dumps({"policy_text": policy_text, "url": url})),
     )
     return cur.fetchone()[0]
