@@ -56,24 +56,39 @@ def applicable_targets(
     """Every compiled rulebook this KIND of applicant could possibly use.
     Decided from official metadata — free, before any LLM call."""
     with conn.cursor() as cur:
+        # two applicability signals, in trust order: official applicant-type
+        # metadata (Grants.gov) wins when present; otherwise the rulebook-level
+        # applicant_kinds the compiler extracted from the eligibility text
+        # (sources like GrantConnect publish no structured applicant types).
+        # A row with neither signal is open to both kinds — exclusion must be
+        # evidenced, never assumed.
         cur.execute(
             """SELECT DISTINCT o.id, o.number, o.title, o.source, o.close_date::text,
-                      EXISTS (
-                        SELECT 1 FROM jsonb_array_elements(
-                          coalesce(o.raw->'detail'->'synopsis'->'applicantTypes', '[]'::jsonb)
-                        ) t WHERE t->>'description' ILIKE '%%individual%%'
-                      ) AS allows_individuals
+                      CASE
+                        WHEN o.raw->'detail'->'synopsis'->'applicantTypes' IS NOT NULL
+                        THEN EXISTS (
+                          SELECT 1 FROM jsonb_array_elements(
+                            o.raw->'detail'->'synopsis'->'applicantTypes'
+                          ) t WHERE t->>'description' ILIKE '%%individual%%')
+                        ELSE coalesce(o.raw->'applicant_kinds' ? 'individual', true)
+                      END AS allows_individuals,
+                      CASE
+                        WHEN o.raw->'detail'->'synopsis'->'applicantTypes' IS NOT NULL
+                        THEN true  -- grants.gov listings are organization-facing
+                        ELSE coalesce(o.raw->'applicant_kinds' ? 'organization', true)
+                      END AS allows_organizations
                FROM opportunities o
                JOIN criteria c ON c.opportunity_id = o.id AND c.superseded_at IS NULL
                ORDER BY o.source DESC, o.close_date::text NULLS LAST"""
         )
         rows = [{"id": r[0], "number": r[1], "title": r[2], "source": r[3],
-                 "close_date": r[4], "allows_individuals": r[5]} for r in cur.fetchall()]
+                 "close_date": r[4], "allows_individuals": r[5],
+                 "allows_organizations": r[6]} for r in cur.fetchall()]
 
     if profile.get("kind") == "individual":
-        # benefit programs + grants that officially accept individuals
+        # benefit programs + grants whose rules accept individual applicants
         return [o for o in rows if o["source"] == "policy" or o["allows_individuals"]]
-    return [o for o in rows if o["source"] != "policy"]
+    return [o for o in rows if o["source"] != "policy" and o["allows_organizations"]]
 
 
 def discover(

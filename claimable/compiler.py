@@ -64,6 +64,11 @@ Rules:
   requirement → {profile_fact: "can_provide_cost_sharing", operator:
   "is_true", value: null}. If the fact is not in the vocabulary, or the check
   needs interpretation, leave threshold null.
+- applicant_kinds: who can be the NAMED APPLICANT per the official text —
+  ["organization"], ["individual"], or both. A natural person applying on
+  their own behalf (including as a sole trader) is "individual"; a legal
+  entity is "organization". Exclusion must be explicit in the text: when it
+  is silent or ambiguous, include both kinds.
 - If the text contains no eligibility information at all, return an empty list.
 """
 
@@ -94,6 +99,11 @@ class CompiledCriterion(BaseModel):
 
 class CompiledCriteria(BaseModel):
     criteria: list[CompiledCriterion]
+    applicant_kinds: list[Literal["individual", "organization"]] = Field(
+        default_factory=lambda: ["individual", "organization"],
+        description="who can be the named applicant per the official text; "
+        "include both when the text does not explicitly exclude one",
+    )
 
 
 def _strip_html(text: str) -> str:
@@ -187,6 +197,17 @@ def snapshot_source(cur, opportunity_id: int, source_text: str) -> None:
 def store_criteria(cur, opportunity_id: int, compiled: CompiledCriteria) -> int:
     """Version-aware insert: supersede any current criteria for the opportunity,
     then write the new set as version N+1. Old versions stay for auditability."""
+    import json
+
+    # rulebook-level applicability, compiled once alongside the criteria; the
+    # discovery filter reads it when a source has no official applicant-type
+    # metadata (build_source_text ignores this key, so snapshots stay stable)
+    cur.execute(
+        """UPDATE opportunities
+           SET raw = raw || jsonb_build_object('applicant_kinds', %s::jsonb)
+           WHERE id = %s""",
+        (json.dumps(compiled.applicant_kinds), opportunity_id),
+    )
     cur.execute(
         """SELECT coalesce(max(version), 0) FROM criteria WHERE opportunity_id = %s""",
         (opportunity_id,),
