@@ -20,13 +20,16 @@ def connect() -> psycopg.Connection:
 
 
 def _parse_date(value: str | None) -> str | None:
-    """Grants.gov dates arrive as MM/DD/YYYY; Postgres wants ISO."""
+    """Grants.gov dates arrive as MM/DD/YYYY; other adapters pre-normalize to
+    ISO (YYYY-MM-DD). Postgres wants ISO."""
     if not value:
         return None
-    try:
-        return datetime.strptime(value, "%m/%d/%Y").date().isoformat()
-    except ValueError:
-        return None
+    for fmt in ("%m/%d/%Y", "%Y-%m-%d"):
+        try:
+            return datetime.strptime(value, fmt).date().isoformat()
+        except ValueError:
+            continue
+    return None
 
 
 def upsert_opportunity(cur: psycopg.Cursor, opp: dict[str, Any]) -> bool:

@@ -78,7 +78,9 @@ def main() -> None:
                     skipped += 1
                     continue
 
-            if "detail" not in raw and "policy_text" not in raw:
+            # emptiness-aware, not just key presence: an empty policy_text must
+            # never compile into criteria with no citable source
+            if not raw.get("detail") and not raw.get("policy_text"):
                 try:
                     import json as _json
 

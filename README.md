@@ -109,9 +109,16 @@ python scripts/load_opportunities.py
 python scripts/embed_opportunities.py
 python scripts/ingest_snap.py
 
+# 1b · optional: Australia's GrantConnect (grants.gov.au) — the international
+#      proof of generality; same loader, same compiler, zero engine changes
+python scripts/fetch_grantconnect.py --rows 20
+python scripts/load_opportunities.py
+python scripts/embed_opportunities.py
+
 # 2 · compile rulebooks + seed synthetic personas (needs ANTHROPIC_API_KEY in .env)
 python scripts/compile_criteria.py HRSA-26-050
 python scripts/compile_criteria.py SNAP-FEDERAL
+python scripts/batch_compile.py GO8107               # any GrantConnect GO number
 python scripts/seed_profiles.py
 
 # 3 · search / discover / screen / plan
@@ -132,7 +139,8 @@ streamlit run app.py
 
 ```
 claimable/               core package
-  ingestion/             grants_gov (Search2 API) · benefits (policy pages)
+  ingestion/             grants_gov (Search2 API) · benefits (policy pages) ·
+                         grantconnect (AU portal, server-rendered HTML)
   enrichment/            usaspending (real award history)
   compiler.py            rulebook → atomic, cited, versioned criteria
   engine.py              LangGraph: deterministic → analyst → verifier
@@ -154,6 +162,9 @@ app.py                   Streamlit UI
 - **Official policy pages** — SNAP & WIC (USDA FNS), EITC (IRS), LIHEAP (HHS
   ACF), Lifeline (FCC/USAC) — the benefits vertical
 - **USAspending API** — who actually wins awards under each listing, no key
+- **GrantConnect (grants.gov.au)** — Australia's central grants portal, no key;
+  no public API, so GO pages are parsed into the same `policy_text` shape the
+  benefits vertical uses — one engine, three sources, two countries
 - Profiles are **synthetic personas** — no real PII anywhere in the system
 
 Coverage is a compile away from bigger: SSA (SSI) and Medicaid.gov bot-block

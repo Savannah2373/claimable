@@ -37,6 +37,11 @@ def main() -> None:
             if "detail" in (raw or {}):
                 print(f"already enriched:  {number}")
                 continue
+            if "policy_text" in (raw or {}):
+                # benefits/grantconnect rows carry their full text already, and
+                # their source_id isn't a Grants.gov numeric id
+                print(f"not a Grants.gov row — nothing to enrich: {number}")
+                continue
             detail = client.fetch_detail(source_id)
             synopsis = (detail.get("synopsis") or {}).get("synopsisDesc")
             cur.execute(
