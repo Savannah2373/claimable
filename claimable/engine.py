@@ -46,8 +46,19 @@ Verdicts:
 Hard rules:
 - NEVER GUESS. If the fact isn't in the profile, the verdict is needs_info —
   even when a guess seems safe. Absence of evidence is not evidence.
-- Every needs_info verdict must include ONE concrete follow_up_question that,
-  if answered, would resolve the criterion.
+- Every needs_info verdict must include ONE follow_up_question. Write it FOR
+  THE APPLICANT — an ordinary member of the public who has never seen the
+  funding rules and does not know program jargon. The question MUST be:
+  · Plain language. Ask for the raw personal fact, not a computed ratio or a
+    program term. Bad: "your income as a percentage of the federal poverty
+    level". Good: "What is your household's total monthly income before tax?"
+  · Self-contained. NEVER mention the source text, "the call document", a
+    section / annex / article number, or anything the applicant cannot see.
+  · Answerable from what the applicant knows about their own situation. Never
+    ask them to look up, read, confirm, or interpret the rules — deciding
+    whether their facts satisfy the rule is YOUR job, not theirs. If the rule
+    lists eligible countries/entities, ask the plain fact ("Which country is
+    your organisation based in?"), don't ask them to check the list.
 - A criterion that imposes no obligation on this applicant (e.g. "no cost
   sharing is required") is met.
 - reasoning: one or two sentences naming the specific profile fact (or the
@@ -106,6 +117,26 @@ _OPS = {
     "is_false": lambda fact, _: bool(fact) is False,
 }
 
+# Plain-language prompts for the threshold vocabulary, so a deterministic
+# needs_info never shows a raw field name (e.g. 'requested_funding_usd') to a
+# member of the public. Falls back to the criterion text for unknown keys.
+_FACT_QUESTIONS = {
+    "requested_funding_usd": "How much funding are you planning to request (in dollars)?",
+    "annual_budget_usd": "What is your organisation's total annual budget (in dollars)?",
+    "staff_count": "How many staff does your organisation employ?",
+    "is_state_government": "Are you a state government agency?",
+    "is_nonprofit": "Is your organisation a registered nonprofit?",
+    "designated_by_governor": "Have you been officially designated by your state's governor for this role?",
+    "can_provide_cost_sharing": "Can you cover part of the project's cost yourself (cost sharing / matching funds)?",
+    "operates_state_office_of_rural_health": "Do you operate a State Office of Rural Health?",
+    "household_size": "How many people are in your household, including yourself?",
+    "monthly_gross_income_usd": "What is your household's total monthly income before taxes (in dollars)?",
+    "monthly_net_income_usd": "What is your household's total monthly income after taxes (in dollars)?",
+    "countable_resources_usd": "About how much do you have in savings and other assets (in dollars)?",
+    "is_us_citizen_or_eligible_noncitizen": "Are you a U.S. citizen or an eligible non-citizen?",
+    "meets_work_requirements": "Are you currently working, or registered for work, the required number of hours?",
+}
+
 
 def deterministic_node(state: EngineState) -> dict[str, Any]:
     """Mechanical checks in code. The LLM never sees these criteria."""
@@ -124,12 +155,10 @@ def deterministic_node(state: EngineState) -> dict[str, Any]:
                 CriterionVerdict(
                     criterion_key=c["criterion_key"],
                     verdict="needs_info",
-                    reasoning=(
-                        f"Deterministic check: profile fact '{t['profile_fact']}' "
-                        f"is not provided."
-                    ),
-                    follow_up_question=(
-                        f"Please provide '{t['profile_fact']}' — needed to check: {c['text']}"
+                    reasoning="This requirement depends on a detail that isn't "
+                              "in your description yet.",
+                    follow_up_question=_FACT_QUESTIONS.get(
+                        t["profile_fact"], c["text"]
                     ),
                 )
             )

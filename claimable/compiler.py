@@ -67,8 +67,13 @@ Rules:
 - applicant_kinds: who can be the NAMED APPLICANT per the official text —
   ["organization"], ["individual"], or both. A natural person applying on
   their own behalf (including as a sole trader) is "individual"; a legal
-  entity is "organization". Exclusion must be explicit in the text: when it
-  is silent or ambiguous, include both kinds.
+  entity is "organization". Do NOT include "individual" when the rules
+  require something only an organization can be or do — a legal entity,
+  a registered company/nonprofit, a consortium or coordinating beneficiary,
+  a public body, an institution, or organization-level registrations. Such
+  grants are ["organization"] even if individuals are not named as excluded,
+  because a natural person cannot satisfy them. Only when the text genuinely
+  leaves the applicant's nature open (or names individuals) include both.
 - If the text contains no eligibility information at all, return an empty list.
 """
 
