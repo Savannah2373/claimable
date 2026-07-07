@@ -17,7 +17,9 @@ from __future__ import annotations
 import hashlib
 import json
 import sys
+from functools import cache
 from pathlib import Path
+from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
@@ -28,37 +30,55 @@ from claimable.ingestion.grantconnect import GrantConnectClient
 from claimable.ingestion.grants_gov import GrantsGovClient
 
 
-def _live_source_text(
-    client: GrantsGovClient, gc_client: GrantConnectClient, row: dict
-) -> str | None:
-    raw = row["raw"] or {}
-    if row["source"] == "grantconnect":
-        # policy_text here is assembled from the GO page's labeled sections,
-        # so re-fetch through the same adapter — not the generic page scraper
-        try:
-            fresh = gc_client.fetch_detail(row["source_id"])
-        except Exception as exc:  # noqa: BLE001 — unreachable source ≠ drift
-            print(f"  ! could not re-fetch GO page for {row['number']}: {exc}")
-            return None
-        return build_source_text({**row, "raw": fresh.raw})
-    if "policy_text" in raw:
-        try:
-            fresh = fetch_policy_text(raw["url"])
-        except Exception as exc:  # noqa: BLE001 — unreachable source ≠ drift
-            print(f"  ! could not re-fetch {raw.get('url')}: {exc}")
-            return None
-        return build_source_text({**row, "raw": {"policy_text": fresh, "url": raw["url"]}})
-    try:
-        detail = client.fetch_detail(row["source_id"])
-    except Exception as exc:  # noqa: BLE001
-        print(f"  ! could not re-fetch detail for {row['number']}: {exc}")
+@cache
+def _grants_gov() -> GrantsGovClient:
+    return GrantsGovClient()
+
+
+@cache
+def _grantconnect() -> GrantConnectClient:
+    return GrantConnectClient()
+
+
+def _refetch_grants_gov(row: dict) -> dict[str, Any]:
+    return {"detail": _grants_gov().fetch_detail(row["source_id"])}
+
+
+def _refetch_policy(row: dict) -> dict[str, Any]:
+    url = row["raw"]["url"]
+    return {"policy_text": fetch_policy_text(url), "url": url}
+
+
+def _refetch_grantconnect(row: dict) -> dict[str, Any]:
+    # grantconnect policy_text is assembled from the GO page's labeled
+    # sections, so re-fetch through the same adapter — not the page scraper
+    return _grantconnect().fetch_detail(row["source_id"]).raw
+
+
+# one re-fetcher per opportunities.source — a new ingestion source registers
+# here or its rows are reported (not silently mis-fetched via a wrong default)
+_REFETCHERS = {
+    "grants.gov": _refetch_grants_gov,
+    "policy": _refetch_policy,
+    "grantconnect": _refetch_grantconnect,
+}
+
+
+def _live_source_text(row: dict) -> str | None:
+    refetch = _REFETCHERS.get(row["source"])
+    if refetch is None:
+        print(f"  ! {row['number']}: no re-fetcher registered for "
+              f"source {row['source']!r} — skipping")
         return None
-    return build_source_text({**row, "raw": {"detail": detail}})
+    try:
+        fresh_raw = refetch(row)
+    except Exception as exc:  # noqa: BLE001 — unreachable source ≠ drift
+        print(f"  ! could not re-fetch {row['number']}: {exc}")
+        return None
+    return build_source_text({**row, "raw": fresh_raw})
 
 
 def main() -> None:
-    client = GrantsGovClient()
-    gc_client = GrantConnectClient()
     drifted: list[str] = []
 
     with connect() as conn, conn.cursor() as cur:
@@ -82,7 +102,7 @@ def main() -> None:
                 print(f"  ~ {row['number']}: no snapshot (compiled before drift "
                       f"monitoring existed) — recompile to baseline")
                 continue
-            live = _live_source_text(client, gc_client, row)
+            live = _live_source_text(row)
             if live is None:
                 continue
             live_hash = hashlib.sha256(live.encode()).hexdigest()
