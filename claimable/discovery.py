@@ -98,6 +98,7 @@ def discover(
     max_screens: int | None = None,
     query: str | None = None,
     on_progress: Callable[[int, int], None] | None = None,
+    errors_out: list[dict[str, Any]] | None = None,
 ) -> list[dict[str, Any]]:
     """Screen everything applicable (default) or cap with max_screens, in
     which case search relevance decides which programs keep their slot."""
@@ -107,17 +108,28 @@ def discover(
         rank = {h.number: i for i, h in enumerate(hybrid_search(conn, query, k=50))}
         targets.sort(key=lambda o: (o["source"] != "policy", rank.get(o["number"], 999)))
         targets = targets[:max_screens]
-    return screen_programs(conn, profile_id, profile, targets, on_progress=on_progress)
+    return screen_programs(conn, profile_id, profile, targets,
+                           on_progress=on_progress, errors_out=errors_out)
 
 
 def _screen_one(profile_id: int, profile: dict[str, Any], opp: dict[str, Any]) -> dict[str, Any] | None:
-    """Screen one program on its own DB connection (thread-worker safe)."""
-    with connect() as conn, conn.cursor() as cur:
-        criteria = _load_criteria(cur, opp["id"])
-        if not criteria:
-            return None
-        result = analyze(profile, criteria)
-        store_analysis(cur, profile_id, opp["id"], criteria, result)
+    """Screen one program on its own DB connection (thread-worker safe).
+
+    A per-program failure (a transient API error, a rate limit, a bad
+    response) returns an {"status": "error"} marker rather than raising —
+    one failed screen must never discard the whole run's successful results.
+    The engine's own "never guess" contract means an errored screen is
+    reported as unscreened, never as a verdict.
+    """
+    try:
+        with connect() as conn, conn.cursor() as cur:
+            criteria = _load_criteria(cur, opp["id"])
+            if not criteria:
+                return None
+            result = analyze(profile, criteria)
+            store_analysis(cur, profile_id, opp["id"], criteria, result)
+    except Exception as exc:  # noqa: BLE001 — isolate one program's failure
+        return {"opportunity": opp, "status": "error", "error": str(exc)}
     counts = {"met": 0, "not_met": 0, "needs_info": 0}
     questions: list[str] = []
     for v in result["verdicts"]:
@@ -141,20 +153,30 @@ def screen_programs(
     profile: dict[str, Any],
     targets: list[dict[str, Any]],
     on_progress: Callable[[int, int], None] | None = None,
+    errors_out: list[dict[str, Any]] | None = None,
 ) -> list[dict[str, Any]]:
-    """Run the full engine on every target program in parallel; ranked summaries."""
+    """Run the full engine on every target program in parallel; ranked summaries.
+
+    Programs that failed to screen are kept out of the ranked results (so
+    they are never miscounted as a verdict) and, when `errors_out` is given,
+    appended there so the caller can report a partial run honestly.
+    """
     results: list[dict[str, Any]] = []
+    errors: list[dict[str, Any]] = []
     done = 0
     with ThreadPoolExecutor(max_workers=_WORKERS) as pool:
         futures = [pool.submit(_screen_one, profile_id, profile, opp) for opp in targets]
         for f in futures:
-            r = f.result()
+            r = f.result()  # _screen_one never raises; errors come back as markers
             done += 1
             if on_progress:
                 on_progress(done, len(targets))
-            if r:
-                results.append(r)
+            if not r:
+                continue
+            (errors if r["status"] == "error" else results).append(r)
 
+    if errors_out is not None:
+        errors_out.extend(errors)
     results.sort(key=lambda r: (STATUS_ORDER[r["status"]],
                                 r["counts"]["needs_info"], -r["counts"]["met"]))
     return results

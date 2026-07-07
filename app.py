@@ -115,10 +115,12 @@ if st.button("Find everything I might qualify for", type="primary", disabled=not
     def on_progress(done: int, total: int) -> None:
         progress.progress(done / total, text=f"Screened {done}/{total} programs…")
 
+    errors: list = []
     with connect() as conn:
         st.session_state["results"] = discover(
-            conn, profile_id, profile, on_progress=on_progress
+            conn, profile_id, profile, on_progress=on_progress, errors_out=errors
         )
+    st.session_state["errors"] = errors
     progress.empty()
 
 # ── step 2: results ───────────────────────────────────────────────────────────
@@ -128,6 +130,14 @@ if "results" in st.session_state:
 
     st.header("What you may qualify for")
     st.caption(f"Screened as: **{profile['name']}** ({profile['kind']})")
+
+    errors = st.session_state.get("errors") or []
+    if errors:
+        msg = (str(errors[0]["error"]) if errors else "").lower()
+        hint = (" — the Anthropic API credit balance ran out; top up and re-run"
+                if "credit balance" in msg else " — usually a temporary API error; try again")
+        st.warning(f"⚠️ {len(errors)} program(s) couldn't be screened{hint}. "
+                   "The results below are complete for everything that did screen.")
     with st.expander("Facts I understood from your description"):
         st.json({k: v for k, v in profile["attrs"].items() if k != "self_description"})
 
