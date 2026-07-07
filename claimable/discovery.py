@@ -245,12 +245,57 @@ def rescreen(
     return screen_programs(conn, profile_id, profile, targets)
 
 
+_DEDUP_SIMILARITY = 0.85  # cosine over bge embeddings; paraphrases score ~0.84+
+
+
 def collect_open_questions(results: list[dict[str, Any]]) -> list[str]:
     """Deduped follow-up questions from programs that are still winnable
-    (🟡 likely) — answering a 🔴 program's questions can't flip its not_met."""
-    seen: dict[str, None] = {}
+    (🟡 likely) — answering a 🔴 program's questions can't flip its not_met.
+
+    Many programs independently ask for the same fact (income, household
+    size, entity type), so exact-string dedup isn't enough — the applicant
+    still sees near-duplicate wordings. We merge those by embedding
+    similarity (free, local model — no API cost), which works across every
+    region since it compares meaning, not keywords. The precise templated
+    questions (engine._FACT_QUESTIONS, one per structured fact) are always
+    kept and never merged into each other, so distinct facts that happen to
+    read similarly — e.g. income *before* vs *after* tax — are never
+    collapsed."""
+    from claimable.engine import _FACT_QUESTIONS
+
+    canonical = set(_FACT_QUESTIONS.values())
+    ordered: list[str] = []
+    seen_exact: set[str] = set()
     for r in results:
         if r["status"] == "likely":
             for q in r["open_questions"]:
-                seen.setdefault(q)
-    return list(seen)
+                if q not in seen_exact:
+                    seen_exact.add(q)
+                    ordered.append(q)
+    if len(ordered) <= 1:
+        return ordered
+
+    from claimable.embeddings import embed_documents
+
+    vecs = dict(zip(ordered, embed_documents(ordered)))
+    kept: list[str] = []
+    kept_vecs: list[list[float]] = []
+
+    def _too_similar(v: list[float]) -> bool:
+        return any(sum(a * b for a, b in zip(v, kv)) >= _DEDUP_SIMILARITY
+                   for kv in kept_vecs)
+
+    # precise templated questions first: always kept, never merged away
+    for q in ordered:
+        if q in canonical:
+            kept.append(q)
+            kept_vecs.append(vecs[q])
+    # then free-text questions, dropping any that duplicate a kept question
+    for q in ordered:
+        if q in canonical or _too_similar(vecs[q]):
+            continue
+        kept.append(q)
+        kept_vecs.append(vecs[q])
+
+    order = {q: i for i, q in enumerate(ordered)}
+    return sorted(kept, key=order.__getitem__)

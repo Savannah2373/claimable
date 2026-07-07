@@ -52,11 +52,13 @@ def main() -> None:
         o, c = r["opportunity"], r["counts"]
         print(f"{BADGES[r['status']]} {o['number']:<24} "
               f"{c['met']}✅ {c['not_met']}❌ {c['needs_info']}❓  {o['title'][:56]}")
-    open_qs = [q for r in results if r["status"] == "likely" for q in r["open_questions"]]
+    from claimable.discovery import collect_open_questions
+
+    open_qs = collect_open_questions(results)  # semantic dedup across programs
     if open_qs:
         print("\nAnswer these to firm up the 🟡 results "
               "(scripts/screen.py runs the full loop):")
-        for q in dict.fromkeys(open_qs):  # dedupe, keep order
+        for q in open_qs:
             print(f"  • {q}")
 
 
