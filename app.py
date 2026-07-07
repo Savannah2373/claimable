@@ -91,6 +91,12 @@ desc = st.text_area(
                 "$2,000/month income…  or  We're a small nonprofit in Oregon that…",
 )
 
+max_screens = st.slider(
+    "How many programs to screen (most relevant first)", 3, 25, 8,
+    help="Each program screened is a paid AI call. Start small; raise it if "
+         "you want broader coverage.",
+)
+
 if st.button("Find everything I might qualify for", type="primary", disabled=not desc.strip()):
     _reset_run_state()
     with st.spinner("Reading your description…"):
@@ -109,8 +115,10 @@ if st.button("Find everything I might qualify for", type="primary", disabled=not
     from claimable.discovery import applicable_targets, discover
 
     with connect() as conn:
-        n_targets = len(applicable_targets(conn, profile))
-    progress = st.progress(0.0, text=f"Screening {n_targets} programs (runs in parallel)…")
+        n_applicable = len(applicable_targets(conn, profile))
+    n_targets = min(n_applicable, max_screens)
+    extra = f" (of {n_applicable} that fit your country)" if n_applicable > n_targets else ""
+    progress = st.progress(0.0, text=f"Screening {n_targets} programs{extra}…")
 
     def on_progress(done: int, total: int) -> None:
         progress.progress(done / total, text=f"Screened {done}/{total} programs…")
@@ -118,8 +126,10 @@ if st.button("Find everything I might qualify for", type="primary", disabled=not
     errors: list = []
     with connect() as conn:
         st.session_state["results"] = discover(
-            conn, profile_id, profile, on_progress=on_progress, errors_out=errors
+            conn, profile_id, profile, max_screens=max_screens,
+            on_progress=on_progress, errors_out=errors,
         )
+    st.session_state["n_applicable"] = n_applicable
     st.session_state["errors"] = errors
     progress.empty()
 

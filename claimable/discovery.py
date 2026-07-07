@@ -21,6 +21,41 @@ from claimable.search import hybrid_search
 STATUS_ORDER = {"eligible": 0, "likely": 1, "not_eligible": 2}
 _WORKERS = 4  # parallel screens; each worker uses its own DB connection
 
+# Each ingestion source belongs to one funding jurisdiction. An applicant is
+# only screened against programs in a jurisdiction they can actually use —
+# a US benefit needs US residency, an Australian grant needs an Australian
+# applicant — so this is a free, pre-LLM filter that also keeps runs cheap.
+_JURISDICTION_BY_SOURCE = {
+    "grants.gov": "US", "policy": "US",
+    "grantconnect": "AU", "eu_portal": "EU", "enterprisesg": "SG",
+}
+_EU_MEMBER_STATES = {
+    "austria", "belgium", "bulgaria", "croatia", "cyprus", "czechia",
+    "czech republic", "denmark", "estonia", "finland", "france", "germany",
+    "greece", "hungary", "ireland", "italy", "latvia", "lithuania",
+    "luxembourg", "malta", "netherlands", "poland", "portugal", "romania",
+    "slovakia", "slovenia", "spain", "sweden",
+}
+
+
+def profile_jurisdictions(profile: dict[str, Any]) -> set[str] | None:
+    """Which funding jurisdictions this applicant's country can use. Returns
+    None when the country can't be mapped — the caller then screens every
+    jurisdiction (relying on the relevance cap for cost), never silently
+    excluding someone because their country string was unfamiliar."""
+    country = str((profile.get("attrs") or {}).get("country") or "").strip().lower()
+    if not country:
+        return None
+    if country in {"united states", "united states of america", "usa", "us", "u.s.", "u.s.a."}:
+        return {"US"}
+    if country == "australia":
+        return {"AU"}
+    if country == "singapore":
+        return {"SG"}
+    if country in _EU_MEMBER_STATES:
+        return {"EU"}
+    return None  # unknown country → don't filter, let the cap bound cost
+
 
 def build_profile_query(profile: dict[str, Any]) -> str:
     a = profile.get("attrs", {})
@@ -84,6 +119,12 @@ def applicable_targets(
         rows = [{"id": r[0], "number": r[1], "title": r[2], "source": r[3],
                  "close_date": r[4], "allows_individuals": r[5],
                  "allows_organizations": r[6]} for r in cur.fetchall()]
+
+    # jurisdiction: only screen programs from a funding system this applicant's
+    # country can use (skipped when the country is unknown)
+    juris = profile_jurisdictions(profile)
+    if juris is not None:
+        rows = [o for o in rows if _JURISDICTION_BY_SOURCE.get(o["source"]) in juris]
 
     if profile.get("kind") == "individual":
         # benefit programs + grants whose rules accept individual applicants
