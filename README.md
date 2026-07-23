@@ -2,105 +2,114 @@
 
 [![evals](https://github.com/Savannah2373/claimable/actions/workflows/ci.yml/badge.svg)](https://github.com/Savannah2373/claimable/actions/workflows/ci.yml)
 
-**The "money you're entitled to" engine.** Claimable matches applicants to
-government money — federal grants for organizations, benefit programs for
-individuals — then reasons through eligibility **clause-by-clause with
-citations to the actual rules**, asks for exactly the facts it's missing, and
-generates a requirement-by-requirement action plan.
+**A trustworthy eligibility-screening engine.** Describe yourself in plain
+English; Claimable screens you against government grants and benefit programs,
+reasons through the rules **clause-by-clause with a citation to the official
+text for every verdict**, asks only for the facts it's missing, and refuses to
+guess. Built as a study in making an LLM system you can actually *trust* with a
+high-stakes answer.
 
-**🎬 [Watch the 3-minute demo](docs/demo.mp4)** — describe yourself in plain
-English, watch every applicable program get screened in parallel, answer the
-open questions once, get an action plan.
+**🎬 [Watch the 3-minute demo](docs/demo.mp4)** — one text box → every relevant
+program screened in parallel → cited 🟢/🟡/🔴 verdicts → answer the open
+questions once → a requirement-by-requirement action plan.
 
-**The product is US-only.** It screens against **140 compiled US
-rulebooks** — 124 live **Grants.gov** opportunities and **16 federal benefit
-programs** (SNAP, WIC, EITC, LIHEAP, Lifeline, TANF, SSI/SSDI, Medicaid/CHIP,
-Medicare, Section 8, Head Start, Child Tax Credit, ACA Premium Tax Credit,
-Weatherization, VA Pension, Unemployment) — every criterion citing the
-official rule text.
+US-only, **140 compiled rulebooks**: 124 live Grants.gov opportunities + 16
+federal benefit programs (SNAP, Medicaid/CHIP, EITC, SSI/SSDI, TANF, LIHEAP,
+Section 8, Medicare, WIC, Head Start, Child Tax Credit, ACA subsidies,
+Unemployment, VA Pension, Weatherization, Lifeline).
 
-The engine is jurisdiction-agnostic by design, and that's proven, not
-claimed: dormant **GrantConnect (Australia)**, **EU Funding & Tenders**, and
-**Enterprise Singapore** adapters and rulebooks sit in the repo behind
-`discovery.ACTIVE_REGIONS`, run through the *same* compiler and engine — kept
-as evidence the architecture generalizes, archived out of the live product
-(see Panel #2 in `../PANEL_2_US_FOCUS_AND_COST.md`).
+## Why this is more than a wrapper
 
-**The app is one text box.** Describe yourself or your organization in plain
-English; an intake agent builds your structured profile; a free applicability
-filter (from official applicant-type metadata) picks every rulebook your kind
-of applicant could use; the full engine screens all of them in parallel and
-ranks the results 🟢 eligible / 🟡 likely / 🔴 not eligible. Then you answer
-the open questions **once** — the answers apply to every program at the same
-time — and the yellows re-screen.
+The whole project is organized around one hard problem: **an eligibility answer
+has to be right, and has to be defensible.** Every design decision falls out of
+that.
 
-Full design doc: `../CLAIMABLE_BRIEF.md`.
+- **Compile, don't prompt.** Each rulebook is decomposed *once* into atomic,
+  citation-linked criteria (`compiler.py`); screening then reasons over ~10
+  criteria, not 80 pages of policy. A criterion whose `source_quote` can't be
+  found verbatim in the source is flagged, not stored quietly.
+- **Numbers never come from the LLM.** Criteria that reduce to a threshold
+  (`monthly_gross_income_usd ≤ limit`) are checked in plain Python by a
+  deterministic node (`engine.py`). The model only makes judgment calls.
+- **It refuses to guess.** A fact missing from the profile becomes a
+  `needs_info` verdict with a concrete follow-up question — never an
+  assumption. Answer once, and every affected program re-screens at the same time.
+- **An independent verifier.** A second agent re-checks the risky verdicts
+  against the cited rule text and downgrades anything unsupported — so a
+  "you qualify" is never shipped on the model's word alone.
+- **A safety metric, gated in CI.** The eval harness tracks **MET-precision** —
+  it must *never* falsely tell someone they qualify — and holds it at **1.00**
+  or the build fails.
+- **Drift monitoring.** Rules change under you. `check_drift.py` re-fetches
+  live sources, compares hashes against the exact text each rulebook was
+  compiled from, and marks stale analyses for recompile.
 
 ## How it works
 
 ```
 INGESTION                          COMPILE (once per rulebook)
 Grants.gov API ──┐                 ┌──────────────────────────────┐
-SNAP/policy URLs ┼─► Postgres ────►│ Criteria Compiler (Claude,   │
+Benefit  URLs ───┼─► Postgres ────►│ Criteria Compiler (Claude,   │
 USAspending API ─┘   + pgvector    │ structured outputs):         │
-                                   │ 80 pages → atomic criteria,  │
-                                   │ each with a verbatim source  │
+                                   │ policy text → atomic criteria│
+                                   │ each w/ a verbatim source    │
                                    │ quote + optional machine-    │
                                    │ checkable threshold spec     │
                                    └──────────────┬───────────────┘
 QUERY TIME (LangGraph)                            ▼
 profile ─► DETERMINISTIC node ─► ANALYST ─► VERIFIER ─► verdicts
-           thresholds checked     LLM judges   independent      │
-           in pure Python —       the rest;    re-check; un-    ▼
-           numbers NEVER by       never        supported →   PLANNER
-           the LLM                guesses      needs_info    action plan
-                │                                             (+ real award
+           thresholds checked     judges the  re-checks the │
+           in pure Python —       rest; never  "met"s;      ▼
+           numbers NEVER by       guesses      unsupported PLANNER
+           the LLM                             → needs_info  action plan
+                │                                            (+ real award
                 └── needs_info → INTAKE agent (Haiku) ◄─── your answers
                     structures free-text answers into facts, re-runs
 ```
 
-Design decisions worth reading the code for:
-
-- **Compile, don't prompt.** Rulebooks are decomposed once into atomic,
-  citation-linked criteria (`claimable/compiler.py`); analysis then reasons
-  over ~10 criteria, not 80 pages. Every criterion's `source_quote` is
-  verified to appear verbatim in the source — a criterion we can't cite is a
-  criterion we don't store quietly.
-- **Numbers never come from the LLM.** Criteria with structured thresholds
-  (`requested_funding_usd ≤ 600000`) are checked in plain Python by the
-  deterministic node (`claimable/engine.py`). The LLM only handles judgment.
-- **Refuses to guess.** A fact missing from the profile is a `needs_info`
-  verdict with a concrete follow-up question — never an assumption. The
-  intake agent turns your free-text answer into structured facts and the
-  engine re-runs.
-- **Independent verification.** A second agent re-checks every LLM verdict
-  against the cited rule text; anything unsupported is downgraded, never shipped.
-- **Versioned rules + drift monitoring.** Recompiles supersede rather than
-  overwrite; `scripts/check_drift.py` re-fetches live sources, compares
-  hashes, and marks analyses stale when the rules change under you.
-- **Model routing + tracing.** Frontier model for judgment and planning,
-  Haiku for intake structuring; every call is traced to Postgres with tokens,
-  latency, and cost (`scripts/costs.py`).
-
-## Eval results (2026-07-06)
+## Eval results
 
 | Metric | Result | Gate |
 |---|---|---|
-| Criteria extraction F1 (6 rulebooks incl. SNAP, 35 required golden criteria) | **1.00** | ≥ 0.75 |
-| Verdict accuracy (4 profile×rulebook cases, 25 labeled verdicts) | **0.96** (24/25) | ≥ 0.80 |
-| MET-precision — safety metric (a false "met" = a person misled) | **1.00** (18/18) | = 1.00 |
+| Criteria-extraction F1 (golden set: 6 rulebooks incl. SNAP, 35 criteria) | **1.00** | ≥ 0.75 |
+| Verdict accuracy (25 labeled profile×rulebook verdicts) | **0.92** | ≥ 0.80 |
+| **MET-precision — safety metric** (a false "met" = a person misled) | **1.00** (18/18) | = 1.00 |
 | Citation integrity (compiled quotes found verbatim in source) | **36/36** | — |
 
-The one verdict miss is a genuinely debatable judgment call (`needs_info` vs
-`not_met` where the rule text allows unspecified "other eligible entities").
-Documented rather than tuned away — the harness exists to surface exactly
-these disagreements. Gates run in CI (`.github/workflows/ci.yml`): the
+The handful of verdict misses are conservative disagreements (`needs_info` where
+a human might say `met`) — the *safe* direction, and documented rather than
+tuned away; the harness exists to surface exactly these. Gates run in CI: the
 extraction suite on every PR from fixtures (no API key needed), the verdict
-suite on pushes when a key secret is present.
+suite on push when a key is present.
 
-Field note: the drift monitor's first real catch was our own nondeterminism —
-Grants.gov returns applicant-type lists in random order between calls, which
-made source hashes flap until the compiler sorted them.
+*Field note:* the drift monitor's first real catch was our own bug — Grants.gov
+returns applicant-type lists in random order between calls, which made source
+hashes flap until the compiler learned to sort them.
+
+## Cost engineering
+
+Screening is the hot path (an analyst + verifier call per program), so it's
+tiered deliberately:
+
+- **Model tiering** — compile (one-time, quality-critical) runs on Opus;
+  screen-time judgment runs on **Sonnet**; intake structuring on **Haiku**.
+- **Prompt caching** on the static analyst/verifier system prompts (~10% cost
+  after the first call in a run).
+- **Verify only what's risky** — the verifier's second call is skipped unless a
+  program produced a `met` verdict, since only a false `met` can mislead someone.
+- **A free pre-LLM filter** — applicant type and jurisdiction narrow the
+  candidate set before any paid call; a relevance cap bounds each run.
+- Every call is traced to Postgres with tokens, latency, and cost (`costs.py`).
+
+## Scope: built to generalize, deliberately narrowed
+
+The engine is jurisdiction-agnostic by design, and that was *proven*, not
+claimed — it ran against Australia (GrantConnect), the EU (Funding & Tenders
+Portal), and Singapore (Enterprise Singapore) through the same compiler and
+engine with zero core changes. Those adapters and rulebooks still live in the
+repo behind `discovery.ACTIVE_REGIONS`, archived out of the live product. The
+narrowing to US-only was a judgment call about focus, not a limit of the
+architecture.
 
 ## Quickstart
 
@@ -110,82 +119,64 @@ pip install -r requirements.txt
 
 colima start --cpu 2 --memory 2      # once per boot (or any Docker engine)
 docker compose up -d                 # Postgres 16 + pgvector on :5433
-docker compose exec -T db psql -U claimable -d claimable < db/schema.sql  # first time
+docker compose exec -T db psql -U claimable -d claimable < db/schema.sql
 
-# 1 · ingest live grants (no key needed) + SNAP policy
+# 1 · ingest US grants (no key) + the federal benefit catalog
 python scripts/fetch_opportunities.py --rows 150 --synopsis
 python scripts/load_opportunities.py
-python scripts/embed_opportunities.py
-python scripts/ingest_snap.py
-
-# 1b · optional: international sources — same loader, same compiler, zero
-#      engine changes (Australia · European Union · Singapore)
-python scripts/fetch_grantconnect.py --rows 20     # AU: grants.gov.au
-python scripts/fetch_eu_portal.py --rows 15        # EU: Funding & Tenders Portal
-python scripts/ingest_enterprisesg.py              # SG: EnterpriseSG catalog
-python scripts/load_opportunities.py
+python scripts/ingest_benefits.py
 python scripts/embed_opportunities.py
 
-# 2 · compile rulebooks + seed synthetic personas (needs ANTHROPIC_API_KEY in .env)
-python scripts/compile_criteria.py HRSA-26-050
-python scripts/compile_criteria.py SNAP-FEDERAL
-python scripts/batch_compile.py GO8107               # any GrantConnect GO number
+# 2 · compile rulebooks (needs ANTHROPIC_API_KEY in .env, ~10¢ each)
+python scripts/batch_compile.py --grants 25
+python scripts/ingest_benefits.py    # then compile the benefit numbers it prints
 python scripts/seed_profiles.py
 
-# 3 · search / discover / screen / plan
-python scripts/search.py "small nonprofit doing rural health research"
-python scripts/discover.py --profile "Maria R. (synthetic persona)"   # screen everything relevant
-python scripts/screen.py --profile "Appalachian Rural Health Data Collaborative" \
-                         --number HRSA-26-050          # interactive follow-ups
-python scripts/batch_compile.py --grants 25            # grow coverage (~10¢/rulebook)
-python scripts/ingest_benefits.py                      # benefit-program catalog
-python scripts/run_evals.py                            # the eval gate
-python scripts/costs.py                                # LLM spend by component
-
-# 4 · or do it all in the UI
-streamlit run app.py
+# 3 · use it
+streamlit run app.py                 # the one-text-box UI
+python scripts/discover.py --profile "Maria R. (synthetic persona)"  # or CLI
+python scripts/run_evals.py          # the eval gate
+python scripts/costs.py              # LLM spend by component
 ```
+
+The dormant international adapters (`scripts/fetch_grantconnect.py`,
+`fetch_eu_portal.py`, `ingest_enterprisesg.py`) still run if you flip
+`ACTIVE_REGIONS`.
 
 ## Layout
 
 ```
 claimable/               core package
   ingestion/             grants_gov (Search2 API) · benefits (policy pages) ·
-                         grantconnect (AU portal) · eu_portal (SEDIA API) ·
-                         html_text (one shared HTML→text — citation-critical)
+                         grantconnect · eu_portal · html_text (shared,
+                         citation-critical HTML→text)
   enrichment/            usaspending (real award history)
   compiler.py            rulebook → atomic, cited, versioned criteria
   engine.py              LangGraph: deterministic → analyst → verifier
+  discovery.py           free applicability filter + parallel screening
   intake.py              free-text answers → structured facts (Haiku)
   planner.py             verdicts → action plan
   search.py / rerank.py  hybrid retrieval (RRF) + cross-encoder rerank
   llm.py                 traced LLM access (tokens, latency, cost → Postgres)
 scripts/                 runnable entry points (fetch, compile, screen, evals…)
 evals/                   golden criteria + golden verdicts + CI fixtures
-db/schema.sql            opportunities · criteria (versioned) · profiles ·
-                         analyses · verdicts · llm_calls
+db/schema.sql            opportunities · criteria (versioned) · profiles · …
 app.py                   Streamlit UI
 .github/workflows/ci.yml eval gates
 ```
 
-## Data sources (all free)
+## Honest limitations
 
-- **Grants.gov Search2 API** — live federal opportunities, no key
-- **Official policy pages** — SNAP & WIC (USDA FNS), EITC (IRS), LIHEAP (HHS
-  ACF), Lifeline (FCC/USAC) — the benefits vertical
-- **USAspending API** — who actually wins awards under each listing, no key
-- **GrantConnect (grants.gov.au)** — Australia's central grants portal, no key;
-  no public API, so GO pages are parsed into the same `policy_text` shape the
-  benefits vertical uses
-- **EU Funding & Tenders Portal (SEDIA)** — Horizon Europe, LIFE, EDF, JTM
-  topics via the portal's public search + topicDetails JSON, no key
-- **Enterprise Singapore** — flagship SME grants (EDG, MRA, PSG) from official
-  scheme pages — one engine, five sources, four continents
-- Profiles are **synthetic personas** — no real PII anywhere in the system
-
-Coverage is a compile away from bigger: SSA (SSI) and Medicaid.gov bot-block
-plain fetches and would need a headless browser or their official APIs —
-documented as future work, not silently skipped.
+- **Federal-level, not state-specific (yet).** Benefit rulebooks are compiled
+  from federal sources. For state-administered programs (SNAP, Medicaid, TANF…)
+  the real income/asset limits vary by state — a verdict here is an accurate
+  *federal-baseline* screen, not the final state determination. State rulebooks
+  are the natural next layer.
+- **Some sources resist plain fetches.** A few programs (school-meal NSLP, Pell,
+  the ended ACP) are bot-blocked or JavaScript-rendered and are documented as
+  deferred, not silently skipped.
+- **Synthetic personas only** — no real PII anywhere in the system.
 
 > Claimable is a screening tool, not legal or financial advice. Eligibility is
 > always determined by the issuing agency.
+```
