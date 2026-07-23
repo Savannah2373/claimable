@@ -16,6 +16,10 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from claimable.db import connect
 from claimable.ingestion.benefits import fetch_policy_text, upsert_policy_opportunity
 
+# Major US federal benefit programs. URLs verified fetchable (official .gov +
+# USAGov/benefits.gov, which mirror the bot-blocked SSA/Medicaid/FCC pages).
+# Bot-blocked/JS-only and thus deferred: NSLP & CSFP (fns.usda.gov now 403s),
+# ACP (program ended), Pell (studentaid.gov is JS-rendered).
 CATALOG = [
     {
         "number": "SNAP-FEDERAL",
@@ -36,18 +40,6 @@ CATALOG = [
         "url": "https://www.irs.gov/credits-deductions/individuals/earned-income-tax-credit/who-qualifies-for-the-earned-income-tax-credit-eitc",
     },
     {
-        "number": "SSI-FEDERAL",
-        "title": "Supplemental Security Income (SSI) — Eligibility",
-        "agency": "Social Security Administration",
-        "url": "https://www.ssa.gov/ssi/eligibility",
-    },
-    {
-        "number": "MEDICAID-FEDERAL",
-        "title": "Medicaid — Who Is Eligible",
-        "agency": "U.S. Department of Health and Human Services",
-        "url": "https://www.hhs.gov/answers/medicare-and-medicaid/who-is-eligible-for-medicaid/index.html",
-    },
-    {
         "number": "LIHEAP-FEDERAL",
         "title": "Low Income Home Energy Assistance Program (LIHEAP)",
         "agency": "HHS Administration for Children and Families",
@@ -60,10 +52,70 @@ CATALOG = [
         "url": "https://www.lifelinesupport.org/do-i-qualify/",
     },
     {
-        "number": "NSLP-FEDERAL",
-        "title": "National School Lunch Program — Applying for Free and Reduced-Price Meals",
-        "agency": "USDA Food and Nutrition Service",
-        "url": "https://www.fns.usda.gov/nslp/applying-free-and-reduced-price-school-meals",
+        "number": "TANF-FEDERAL",
+        "title": "Temporary Assistance for Needy Families (TANF) — Welfare Benefits",
+        "agency": "HHS Administration for Children and Families",
+        "url": "https://www.benefits.gov/benefit/613",
+    },
+    {
+        "number": "SSDI-SSI-FEDERAL",
+        "title": "SSDI and SSI — Social Security Disability & Supplemental Security Income",
+        "agency": "Social Security Administration",
+        "url": "https://www.usa.gov/social-security-disability",
+    },
+    {
+        "number": "MEDICAID-CHIP-FEDERAL",
+        "title": "Medicaid and CHIP — Health Coverage Eligibility",
+        "agency": "Centers for Medicare & Medicaid Services",
+        "url": "https://www.benefits.gov/benefit/1637",
+    },
+    {
+        "number": "MEDICARE-FEDERAL",
+        "title": "Medicare — Eligibility and How to Apply",
+        "agency": "Centers for Medicare & Medicaid Services",
+        "url": "https://www.usa.gov/medicare",
+    },
+    {
+        "number": "SECTION8-HCV",
+        "title": "Section 8 Housing Choice Voucher Program",
+        "agency": "U.S. Department of Housing and Urban Development",
+        "url": "https://www.benefits.gov/benefit/710",
+    },
+    {
+        "number": "HEADSTART-FEDERAL",
+        "title": "Head Start & Early Head Start — Child Care and Early Education Help",
+        "agency": "HHS Administration for Children and Families",
+        "url": "https://www.benefits.gov/benefit/616",
+    },
+    {
+        "number": "CTC-IRS",
+        "title": "Child Tax Credit — Who Qualifies",
+        "agency": "Internal Revenue Service",
+        "url": "https://www.irs.gov/credits-deductions/individuals/child-tax-credit",
+    },
+    {
+        "number": "PREMIUM-TAX-CREDIT-IRS",
+        "title": "Premium Tax Credit (ACA Marketplace Subsidy) — Eligibility",
+        "agency": "Internal Revenue Service",
+        "url": "https://www.irs.gov/affordable-care-act/individuals-and-families/eligibility-for-the-premium-tax-credit",
+    },
+    {
+        "number": "WEATHERIZATION-WAP",
+        "title": "Weatherization Assistance Program (WAP)",
+        "agency": "U.S. Department of Energy",
+        "url": "https://www.energy.gov/scep/wap/how-apply-weatherization-assistance",
+    },
+    {
+        "number": "VA-PENSION",
+        "title": "VA Pension — Wartime Veterans Needs-Based Benefit",
+        "agency": "U.S. Department of Veterans Affairs",
+        "url": "https://www.va.gov/pension/eligibility/",
+    },
+    {
+        "number": "UNEMPLOYMENT-FEDERAL",
+        "title": "Unemployment Insurance Benefits — Eligibility",
+        "agency": "U.S. Department of Labor (state-administered)",
+        "url": "https://www.usa.gov/unemployment-benefits",
     },
 ]
 

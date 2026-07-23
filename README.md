@@ -12,13 +12,19 @@ generates a requirement-by-requirement action plan.
 English, watch every applicable program get screened in parallel, answer the
 open questions once, get an action plan.
 
-One engine, two proven verticals, four continents, **166 compiled
-rulebooks**: 124 live **Grants.gov** opportunities, 5 US federal benefit
-programs (**SNAP, WIC, EITC, LIHEAP, Lifeline**), 20 Australian
-**GrantConnect** opportunities, 14 **EU Funding & Tenders Portal** topics
-(Horizon Europe, LIFE, EDF, JTM), and 3 **Enterprise Singapore** SME grants
-(EDG, MRA, PSG) — all run through the *same* compiler and the *same*
-eligibility engine, every criterion citing the official text.
+**The product is US-only.** It screens against **140 compiled US
+rulebooks** — 124 live **Grants.gov** opportunities and **16 federal benefit
+programs** (SNAP, WIC, EITC, LIHEAP, Lifeline, TANF, SSI/SSDI, Medicaid/CHIP,
+Medicare, Section 8, Head Start, Child Tax Credit, ACA Premium Tax Credit,
+Weatherization, VA Pension, Unemployment) — every criterion citing the
+official rule text.
+
+The engine is jurisdiction-agnostic by design, and that's proven, not
+claimed: dormant **GrantConnect (Australia)**, **EU Funding & Tenders**, and
+**Enterprise Singapore** adapters and rulebooks sit in the repo behind
+`discovery.ACTIVE_REGIONS`, run through the *same* compiler and engine — kept
+as evidence the architecture generalizes, archived out of the live product
+(see Panel #2 in `../PANEL_2_US_FOCUS_AND_COST.md`).
 
 **The app is one text box.** Describe yourself or your organization in plain
 English; an intake agent builds your structured profile; a free applicability

@@ -224,7 +224,13 @@ def verifier_node(state: EngineState) -> dict[str, Any]:
     checks: dict[str, VerificationCheck] = {}
     downgraded: list[CriterionVerdict] = []
 
-    if state["verdicts"]:  # LLM verdicts to verify
+    # Only "met" verdicts get independently re-checked: a false "met" is the
+    # harmful failure (tells someone they qualify when they don't — the
+    # MET-precision safety metric). "not_met"/"needs_info" can't create that
+    # harm, so skipping them halves verifier calls on the common all-yellow
+    # screen with no cost to the safety guarantee.
+    met_verdicts = [v for v in state["verdicts"] if v.verdict == "met"]
+    if met_verdicts:  # something risky to verify
         payload = json.dumps(
             {
                 "applicant_profile": state["profile"],
@@ -239,7 +245,7 @@ def verifier_node(state: EngineState) -> dict[str, Any]:
                         "verdict": v.verdict,
                         "reasoning": v.reasoning,
                     }
-                    for v in state["verdicts"]
+                    for v in met_verdicts
                 ],
             },
             indent=2,
