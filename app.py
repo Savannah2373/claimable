@@ -23,9 +23,9 @@ st.set_page_config(page_title="Claimable", page_icon="🧾", layout="centered")
 
 ICONS = {"met": "✅", "not_met": "❌", "needs_info": "❓"}
 BADGES = {
-    "eligible": ("🟢", "Appears eligible — every published requirement met"),
-    "likely": ("🟡", "Likely — nothing disqualifies you, open questions remain"),
-    "not_eligible": ("🔴", "Not eligible as things stand"),
+    "eligible": ("🟢", "You appear to qualify — every published requirement is met"),
+    "likely": ("🟡", "You likely qualify — just a couple details left to confirm"),
+    "not_eligible": ("🔴", "Doesn't look like a fit as things stand"),
 }
 
 EXAMPLES = {
@@ -36,8 +36,8 @@ EXAMPLES = {
     ),
     "A person / household": (
         "I'm a single mom in Ohio with two kids, 8 and 11. I work part-time "
-        "retail about 28 hours a week and bring home about $2,400 a month "
-        "before taxes, $1,850 after. We have about $1,200 in savings. "
+        "retail about 25 hours a week and bring home about $1,800 a month "
+        "before taxes, $1,500 after. We have about $500 in savings. "
         "I'm a US citizen and I'm not in school."
     ),
     "A state agency": (
@@ -57,19 +57,22 @@ def _reset_run_state() -> None:
 with st.sidebar:
     st.title("🧾 Claimable")
     st.write(
-        "Describe yourself or your organization. Claimable screens you "
-        "against every government program it has compiled — federal grants "
-        "and benefit programs — and shows exactly which requirements you "
-        "meet, with a citation from the official rules for every answer."
+        "Describe yourself or your organization. Claimable screens you against "
+        "**US** federal grants and benefit programs it has compiled, and shows "
+        "exactly which requirements you meet, with a citation from the official "
+        "rules for every answer."
     )
+    from claimable.discovery import _ACTIVE_SOURCES
+
     with connect() as conn, conn.cursor() as cur:
-        cur.execute("""SELECT count(DISTINCT opportunity_id),
-                              count(*) FILTER (WHERE superseded_at IS NULL)
-                       FROM criteria""")
+        cur.execute("""SELECT count(DISTINCT c.opportunity_id),
+                              count(*) FILTER (WHERE c.superseded_at IS NULL)
+                       FROM criteria c JOIN opportunities o ON o.id = c.opportunity_id
+                       WHERE c.superseded_at IS NULL AND o.source = ANY(%s)""",
+                    (list(_ACTIVE_SOURCES),))
         n_programs, n_criteria = cur.fetchone()
-    st.metric("Programs it can screen today", n_programs)
-    st.caption(f"{n_criteria} compiled requirements, every one citing official text. "
-               "Coverage grows one `batch_compile` at a time.")
+    st.metric("US programs it can screen today", n_programs)
+    st.caption(f"{n_criteria} compiled requirements, every one citing official text.")
     st.divider()
     st.caption("Screening only — eligibility is always determined by the "
                "issuing agency. Don't enter real personal details you "
@@ -92,9 +95,10 @@ desc = st.text_area(
 )
 
 max_screens = st.slider(
-    "How many programs to screen (most relevant first)", 3, 25, 8,
-    help="Each program screened is a paid AI call. Start small; raise it if "
-         "you want broader coverage.",
+    "How many of your most relevant programs to check", 3, 25, 8,
+    help="Claimable checks this many of the programs that fit you, best matches "
+         "first. Each check is a quick AI call — a smaller number runs faster "
+         "and cheaper; raise it for broader coverage.",
 )
 
 if st.button("Find everything I might qualify for", type="primary", disabled=not desc.strip()):
@@ -116,9 +120,16 @@ if st.button("Find everything I might qualify for", type="primary", disabled=not
 
     with connect() as conn:
         n_applicable = len(applicable_targets(conn, profile))
+    if n_applicable == 0:
+        st.warning(
+            "Claimable currently covers **US** programs only. The description "
+            "doesn't look US-based, so there's nothing to screen yet — try a "
+            "US person, household, or organization."
+        )
+        st.stop()
     n_targets = min(n_applicable, max_screens)
-    extra = f" (of {n_applicable} that fit your country)" if n_applicable > n_targets else ""
-    progress = st.progress(0.0, text=f"Screening {n_targets} programs{extra}…")
+    extra = f" (your {n_targets} best matches of {n_applicable} that fit)" if n_applicable > n_targets else ""
+    progress = st.progress(0.0, text=f"Checking {n_targets} programs{extra}…")
 
     def on_progress(done: int, total: int) -> None:
         progress.progress(done / total, text=f"Screened {done}/{total} programs…")
@@ -154,9 +165,12 @@ if "results" in st.session_state:
     n_green = sum(r["status"] == "eligible" for r in results)
     n_yellow = sum(r["status"] == "likely" for r in results)
     c1, c2, c3 = st.columns(3)
-    c1.metric("🟢 Eligible", n_green)
-    c2.metric("🟡 Likely", n_yellow)
-    c3.metric("🔴 Not eligible", len(results) - n_green - n_yellow)
+    c1.metric("🟢 Qualify", n_green)
+    c2.metric("🟡 Likely qualify", n_yellow)
+    c3.metric("🔴 Not a fit", len(results) - n_green - n_yellow)
+    if n_green == 0 and n_yellow > 0:
+        st.info("🟡 **Likely qualify** means nothing disqualifies you — answer the "
+                "quick questions below and these can turn green.")
 
     for r in results:
         icon, label = BADGES[r["status"]]
@@ -171,10 +185,14 @@ if "results" in st.session_state:
     # ── step 3: answer once, everything re-screens ────────────────────────────
     from claimable.discovery import collect_open_questions
 
-    questions = collect_open_questions(results)
+    _MAX_QUESTIONS = 8
+    all_questions = collect_open_questions(results)
+    questions = all_questions[:_MAX_QUESTIONS]
     if questions:
         st.header("A few questions to firm things up")
-        st.caption("Your answers apply to every 🟡 program at once.")
+        extra_q = (f" (showing the {_MAX_QUESTIONS} most useful of "
+                   f"{len(all_questions)})") if len(all_questions) > _MAX_QUESTIONS else ""
+        st.caption(f"Your answers apply to every 🟡 program at once{extra_q}.")
         with st.form("answers"):
             answers: dict[str, str] = {}
             for i, q in enumerate(questions):

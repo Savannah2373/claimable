@@ -30,7 +30,18 @@ from claimable.llm import traced_parse
 
 load_dotenv()
 
-ENGINE_MODEL = os.environ.get("ENGINE_MODEL", "claude-opus-4-8")
+# Screen-time judgment (analyst + verifier) runs on Sonnet, not Opus: it's a
+# bounded criterion-vs-fact classification task, so Sonnet keeps accuracy while
+# cutting cost ~1.7x and running noticeably faster — the hot path, called twice
+# per program per screen. Compile (quality-critical, one-time) stays on Opus.
+ENGINE_MODEL = os.environ.get("ENGINE_MODEL", "claude-sonnet-5")
+
+
+def _cached_system(text: str) -> list[dict[str, Any]]:
+    """A system prompt as a cache-marked block. The analyst/verifier system
+    prompts are identical across the ~8 programs in one screening run, so
+    caching serves them at ~10% cost after the first call each run."""
+    return [{"type": "text", "text": text, "cache_control": {"type": "ephemeral"}}]
 
 ANALYST_SYSTEM = """\
 You are the eligibility analyst for a screening system. You receive an
@@ -202,7 +213,7 @@ def analyst_node(state: EngineState) -> dict[str, Any]:
         "analyst",
         model=ENGINE_MODEL,
         max_tokens=16000,
-        system=ANALYST_SYSTEM,
+        system=_cached_system(ANALYST_SYSTEM),
         messages=[{"role": "user", "content": _payload(state)}],
         output_format=AnalystOutput,
     )
@@ -237,7 +248,7 @@ def verifier_node(state: EngineState) -> dict[str, Any]:
             "verifier",
             model=ENGINE_MODEL,
             max_tokens=16000,
-            system=VERIFIER_SYSTEM,
+            system=_cached_system(VERIFIER_SYSTEM),
             messages=[{"role": "user", "content": payload}],
             output_format=VerifierOutput,
         )

@@ -29,6 +29,14 @@ _JURISDICTION_BY_SOURCE = {
     "grants.gov": "US", "policy": "US",
     "grantconnect": "AU", "eu_portal": "EU", "enterprisesg": "SG",
 }
+
+# The product is US-only. The AU/EU/SG adapters and their compiled rulebooks
+# stay in the repo and database (proof the engine generalizes; resurrectable
+# later), but are archived out of every live query. Flip this to broaden.
+ACTIVE_REGIONS = {"US"}
+_ACTIVE_SOURCES = tuple(
+    s for s, region in _JURISDICTION_BY_SOURCE.items() if region in ACTIVE_REGIONS
+)
 _EU_MEMBER_STATES = {
     "austria", "belgium", "bulgaria", "croatia", "cyprus", "czechia",
     "czech republic", "denmark", "estonia", "finland", "france", "germany",
@@ -119,6 +127,10 @@ def applicable_targets(
         rows = [{"id": r[0], "number": r[1], "title": r[2], "source": r[3],
                  "close_date": r[4], "allows_individuals": r[5],
                  "allows_organizations": r[6]} for r in cur.fetchall()]
+
+    # US-only product: archive every non-active-region program out of the
+    # live set (data stays in the DB, just dormant)
+    rows = [o for o in rows if o["source"] in _ACTIVE_SOURCES]
 
     # jurisdiction: only screen programs from a funding system this applicant's
     # country can use (skipped when the country is unknown)
